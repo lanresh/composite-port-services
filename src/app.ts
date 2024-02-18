@@ -9,10 +9,11 @@ import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { dbConnection } from '@database';
+import { dbConfig } from '@database';
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { createConnection } from 'typeorm';
 
 export class App {
   public app: express.Application;
@@ -45,7 +46,14 @@ export class App {
   }
 
   private async connectToDatabase() {
-    await dbConnection();
+    try {
+      const connection = await createConnection(dbConfig)
+      const recentMigrations = await connection.runMigrations()
+      console.log(recentMigrations)
+    } catch (error) {
+      console.log(error.message)
+    }
+    // const connection = await dbConnection();
   }
 
   private initializeMiddlewares() {

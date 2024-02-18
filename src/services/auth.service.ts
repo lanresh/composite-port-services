@@ -1,54 +1,46 @@
-// import { compare, hash } from 'bcrypt';
-// import { sign } from 'jsonwebtoken';
-// import { Service } from 'typedi';
-// import { EntityRepository, Repository } from 'typeorm';
-// import { SECRET_KEY } from '@config';
-// import { UserEntity } from '@entities/users.entity';
-// import { HttpException } from '@/exceptions/httpException';
-// import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
-// import { User } from '@interfaces/users.interface';
+import { compare, hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import { EntityRepository, Repository, getConnection } from 'typeorm';
+import { SECRET_KEY } from '@config';
+import { UserEntity } from '@entities/users.entity';
+import { HttpException } from '@/exceptions/httpException';
+import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
+import { User } from '@interfaces/users.interface';
 
-// const createToken = (user: User): TokenData => {
-//   const dataStoredInToken: DataStoredInToken = { id: user.id };
-//   const secretKey: string = SECRET_KEY;
-//   const expiresIn: number = 60 * 60;
+const createToken = (user: User, expiresIn: number = 60 * 60): TokenData => {
+  const dataStoredInToken: DataStoredInToken = { userid: user.userid, id: user.id };
+  const secretKey: string = SECRET_KEY;
 
-//   return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
-// }
+  return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
+};
 
-// const createCookie = (tokenData: TokenData): string => {
-//   return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
-// }
+const createCookie = (tokenData: TokenData): string => {
+  return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+};
 
-// @Service()
-// @EntityRepository()
-// export class AuthService extends Repository<UserEntity> {
-//   public async signup(userData: User): Promise<User> {
-//     const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-//     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+@EntityRepository(UserEntity)
+export class AuthService extends Repository<UserEntity> {
+  public async login(email: string, password: string): Promise<{ token: string; findUser: User }> {
+    const findUser: User[] = await getConnection().query(`SELECT * FROM users_entity WHERE email = $1`, [email]);
+    if (!findUser.length) throw new HttpException(409, `This email ${email} was not found`);
 
-//     const hashedPassword = await hash(userData.password, 10);
-//     const createUserData: User = await UserEntity.create({ ...userData, password: hashedPassword }).save();
-//     return createUserData;
-//   }
+    const isPasswordMatching: boolean = await compare(password, findUser[0].password);
+    if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
 
-//   public async login(userData: User): Promise<{ cookie: string; findUser: User }> {
-//     const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-//     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+    const tokenData = createToken(findUser[0]);
+    const token = createCookie(tokenData);
 
-//     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
-//     if (!isPasswordMatching) throw new HttpException(409, "Password not matching");
+    return { token, findUser: findUser[0] };
+  }
 
-//     const tokenData = createToken(findUser);
-//     const cookie = createCookie(tokenData);
+  public async logout(userId: string): Promise<string> {
+    const findUser: User = await getConnection().query(`SELECT userid FROM users_entity WHERE userId = $1`, [userId]);
+    // const findUser: User = await UserEntity.findOne({ where: { email: userData.email, password: userData.password } });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-//     return { cookie, findUser };
-//   }
+    const tokenData = createToken(findUser, 0);
+    const token = createCookie(tokenData);
 
-//   public async logout(userData: User): Promise<User> {
-//     const findUser: User = await UserEntity.findOne({ where: { email: userData.email, password: userData.password } });
-//     if (!findUser) throw new HttpException(409, "User doesn't exist");
-
-//     return findUser;
-//   }
-// }
+    return token;
+  }
+}

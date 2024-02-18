@@ -1,10 +1,10 @@
-// import { NextFunction, Request, Response } from 'express';
-// import { Container } from 'typedi';
-// import { User } from '@interfaces/users.interface';
-// import { UserService } from '@services/users.service';
+import { NextFunction, Request, Response } from 'express';
+import { Container } from 'typedi';
+import { User } from '@interfaces/users.interface';
+import { UserService } from '@services/users.service';
 
-// export class UserController {
-//   public user = Container.get(UserService);
+export class UserController {
+  public user = new UserService();
 
 //   public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 //     try {
@@ -27,16 +27,16 @@
 //     }
 //   };
 
-//   public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//     try {
-//       const userData: User = req.body;
-//       const createUserData: User = await this.user.createUser(userData);
+  public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: User = req.body;
+      const createUserData: User = await this.user.createUser(userData);
 
-//       res.status(201).json({ data: createUserData, message: 'created' });
-//     } catch (error) {
-//       next(error);
-//     }
-//   };
+      res.status(201).json({ data: createUserData, message: 'user created' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 //   public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 //     try {
@@ -60,4 +60,4 @@
 //       next(error);
 //     }
 //   };
-// }
+}
