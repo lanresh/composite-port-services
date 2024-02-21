@@ -24,15 +24,29 @@ export class AuthService extends Repository<UserEntity> {
   public async createUser(userId: string, userData): Promise<User> {
     const findUser: User[] = await getConnection().query('SELECT email FROM users_entity WHERE email = $1', [userData.email]);
     if (findUser.length) throw new HttpException(409, `This email ${userData.email} already exists`);
+    let password: string;
+    if (userData.password) {
+      password= userData.password
+    }
+    else{
+      password = 'password'
+    }
+    let userType: string;
+    if (userData.user_type) {
+      userType= userData.password
+    }
+    else{
+      userType = 'Client'
+    }
 
-    const hashedPassword = await hash(userData.password, 10);
+    const hashedPassword = await hash(password, 10);
     const createUserData: User = await getConnection().query(
       `INSERT INTO users_entity(userid, email, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, 'Active', 0, now()) RETURNING *`,
       [
         userId,
         userData.email,
         hashedPassword,
-        userData.user_type
+        userType
       ],
     );
 
