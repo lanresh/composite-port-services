@@ -33,7 +33,7 @@ export class AuthService extends Repository<UserEntity> {
     }
     let userType: string;
     if (userData.user_type) {
-      userType= userData.password
+      userType= userData.user_type
     }
     else{
       userType = 'Client'
