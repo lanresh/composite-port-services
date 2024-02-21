@@ -1,5 +1,5 @@
 import { ProjectEntity } from '@/entities/project.entity';
-import { HttpException } from '@/exceptions/httpException';
+import { HttpException } from '@/exceptions/HttpException';
 import { Project } from '@/interfaces/project.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 

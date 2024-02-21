@@ -1,5 +1,5 @@
 import { StaffEntity } from '@/entities/staff.entity';
-import { HttpException } from '@/exceptions/httpException';
+import { HttpException } from '@/exceptions/HttpException';
 import { Staff } from '@/interfaces/staff.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { AuthService } from './auth.service';
