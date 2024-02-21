@@ -24,7 +24,9 @@ export interface Staff {
     branchcode: string;
     employee_status: string;
     role: string;
-    staff_type: string;}
+    staff_type: string;
+    password?: string;
+}
   
   
 
