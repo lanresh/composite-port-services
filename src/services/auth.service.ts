@@ -6,6 +6,7 @@ import { UserEntity } from '@entities/users.entity';
 import { HttpException } from '@/exceptions/httpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
+import { Staff } from '@/interfaces/staff.interface';
 
 const createToken = (user: User, expiresIn: number = 60 * 60): TokenData => {
   const dataStoredInToken: DataStoredInToken = { userid: user.userid, id: user.id };
@@ -20,6 +21,24 @@ const createCookie = (tokenData: TokenData): string => {
 
 @EntityRepository(UserEntity)
 export class AuthService extends Repository<UserEntity> {
+  public async createUser(userId: string, userData): Promise<User> {
+    const findUser: User[] = await getConnection().query('SELECT email FROM users_entity WHERE email = $1', [userData.email]);
+    if (findUser.length) throw new HttpException(409, `This email ${userData.email} already exists`);
+
+    const hashedPassword = await hash(userData.password, 10);
+    const createUserData: User = await getConnection().query(
+      `INSERT INTO users_entity(userid, email, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, 'Active', 0, now()) RETURNING *`,
+      [
+        userId,
+        userData.email,
+        hashedPassword,
+        userData.user_type
+      ],
+    );
+
+    return createUserData[0];
+  }
+
   public async login(email: string, password: string): Promise<{ token: string; findUser: User }> {
     const findUser: User[] = await getConnection().query(`SELECT * FROM users_entity WHERE email = $1`, [email]);
     if (!findUser.length) throw new HttpException(409, `This email ${email} was not found`);

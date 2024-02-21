@@ -9,6 +9,6 @@ export interface User {
   status: string;
   lastlogdate: string;
   pwd_status: number;
-  pwd_date_created: string
+  pwd_date_created: string;
+  staff_type?: string;
 }
-
