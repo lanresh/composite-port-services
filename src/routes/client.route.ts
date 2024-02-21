@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { Routes } from '@interfaces/routes.interface';
 import { ValidationMiddleware } from '@middlewares/validation.middleware';
 import { ClientController } from '@/controllers/client.controller';
+import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { CreateClientDto } from '@/dtos/client.dto';
 
 export class ClientRoute implements Routes {
   public path = '/client';
@@ -13,9 +15,9 @@ export class ClientRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.clientController.findAllClients);
-    this.router.get(`${this.path}/:id`, this.clientController.findClientById);
-    this.router.post(`${this.path}`, this.clientController.createClient);
-    this.router.put(`${this.path}/:id`, this.clientController.updateClient);
-    this.router.delete(`${this.path}/:id`, this.clientController.deleteClient);
+    this.router.get(`${this.path}`,AuthMiddleware,this.clientController.findAllClients);
+    this.router.get(`${this.path}/:id`,AuthMiddleware, this.clientController.findClientById);
+    this.router.post(`${this.path}`,AuthMiddleware,ValidationMiddleware(CreateClientDto), this.clientController.createClient);
+    this.router.put(`${this.path}/:id`,AuthMiddleware, this.clientController.updateClient);
+    this.router.delete(`${this.path}/:id`,AuthMiddleware, this.clientController.deleteClient);
 }}
