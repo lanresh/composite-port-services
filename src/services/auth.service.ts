@@ -60,10 +60,12 @@ export class AuthService extends Repository<UserEntity> {
     const isPasswordMatching: boolean = await compare(password, findUser[0].password);
     if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
 
-    const tokenData = createToken(findUser[0]);
+    const userData = await getConnection().query(`UPDATE users_entity SET lastlogdate = now() WHERE userid = $1 RETURNING *`, [findUser[0].userid]);
+
+    const tokenData = createToken(userData[0][0]);
     const token = createCookie(tokenData);
 
-    return { token, findUser: findUser[0] };
+    return { token, findUser: userData[0][0] };
   }
 
   public async logout(userId: string): Promise<string> {

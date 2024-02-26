@@ -6,7 +6,7 @@ import { ProjectReport } from '@interfaces/project_report.interface';
 export class ProjectReportService extends Repository<ProjectReportEntity> {
   public async findAllProjectReports(): Promise<ProjectReport[]> {
     try {
-      const allProjectReports = await getConnection().query('SELECT * FROM project_report_entity');
+      const allProjectReports = await getConnection().query(`SELECT pr.*, concat(st.firstname,' ', st.lastname) as name FROM project_report_entity pr JOIN staff_entity st ON pr."createdBy" = st.userid`);
       return allProjectReports;
     } catch (error) {
       throw error;
@@ -29,12 +29,12 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
     }
   }
 
-  public async createProjectReport(reportData: Partial<ProjectReport>): Promise<ProjectReport> {
+  public async createProjectReport(userId: string, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
       const connection = getConnection();
       const query = `
-        INSERT INTO project_report_entity(report_code, report_type, created_for, project_name, project_code, project_supervisor, report_summary, challenges, solutions, recommendation, weekly_projection, materials_required_for_projection, materials_on_site, status, submitted_by, submitted_on, visitor, weather, photograph_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+        INSERT INTO project_report_entity(report_code, report_type, created_for, project_name, project_code, project_supervisor, report_summary, challenges, solutions, recommendation, weekly_projection, materials_required_for_projection, materials_on_site, status, submitted_by, submitted_on, visitor, weather, photograph_id, "createdBy")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
         RETURNING *
       `;
       const result = await connection.query(query, [
@@ -57,6 +57,7 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
         reportData.visitor,
         reportData.weather,
         reportData.photograph_id,
+        userId,
       ]);
       return result[0];
     } catch (error) {
