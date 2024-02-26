@@ -63,6 +63,9 @@ export class ProjectReportEntity extends BaseEntity implements ProjectReport {
   @Column({ nullable: true })
   photograph_id: string;
 
+  @Column({ nullable: true })
+  createdBy: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

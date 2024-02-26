@@ -19,4 +19,5 @@ export interface ProjectReport{
     visitor: string;
     weather: string;
     photograph_id: string;
+    createdBy: string;
 }
