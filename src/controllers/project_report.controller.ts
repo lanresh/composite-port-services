@@ -1,3 +1,4 @@
+import { RequestWithUser } from '@/interfaces/auth.interface';
 import { ProjectReport } from '@/interfaces/project_report.interface';
 import { ProjectReportService } from '@/services/project_report.service';
 import { NextFunction, Request, Response } from 'express';
@@ -24,10 +25,12 @@ export class ProjectReportController {
     }
   }
 
-  public createProjectReport = async (req: Request, res: Response, next: NextFunction) => {
+  public createProjectReport = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
+      const userId = req.user.userid;
+  
       const reportData: ProjectReport = req.body;
-      const createReport = await this.projectReportService.createProjectReport(reportData);
+      const createReport = await this.projectReportService.createProjectReport(userId, reportData);
       res.status(201).json({ data: createReport, message: 'project report created' });
     } catch (error) {
       next(error);

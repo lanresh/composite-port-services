@@ -15,9 +15,9 @@ export class ProjectReportRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`,AuthMiddleware, this.projectReport.findAllProjectReports);
-    this.router.get(`${this.path}/:id`,AuthMiddleware, this.projectReport.findProjectReportById);
-    this.router.post(`${this.path}`,AuthMiddleware, this.projectReport.createProjectReport);
-    this.router.put(`${this.path}/:id`,AuthMiddleware, this.projectReport.updateProjectReport);
-    this.router.delete(`${this.path}/:id`,AuthMiddleware, this.projectReport.deleteProjectReport);
+    this.router.get(`${this.path}`, AuthMiddleware, this.projectReport.findAllProjectReports);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.projectReport.findProjectReportById);
+    this.router.post(`${this.path}`, AuthMiddleware, this.projectReport.createProjectReport);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.projectReport.updateProjectReport);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.projectReport.deleteProjectReport);
 }}
