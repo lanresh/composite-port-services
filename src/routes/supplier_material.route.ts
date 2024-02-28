@@ -5,23 +5,23 @@ import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
-
-
 export class SupplierMaterialRoute implements Routes {
-    public path = '/suppliers/materials';
-    public router = Router();
-    public supplierMaterial = new SupplierMaterialController();
-    
-    constructor() {
-        this.initializeRoutes();
-    }
+  public path = '/suppliers-materials';
+  public router = Router();
+  public supplierMaterial = new SupplierMaterialController();
 
-    private initializeRoutes() {
-        this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateSupplierMaterialDto), this.supplierMaterial.createSupplierMaterial);
-        this.router.get(`${this.path}`, AuthMiddleware, this.supplierMaterial.getAllSupplierMaterials);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.getSupplierMaterial);
-        this.router.put(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.updateSupplierMaterial);
-        this.router.delete(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.deleteSupplierMaterial);
-    }
+  constructor() {
+    this.initializeRoutes();
+  }
 
+  private initializeRoutes() {
+    this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateSupplierMaterialDto), this.supplierMaterial.createSupplierMaterial);
+    this.router.get(`${this.path}`, AuthMiddleware, this.supplierMaterial.getAllSupplierMaterials);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.getSupplierMaterial);
+    this.router.get(`${this.path}/types/all`, AuthMiddleware, this.supplierMaterial.getMaterialTypes);
+    this.router.get(`${this.path}/sub-type/all`, AuthMiddleware, this.supplierMaterial.getMaterialSubTypes);
+    this.router.get(`${this.path}/type/description`, AuthMiddleware, this.supplierMaterial.getMaterialDescription);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.updateSupplierMaterial);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.deleteSupplierMaterial);
+  }
 }
