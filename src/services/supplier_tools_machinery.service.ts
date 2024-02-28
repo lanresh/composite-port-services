@@ -37,7 +37,7 @@ export class SupplierToolsMachineryService extends Repository<SupplierToolsMachi
 
   public async findAllSupplierToolsMachinery(): Promise<SupplierToolsMachinery[]> {
     const supplierToolsMachinery: SupplierToolsMachinery[] = await getConnection().query(
-      'SELECT s.*, CONCAT(st.firstname, " ", st.lastname) FROM supplier_tools_machinery_entity s JOIN staff_entity st ON s.created_by = st.userid',
+      `SELECT s.*, CONCAT(st.firstname, ' ', st.lastname) FROM supplier_tools_machinery_entity s JOIN staff_entity st ON s.created_by = st.userid`,
     );
 
     return supplierToolsMachinery;
@@ -45,7 +45,7 @@ export class SupplierToolsMachineryService extends Repository<SupplierToolsMachi
 
   public async findSupplierToolsMachineryById(id: number): Promise<SupplierToolsMachinery> {
     const supplierToolsMachinery: SupplierToolsMachinery = await getConnection().query(
-      'SELECT * FROM supplier_tools_machinery_entity WHERE id = $1',
+      'SELECT * FROM supplier_tools_machinery_entity WHERE tool_id = $1',
       [id],
     );
 
