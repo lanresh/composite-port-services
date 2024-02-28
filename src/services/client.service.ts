@@ -40,7 +40,7 @@ export class ClientService extends Repository<ClientEntity> {
 
   async createClient(clientData: Partial<Client>): Promise<Client> {
     try {
-      const findClient: Client = await ClientEntity.findOne({ where: { email: clientData.email } });
+      const findClient: Client|undefined = await ClientEntity.findOne({ where: { email: clientData.email } });
       if (findClient) throw new HttpException(409, `Client with ${clientData.email} already exist`);
   
       // generate user ID
@@ -72,24 +72,36 @@ export class ClientService extends Repository<ClientEntity> {
   }
 
 
-  public async updateClient(clientId:number,clientData: Partial<Client>): Promise<Client> {
-    const findClient: Client = await ClientEntity.findOne({ where: { client_id: clientId } });
-    if (!findClient) throw new HttpException(409, "User doesn't exist");
+  public async updateClient(clientId: number, clientData: Partial<Client>): Promise<Client> {
+    try {
+      const findClient: Client | undefined = await ClientEntity.findOne({ where: { client_id: clientId } });
+      if (!findClient) throw new HttpException(404, "Client not found");
 
-    await ClientEntity.update(clientId, { ...clientData });
+      await ClientEntity.update(clientId, { ...clientData });
 
-    const updateClient: Client = await ClientEntity.findOne({ where: { client_id: clientId } });
-    return updateClient;
+      const updatedClient: Client | undefined = await ClientEntity.findOne({ where: { client_id: clientId } });
+      return updatedClient;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(500, 'Internal server error');
+    }
   }
 
  
   public async deleteClient(clientId: number): Promise<void> {
-    const findClient: Client = await ClientEntity.findOne({ where: { client_id: clientId } });
-    if (!findClient) throw new HttpException(409, "User doesn't exist");
+  try {
+    const findClient: Client | undefined = await ClientEntity.findOne({ where: { client_id: clientId } });
+    if (!findClient) throw new HttpException(409, "Client doesn't exist");
     
-    await getConnection().query(
-      'DELETE FROM client_entity WHERE client_id = $1',[clientId]
-    );
+    await getConnection().query('DELETE FROM client_entity WHERE client_id = $1', [clientId]);
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    throw new HttpException(500, 'Internal server error');
+  }
 }
 
 }

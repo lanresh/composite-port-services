@@ -1,6 +1,15 @@
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { ProjectReportEntity } from '@entities/project_report.entity';
 import { ProjectReport } from '@interfaces/project_report.interface';
+import { HttpException } from '@exceptions/HttpException';
+
+const generateCode = async () => {
+  const count = await getConnection().getRepository(ProjectReportEntity).count();
+
+  //generate user id
+  const code = 'REP-' + (count + 1).toString().padStart(4, '0');
+  return code;
+};
 
 @EntityRepository(ProjectReportEntity)
 export class ProjectReportService extends Repository<ProjectReportEntity> {
@@ -31,6 +40,8 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async createProjectReport(userId: string, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
+
+      const report_code = await generateCode();
       const connection = getConnection();
       const query = `
         INSERT INTO project_report_entity(report_code, report_type, created_for, project_name, project_code, project_supervisor, report_summary, challenges, solutions, recommendation, weekly_projection, materials_required_for_projection, materials_on_site, status, submitted_by, submitted_on, visitor, weather, photograph_id, "createdBy")
@@ -38,7 +49,7 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
         RETURNING *
       `;
       const result = await connection.query(query, [
-        reportData.report_code,
+        report_code,
         reportData.report_type,
         reportData.created_for,
         reportData.project_name,
@@ -67,12 +78,12 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async updateProjectReport(reportId: number, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
-      const findReport: ProjectReport = await ProjectReportEntity.findOne({ where: { id: reportId } });
-      if (!findReport) throw new Error("Project report doesn't exist");
+      const findReport: ProjectReport| undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
+      if (!findReport) throw new HttpException(409,"Project report doesn't exist");
 
       await ProjectReportEntity.update(reportId, { ...reportData });
 
-      const updateReport: ProjectReport = await ProjectReportEntity.findOne({ where: { id: reportId } });
+      const updateReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
       return updateReport;
     } catch (error) {
       throw error;
@@ -81,8 +92,8 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async deleteProjectReport(reportId: number): Promise<void> {
     try {
-      const findReport: ProjectReport = await ProjectReportEntity.findOne({ where: { id: reportId } });
-      if (!findReport) throw new Error("Project report doesn't exist");
+      const findReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
+      if (!findReport) throw new HttpException(409,"Project report doesn't exist");
 
       await getConnection().query('DELETE FROM project_report_entity WHERE id = $1', [reportId]);
     } catch (error) {
