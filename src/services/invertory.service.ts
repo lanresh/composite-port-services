@@ -50,7 +50,7 @@ export class InventoryService extends Repository<InventoryEntity> {
       const connection = getConnection();
       const query = `
         INSERT INTO inventory_entity(inventory_code, name, type, unit_price, quantity, total_price, total_quantity, remaining_quantity, created_by, comment)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING *
       `;
       const result = await connection.query(query, [
