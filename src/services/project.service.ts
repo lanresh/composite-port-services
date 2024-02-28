@@ -34,7 +34,7 @@ export class ProjectService extends Repository<ProjectEntity> {
     const project_duration = duration(projectData.start_date, projectData.end_date);
 
     const createProjectData: Project = await getConnection().query(
-      `INSERT INTO project_entity (project_name, project_description, project_code, project_location, address, city, state, lga, project_duration, start_date, end_date, comment, status, date_added, project_supervisor, supervisor_id, createdBy)
+      `INSERT INTO project_entity (project_name, project_description, project_code, project_location, address, city, state, lga, project_duration, start_date, end_date, comment, status, date_added, project_supervisor, supervisor_id, "createdBy")
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, now(), $14, $15, $16)
             RETURNING *`,
       [
