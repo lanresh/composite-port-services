@@ -9,6 +9,7 @@ import { ProjectReportRoute } from './routes/project_report.route';
 import { SupplierRoute } from './routes/supplier.route';
 import { SupplierMaterialRoute } from './routes/supplier_material.route';
 import { SupplierToolsMachineryRoute } from './routes/supplier_tools_machinery.route';
+import { InventoryRoute } from './routes/inventory.route';
 
 ValidateEnv();
 
@@ -22,6 +23,7 @@ const app = new App([
   new SupplierRoute(),
   new SupplierMaterialRoute(),
   new SupplierToolsMachineryRoute(),
+  new InventoryRoute(),
 ]);
 
 app.listen();
