@@ -59,7 +59,7 @@ export class SupplierMaterialService extends Repository<SupplierMaterialsEntity>
 
   public async fetchMaterialSubTypes(materialTypeId: number): Promise<MaterialSubType[]> {
     const materialSubTypes: MaterialSubType[] = await getConnection().query(
-      `SELECT distinct sub_type_desc FROM material_subtype_entity WHERE material_type_id = $1`,
+      `SELECT distinct sub_type_desc FROM material_sub_type_entity WHERE material_type_id = $1`,
       [materialTypeId],
     );
 
@@ -68,7 +68,7 @@ export class SupplierMaterialService extends Repository<SupplierMaterialsEntity>
 
   public async fetchMaterialDescription(subType: string): Promise<MaterialSubType[]> {
     const materialDescription: MaterialSubType[] = await getConnection().query(
-      `SELECT CONCAT(dimension, ' ', sub_type_category, ' ', sub_type_desc) AS description FROM material_subtype_entity WHERE sub_type_desc = $1`,
+      `SELECT CONCAT(dimension, ' ', sub_type_category, ' ', sub_type_desc) AS description FROM material_sub_type_entity WHERE sub_type_desc = $1`,
       [subType],
     );
 
