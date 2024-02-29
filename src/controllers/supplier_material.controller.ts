@@ -62,7 +62,7 @@ export class SupplierMaterialController {
 
   public getMaterialDescription = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const materialSubType: string = req.params.id;
+      const materialSubType = req.query.materialSubType as string;
       const materialDescription: MaterialSubType[] = await this.supplierMaterial.fetchMaterialDescription(materialSubType);
 
       res.status(200).json({ data: materialDescription, message: 'Data fetched successfully' });
