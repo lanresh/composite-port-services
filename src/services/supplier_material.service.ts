@@ -52,7 +52,7 @@ export class SupplierMaterialService extends Repository<SupplierMaterialsEntity>
   }
 
   public async fetchMaterialTypes(): Promise<MaterialType[]> {
-    const materialTypes: MaterialType[] = await getConnection().query('SELECT material_type_id, material_type_desc FROM material_entity');
+    const materialTypes: MaterialType[] = await getConnection().query('SELECT material_type_id, material_type_desc FROM material_type_entity');
 
     return materialTypes;
   }
