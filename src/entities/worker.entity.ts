@@ -7,7 +7,7 @@ export class WorkerEntity extends BaseEntity implements Worker {
   id: number;
 
   @Column()
-  @Unique(['inventory_code'])
+  @Unique(['worker_code'])
   worker_code: string;
 
   @Column({ nullable: true })
