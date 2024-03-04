@@ -10,6 +10,8 @@ import { SupplierRoute } from './routes/supplier.route';
 import { SupplierMaterialRoute } from './routes/supplier_material.route';
 import { SupplierToolsMachineryRoute } from './routes/supplier_tools_machinery.route';
 import { InventoryRoute } from './routes/inventory.route';
+import { ContractorRoute } from './routes/contractor.route';
+import { ContractorProjectRoute } from './routes/contractor_project.route';
 
 ValidateEnv();
 
@@ -24,6 +26,8 @@ const app = new App([
   new SupplierMaterialRoute(),
   new SupplierToolsMachineryRoute(),
   new InventoryRoute(),
+  new ContractorRoute(),
+  new ContractorProjectRoute(),
 ]);
 
 app.listen();

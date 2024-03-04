@@ -1,0 +1,60 @@
+import { EntityRepository, Repository, getConnection } from 'typeorm';
+import { ContractorProjectEntity } from '../entities/contractor_project.entity';
+import { ContractorProject } from '@/interfaces/contractor_project.interface';
+import { HttpException } from '@/exceptions/HttpException';
+
+@EntityRepository(ContractorProjectEntity)
+export class ContractorProjectService extends Repository<ContractorProjectEntity> {
+  public async createContractorProject(userId: string, contractorProjectData: Partial<ContractorProject>): Promise<ContractorProject> {
+    const query = `INSERT INTO public.contractor_project_entity(
+            contractor_code, contractor_project_code, contractor_amount, service, "createdBy", comment)
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+
+    const createContractorProjectData: ContractorProject = await getConnection().query(query, [
+      contractorProjectData.contractor_code,
+      contractorProjectData.contractor_project_code,
+      contractorProjectData.contractor_amount,
+      contractorProjectData.service,
+      userId,
+      contractorProjectData.comment,
+    ]);
+
+    return createContractorProjectData[0];
+  }
+
+  public async findAllContractorProject(): Promise<ContractorProject[]> {
+    return getConnection().query(
+      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid`,
+    );
+  }
+
+  public async findContractorProjectById(contractorProjectId: number): Promise<ContractorProject> {
+    const contractorProject: ContractorProject[] = await getConnection().query(
+      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid WHERE cp.id = $1`,
+      [contractorProjectId],
+    );
+    if (!contractorProject.length) throw new HttpException(409, 'Contractor project not found');
+
+    return contractorProject[0];
+  }
+
+  public async updateContractorProject(contractorProjectId: number, contractorProjectData: Partial<ContractorProject>): Promise<ContractorProject> {
+    const findContractorProject: ContractorProject = await ContractorProjectEntity.findOne({ where: { id: contractorProjectId } });
+    if (!findContractorProject) throw new HttpException(409, "Contractor project doesn't exist");
+
+    await ContractorProjectEntity.update({ id: contractorProjectId }, contractorProjectData);
+
+    const updateContractorProject: ContractorProject = await ContractorProjectEntity.findOne({ where: { id: contractorProjectId } });
+    return updateContractorProject;
+  }
+
+  public async deleteContractorProject(contractorProjectId: number): Promise<ContractorProject> {
+    const deletedContractorProject: ContractorProject[] = await getConnection().query(
+      `DELETE FROM contractor_project_entity WHERE id = $1 RETURNING *`,
+      [contractorProjectId],
+    );
+    if (!deletedContractorProject.length) throw new HttpException(409, "Contractor project doesn't exist");
+
+    return deletedContractorProject[0];
+  }
+}
