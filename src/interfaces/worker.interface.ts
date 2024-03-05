@@ -19,6 +19,9 @@ export interface Worker {
     outstanding_balance: number;
     date_assigned_to_project: Date;
     comment: string;
+    bank_name: string;
+    account_name: string;
+    account_number: string;
 }
 
 

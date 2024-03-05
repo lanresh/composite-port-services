@@ -81,6 +81,16 @@ export class StaffEntity extends BaseEntity implements Staff {
   @Column()
   staff_type: string;
 
+  @Column({ nullable: true })
+  bank_name: string;
+
+  @Column({ nullable: true })
+  account_name: string;
+
+  @Column({ nullable: true })
+  account_number: string;
+
+
   @CreateDateColumn()
   createdAt: Date;
 
