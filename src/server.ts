@@ -14,6 +14,9 @@ import { ContractorRoute } from './routes/contractor.route';
 import { ContractorProjectRoute } from './routes/contractor_project.route';
 import { RequestRoute } from './routes/request.route';
 import { CashAdvanceRoute } from './routes/cash_advance.route';
+import { CashAdvanceBreakdownRoute } from './routes/cash_advance_breakdown.route';
+import { ProjectFlatsRoute } from './routes/project_flats.route';
+import { StartupCostRoute } from './routes/startup_cost.route';
 
 ValidateEnv();
 
@@ -32,6 +35,9 @@ const app = new App([
   new ContractorProjectRoute(),
   new RequestRoute(),
   new CashAdvanceRoute(),
+  new CashAdvanceBreakdownRoute(),
+  new StartupCostRoute(),
+  new ProjectFlatsRoute()
 ]);
 
 app.listen();
