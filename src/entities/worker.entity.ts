@@ -64,6 +64,15 @@ export class WorkerEntity extends BaseEntity implements Worker {
   @Column({ nullable: true })
   comment: string;
 
+  @Column({ nullable: true })
+  bank_name: string;
+
+  @Column({ nullable: true })
+  account_name: string;
+
+  @Column({ nullable: true })
+  account_number: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

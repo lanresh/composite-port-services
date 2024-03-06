@@ -26,6 +26,9 @@ export interface Staff {
     role: string;
     staff_type: string;
     password?: string;
+    bank_name: string;
+    account_name: string;
+    account_number: string;
 }
   
   
