@@ -12,6 +12,8 @@ import { SupplierToolsMachineryRoute } from './routes/supplier_tools_machinery.r
 import { InventoryRoute } from './routes/inventory.route';
 import { ContractorRoute } from './routes/contractor.route';
 import { ContractorProjectRoute } from './routes/contractor_project.route';
+import { RequestRoute } from './routes/request.route';
+import { CashAdvanceRoute } from './routes/cash_advance.route';
 
 ValidateEnv();
 
@@ -28,6 +30,8 @@ const app = new App([
   new InventoryRoute(),
   new ContractorRoute(),
   new ContractorProjectRoute(),
+  new RequestRoute(),
+  new CashAdvanceRoute(),
 ]);
 
 app.listen();
