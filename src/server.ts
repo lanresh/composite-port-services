@@ -17,6 +17,8 @@ import { CashAdvanceRoute } from './routes/cash_advance.route';
 import { CashAdvanceBreakdownRoute } from './routes/cash_advance_breakdown.route';
 import { ProjectFlatsRoute } from './routes/project_flats.route';
 import { StartupCostRoute } from './routes/startup_cost.route';
+import { StakeholderRoute } from './routes/stakeholder.route';
+import { StakeholderProjectRoute } from './routes/stakeholder_project.route';
 
 ValidateEnv();
 
@@ -37,7 +39,9 @@ const app = new App([
   new CashAdvanceRoute(),
   new CashAdvanceBreakdownRoute(),
   new StartupCostRoute(),
-  new ProjectFlatsRoute()
+  new ProjectFlatsRoute(),
+  new StakeholderRoute(),
+  new StakeholderProjectRoute(),
 ]);
 
 app.listen();
