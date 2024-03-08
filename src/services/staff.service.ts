@@ -24,7 +24,7 @@ export class StaffService extends Repository<StaffEntity> {
     //create staff data
     const createStaffData: Staff = await getConnection().query(
       `INSERT INTO staff_entity
-                (userid, firstname, middlename, lastname, dob, "stateOfOrigin", lga, sex, marital_status, address, home_phone, cell_phone, email, "nextOfKin", relationship, "addressOfNOK", "emailOfNOK", "phoneOfNOK", date_employed, deptid, gradeid, branchcode, employee_status, role, staff_type)
+                (userid, firstname, middlename, lastname, dob, "stateOfOrigin", lga, sex, marital_status, address, home_phone, cell_phone, email, "nextOfKin", relationship, "addressOfNOK", "emailOfNOK", "phoneOfNOK", date_employed, deptid, gradeid, branchcode, employee_status, role, staff_type, bank_name, account_name, account_number)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25) RETURNING *`,
       [
         userId,
@@ -52,6 +52,9 @@ export class StaffService extends Repository<StaffEntity> {
         staffData.employee_status,
         staffData.role,
         staffData.staff_type,
+        staffData.bank_name,
+        staffData.account_name,
+        staffData.account_number,
       ],
     );
 
