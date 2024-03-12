@@ -38,17 +38,16 @@ export class UserController {
     }
   };
 
-  // public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const userId = Number(req.params.id);
-  //     const userData: User = req.body;
-  //     const updateUserData: User = await this.user.updateUser(userId, userData);
+  public updateUserPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: User = req.body;
+      const updateUserData: User = await this.user.updateUser(userData);
 
-  //     res.status(200).json({ data: updateUserData, message: 'updated' });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ data: updateUserData, message: 'updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 //   public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 //     try {
