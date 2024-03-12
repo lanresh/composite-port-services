@@ -15,6 +15,6 @@ export interface Tenant {
     status: string;
     rent_payment: string;
     reminder: string;
-    fee_type : string[];
-    value: number[];
+    fees : string;
+    
 }

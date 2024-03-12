@@ -51,11 +51,8 @@ export class TenantEntity extends BaseEntity implements Tenant {
   @Column({ nullable: true })
   reminder: string;
 
-  @Column('simple-array',{ nullable: true })
-  fee_type: string[];
-
-  @Column('simple-array',{ nullable: true })
-  value: number[];
+  @Column({type: 'text', nullable: true })
+  fees: string;
 
   @CreateDateColumn()
   createdAt: Date;
