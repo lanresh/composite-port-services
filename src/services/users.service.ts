@@ -43,16 +43,16 @@ export class UserService extends Repository<UserEntity> {
     return createUserData[0];
   }
 
-  //   public async updateUser(userId: number, userData: User): Promise<User> {
-  //     const findUser: User = await UserEntity.findOne({ where: { id: userId } });
-  //     if (!findUser) throw new HttpException(409, "User doesn't exist");
+    public async updateUser(userData: User): Promise<User> {
+      const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+      if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-  //     const hashedPassword = await hash(userData.password, 10);
-  //     await UserEntity.update(userId, { ...userData, password: hashedPassword });
+      const hashedPassword = await hash(userData.password, 10);
+      await UserEntity.update({ email: userData.email }, { ...userData, password: hashedPassword });
 
-  //     const updateUser: User = await UserEntity.findOne({ where: { id: userId } });
-  //     return updateUser;
-  //   }
+      const updateUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+      return updateUser;
+    }
 
   //   public async deleteUser(userId: number): Promise<User> {
   //     const findUser: User = await UserEntity.findOne({ where: { id: userId } });

@@ -7,6 +7,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { Staff } from '@/interfaces/staff.interface';
+import sendResetLink from '@/helpers/email.helper';
 
 const createToken = (user: User, expiresIn: number = 60 * 60): TokenData => {
   const dataStoredInToken: DataStoredInToken = { userid: user.userid, id: user.id };
@@ -26,28 +27,21 @@ export class AuthService extends Repository<UserEntity> {
     if (findUser.length) throw new HttpException(409, `This email ${userData.email} already exists`);
     let password: string;
     if (userData.password) {
-      password= userData.password
-    }
-    else{
-      password = 'password'
+      password = userData.password;
+    } else {
+      password = 'password';
     }
     let userType: string;
     if (userData.user_type) {
-      userType= userData.user_type
-    }
-    else{
-      userType = 'Client'
+      userType = userData.user_type;
+    } else {
+      userType = 'Client';
     }
 
     const hashedPassword = await hash(password, 10);
     const createUserData: User = await getConnection().query(
       `INSERT INTO users_entity(userid, email, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, 'Active', 0, now()) RETURNING *`,
-      [
-        userId,
-        userData.email,
-        hashedPassword,
-        userType
-      ],
+      [userId, userData.email, hashedPassword, userType],
     );
 
     return createUserData[0];
@@ -77,5 +71,17 @@ export class AuthService extends Repository<UserEntity> {
     const token = createCookie(tokenData);
 
     return token;
+  }
+
+  public async forgotPassword(email: string, link: string): Promise<string> {
+    const findUser: User[] = await getConnection().query(`SELECT userid FROM users_entity WHERE email = $1`, [email]);
+    if (!findUser.length) throw new HttpException(409, `This email ${email} was not found`);
+
+    const sent = await sendResetLink(email, link);
+    if (sent) {
+      return findUser[0].email;
+    }
+
+    return 'Invalid Details';
   }
 }

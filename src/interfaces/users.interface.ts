@@ -11,4 +11,5 @@ export interface User {
   pwd_status: number;
   pwd_date_created: string;
   staff_type?: string;
+  link?: string;
 }

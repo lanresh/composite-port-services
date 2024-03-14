@@ -23,8 +23,19 @@ export class AuthController {
       const userId: string = req.user.userid;
       const logOutUserData: string = await this.auth.logout(userId);
 
-    //   res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
+      //   res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
       res.status(200).json({ data: logOutUserData, message: 'logout' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: User = req.body;
+      const resetPasswordData: string = await this.auth.forgotPassword(userData.email, userData.link);
+
+      res.status(200).json({ data: resetPasswordData, message: 'password reset link sent' });
     } catch (error) {
       next(error);
     }
