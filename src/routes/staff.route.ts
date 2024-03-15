@@ -21,6 +21,7 @@ export class StaffRoute implements Routes {
     this.router.put(`${this.path}/:id/:uid`, AuthMiddleware, this.staff.updateStaff);
     this.router.get(`${this.path}/roles/all`, AuthMiddleware, this.staff.getRoles);
     this.router.get(`${this.path}/role/all`, AuthMiddleware, this.staff.getStaffsByRole);
+    this.router.put(`${this.path}/image-upload/`, AuthMiddleware, this.staff.uploadStaffImage);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.staff.deleteStaff);
   }
 }

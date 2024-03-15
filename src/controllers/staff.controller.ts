@@ -1,4 +1,6 @@
+import { photoUpload } from '@/helpers/s3.helper';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import { MulterRequest } from '@/interfaces/multer.interface';
 import { Staff } from '@/interfaces/staff.interface';
 import { StaffService } from '@/services/staff.service';
 import { NextFunction, Request, Response } from 'express';
@@ -84,4 +86,17 @@ export class StaffController {
       next(error);
     }
   };
+
+  public uploadStaffImage = async (req: MulterRequest, res: Response, next: NextFunction) => {
+    try {
+      const id: number = req.user.id
+      const userId: string = req.user.userid;
+      const files = req.file;
+      const imageUrl = await photoUpload(userId, files);
+      const uploadedStaffImage: Staff = await this.staff.updateStaff(id, userId, { image: imageUrl });
+      res.status(200).json({ data: uploadedStaffImage, message: 'Staff image uploaded successfully' });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
