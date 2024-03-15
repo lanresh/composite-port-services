@@ -19,5 +19,6 @@ export class ProjectReportRoute implements Routes {
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.projectReport.findProjectReportById);
     this.router.post(`${this.path}`, AuthMiddleware, this.projectReport.createProjectReport);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.projectReport.updateProjectReport);
+    this.router.put(`${this.path}/images/:id`, AuthMiddleware, this.projectReport.uploadProjectReportImages);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.projectReport.deleteProjectReport);
 }}

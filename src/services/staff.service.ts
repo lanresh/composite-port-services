@@ -76,7 +76,7 @@ export class StaffService extends Repository<StaffEntity> {
     return staff[0];
   }
 
-  public async updateStaff(id: number, userId: string, staffData: Staff): Promise<Staff> {
+  public async updateStaff(id: number, userId: string, staffData: Partial<Staff>): Promise<Staff> {
     const findStaff: Staff = await StaffEntity.findOne({ where: { id: id, userid: userId } });
     if (!findStaff) throw new HttpException(409, "User doesn't exist");
 
