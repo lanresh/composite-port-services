@@ -74,7 +74,7 @@ export class AuthService extends Repository<UserEntity> {
   }
 
   public async forgotPassword(email: string, link: string): Promise<string> {
-    const findUser: User[] = await getConnection().query(`SELECT userid FROM users_entity WHERE email = $1`, [email]);
+    const findUser: User[] = await getConnection().query(`SELECT userid, email FROM users_entity WHERE email = $1`, [email]);
     if (!findUser.length) throw new HttpException(409, `This email ${email} was not found`);
 
     const sent = await sendResetLink(email, link);
