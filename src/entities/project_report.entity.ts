@@ -60,8 +60,8 @@ export class ProjectReportEntity extends BaseEntity implements ProjectReport {
   @Column({ nullable: true })
   weather: string;
 
-  @Column({ nullable: true })
-  photograph_id: string;
+  @Column('simple-array',{array: true, nullable: true })
+  photograph_id: string[];
 
   @Column({ nullable: true })
   createdBy: string;
@@ -72,3 +72,4 @@ export class ProjectReportEntity extends BaseEntity implements ProjectReport {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
