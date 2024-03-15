@@ -9,4 +9,5 @@ export interface Client {
     address: string;
     state: string;
     activation_code: string;
+    image: string;
 }

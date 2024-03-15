@@ -18,20 +18,23 @@ export class ClientEntity extends BaseEntity implements Client {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone_number: string;
 
-  @Column()
+  @Column({ nullable: true })
   mobile_number: string;
 
-  @Column()
+  @Column({ nullable: true })
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   state: string;
 
-  @Column()
+  @Column({ nullable: true })
   activation_code: string;
+
+  @Column({ nullable: true })
+  image: string;
 
   @CreateDateColumn()
   createdAt: Date;

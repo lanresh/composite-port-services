@@ -29,7 +29,7 @@ export interface Staff {
     bank_name: string;
     account_name: string;
     account_number: string;
-    image?: string;
+    image: string;
 }
   
   

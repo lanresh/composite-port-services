@@ -90,6 +90,8 @@ export class StaffEntity extends BaseEntity implements Staff {
   @Column({ nullable: true })
   account_number: string;
 
+  @Column({ nullable: true })
+  image: string;
 
   @CreateDateColumn()
   createdAt: Date;

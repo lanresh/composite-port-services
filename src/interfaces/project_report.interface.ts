@@ -18,6 +18,6 @@ export interface ProjectReport{
     submitted_on: string;
     visitor: string;
     weather: string;
-    photograph_id: string;
+    photograph_id: string[];
     createdBy: string;
 }
