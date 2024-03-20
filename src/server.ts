@@ -19,6 +19,9 @@ import { ProjectFlatsRoute } from './routes/project_flats.route';
 import { StartupCostRoute } from './routes/startup_cost.route';
 import { StakeholderRoute } from './routes/stakeholder.route';
 import { StakeholderProjectRoute } from './routes/stakeholder_project.route';
+import { WorkerJobsRoute } from './routes/worker_jobs.route';
+import { WorkerRoute } from './routes/worker.route';
+import { ToolFromStoreRoute } from './routes/tool_from_store.route';
 
 ValidateEnv();
 
@@ -42,6 +45,9 @@ const app = new App([
   new ProjectFlatsRoute(),
   new StakeholderRoute(),
   new StakeholderProjectRoute(),
+  new WorkerJobsRoute(),
+  new WorkerRoute(),
+  new ToolFromStoreRoute(),
 ]);
 
 app.listen();
