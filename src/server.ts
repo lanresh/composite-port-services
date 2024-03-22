@@ -47,6 +47,11 @@ const app = new App([
   new ProjectFlatsRoute(),
   new StakeholderRoute(),
   new StakeholderProjectRoute(),
+  new DashboardRoute(),
+  new TenantRoute(),
+  new WorkerJobsRoute(),
+  new WorkerRoute(),
+  new ToolFromStoreRoute(),
 ]);
 
 app.listen();
