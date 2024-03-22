@@ -21,6 +21,9 @@ import { StakeholderRoute } from './routes/stakeholder.route';
 import { StakeholderProjectRoute } from './routes/stakeholder_project.route';
 import { DashboardRoute } from './routes/dashboard.route';
 import { TenantRoute } from './routes/tenant.route';
+import { WorkerJobsRoute } from './routes/worker_jobs.route';
+import { WorkerRoute } from './routes/worker.route';
+import { ToolFromStoreRoute } from './routes/tool_from_store.route';
 
 ValidateEnv();
 
@@ -44,8 +47,6 @@ const app = new App([
   new ProjectFlatsRoute(),
   new StakeholderRoute(),
   new StakeholderProjectRoute(),
-  new DashboardRoute(),
-  new TenantRoute(),
 ]);
 
 app.listen();
