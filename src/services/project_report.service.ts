@@ -15,7 +15,9 @@ const generateCode = async () => {
 export class ProjectReportService extends Repository<ProjectReportEntity> {
   public async findAllProjectReports(): Promise<ProjectReport[]> {
     try {
-      const allProjectReports = await getConnection().query(`SELECT pr.*, concat(st.firstname,' ', st.lastname) as name FROM project_report_entity pr JOIN staff_entity st ON pr."createdBy" = st.userid`);
+      const allProjectReports = await getConnection().query(
+        `SELECT pr.*, concat(st.firstname,' ', st.lastname) as name FROM project_report_entity pr JOIN staff_entity st ON pr."createdBy" = st.userid`,
+      );
       return allProjectReports;
     } catch (error) {
       throw error;
@@ -24,13 +26,10 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async findProjectReportById(reportId: number): Promise<ProjectReport | string> {
     try {
-      const reportById = await getConnection().query(
-        'SELECT * FROM project_report_entity WHERE id = $1',
-        [reportId]
-      );
+      const reportById = await getConnection().query('SELECT * FROM project_report_entity WHERE id = $1', [reportId]);
       const result = reportById.length ? reportById[0] : undefined;
       if (!result) {
-        return "No project report was found with this ID.";
+        return 'No project report was found with this ID.';
       }
       return result;
     } catch (error) {
@@ -40,7 +39,6 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async createProjectReport(userId: string, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
-
       const report_code = await generateCode();
       const connection = getConnection();
       const query = `
@@ -78,10 +76,10 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async updateProjectReport(reportId: number, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
-      const findReport: ProjectReport| undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
-      if (!findReport) throw new HttpException(409,"Project report doesn't exist");
+      const findReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
+      if (!findReport) throw new HttpException(409, "Project report doesn't exist");
 
-      await ProjectReportEntity.update(reportId, { ...reportData });
+      await ProjectReportEntity.update({ id: reportId }, { ...reportData });
 
       const updateReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
       return updateReport;
@@ -90,10 +88,35 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
     }
   }
 
+  public async uploadProjectReportImages(reportId: number, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
+    try {
+      const findReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
+      if (!findReport) throw new HttpException(409, "Project report doesn't exist");
+
+      // Convert the array of URLs to a PostgreSQL array literal
+      const imageUrlArray = reportData.photograph_id.map(url => `'${url}'`).join(', ');
+
+      // Use the ARRAY constructor to properly format the array for PostgreSQL
+      const query = `
+      UPDATE project_report_entity
+      SET photograph_id = ARRAY[${imageUrlArray}], "updatedAt" = NOW()
+      WHERE id = $1
+      RETURNING *;
+    `;
+
+      const updatedReport = await getConnection().query(query, [reportId]);
+
+      // Return the updated report
+      return updatedReport;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async deleteProjectReport(reportId: number): Promise<void> {
     try {
       const findReport: ProjectReport | undefined = await ProjectReportEntity.findOne({ where: { id: reportId } });
-      if (!findReport) throw new HttpException(409,"Project report doesn't exist");
+      if (!findReport) throw new HttpException(409, "Project report doesn't exist");
 
       await getConnection().query('DELETE FROM project_report_entity WHERE id = $1', [reportId]);
     } catch (error) {

@@ -2,6 +2,7 @@ import { StaffController } from '@/controllers/staff.controller';
 import { CreateStaffDto } from '@/dtos/staff.dto';
 import { Routes } from '@/interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { upload } from '@/middlewares/multer.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -18,10 +19,10 @@ export class StaffRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateStaffDto), this.staff.createStaff);
     this.router.get(`${this.path}`, AuthMiddleware, this.staff.getAllStaffs);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.staff.getStaff);
-    this.router.put(`${this.path}/:id/:uid`, AuthMiddleware, this.staff.updateStaff);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.staff.updateStaff);
     this.router.get(`${this.path}/roles/all`, AuthMiddleware, this.staff.getRoles);
     this.router.get(`${this.path}/role/all`, AuthMiddleware, this.staff.getStaffsByRole);
-    this.router.put(`${this.path}/image-upload/`, AuthMiddleware, this.staff.uploadStaffImage);
+    this.router.put(`${this.path}/image/upload`, AuthMiddleware, upload.single('image'), this.staff.uploadStaffImage);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.staff.deleteStaff);
   }
 }

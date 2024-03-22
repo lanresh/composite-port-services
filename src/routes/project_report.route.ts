@@ -3,6 +3,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ProjectReportController } from '@/controllers/project_report.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { ValidationMiddleware } from '@middlewares/validation.middleware';
+import { upload } from '@/middlewares/multer.middleware';
 
 
 export class ProjectReportRoute implements Routes {
@@ -19,6 +20,6 @@ export class ProjectReportRoute implements Routes {
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.projectReport.findProjectReportById);
     this.router.post(`${this.path}`, AuthMiddleware, this.projectReport.createProjectReport);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.projectReport.updateProjectReport);
-    this.router.put(`${this.path}/images/:id`, AuthMiddleware, this.projectReport.uploadProjectReportImages);
+    this.router.put(`${this.path}/images/:id`, AuthMiddleware, upload.array('images'), this.projectReport.uploadProjectReportImages);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.projectReport.deleteProjectReport);
 }}

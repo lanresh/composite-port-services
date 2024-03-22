@@ -63,9 +63,11 @@ export class ProjectReportController {
   public uploadProjectReportImages = async (req: MulterRequest, res: Response, next: NextFunction) => {
     try {
       const reportId = Number(req.params.id);
-      const files = req.file;
+      const files = req.files;
       const imageUrls = await uploadToS3(reportId, files);
-      const uploadedProjectReportImages = await this.projectReportService.updateProjectReport(reportId, { photograph_id: imageUrls });
+      const reportData = { photograph_id: imageUrls };
+  
+      const uploadedProjectReportImages = await this.projectReportService.uploadProjectReportImages(reportId, reportData);
       res.status(200).json({ data: uploadedProjectReportImages, message: 'project report images uploaded' });
     } catch (error) {
       next(error);

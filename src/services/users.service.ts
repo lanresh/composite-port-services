@@ -1,4 +1,4 @@
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { Service } from 'typedi';
 import { UserEntity } from '@entities/users.entity';
@@ -43,16 +43,30 @@ export class UserService extends Repository<UserEntity> {
     return createUserData[0];
   }
 
-    public async updateUser(userData: User): Promise<User> {
-      const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-      if (!findUser) throw new HttpException(409, "User doesn't exist");
+  public async updateUser(userData: User): Promise<User> {
+    const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-      const hashedPassword = await hash(userData.password, 10);
-      await UserEntity.update({ email: userData.email }, { ...userData, password: hashedPassword });
+    const hashedPassword = await hash(userData.password, 10);
+    await UserEntity.update({ email: userData.email }, { ...userData, password: hashedPassword });
 
-      const updateUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-      return updateUser;
-    }
+    const updateUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+    return updateUser;
+  }
+
+  public async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<User> {
+    const findUser: User = await UserEntity.findOne({ where: { userid: userId } });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
+
+    const isPasswordMatching: boolean = await compare(oldPassword, findUser.password);
+    if (!isPasswordMatching) throw new HttpException(409, 'Old Password not matching');
+
+    const hashedPassword = await hash(newPassword, 10);
+    await UserEntity.update({ userid: userId }, { password: hashedPassword });
+
+    const updateUser: User = await UserEntity.findOne({ where: { userid: userId } });
+    return updateUser;
+  }
 
   //   public async deleteUser(userId: number): Promise<User> {
   //     const findUser: User = await UserEntity.findOne({ where: { id: userId } });
