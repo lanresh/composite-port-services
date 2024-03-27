@@ -102,8 +102,10 @@ export class StaffService extends Repository<StaffEntity> {
   }
 
   public async deleteStaff(userId: string): Promise<Staff> {
-    const deletedStaff: Staff = await getConnection().query(`DELETE FROM staff_entity WHERE userid = $1`, [userId]);
+    const deletedStaff: Staff = await getConnection().query(`DELETE FROM staff_entity WHERE userid = $1 RETURNING *`, [userId]);
     if (!deletedStaff[0].length) throw new HttpException(409, 'Staff does not exist');
+
+    await getConnection().query(`DELETE FROM users_entity WHERE userid = $1`, [userId]);
 
     return deletedStaff[0];
   }
