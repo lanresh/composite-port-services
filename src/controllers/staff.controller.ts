@@ -42,13 +42,10 @@ export class StaffController {
 
   public updateStaff = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id: number = +req.params.id
-      const userId: string = req.params.uid;
+      const userId: string = req.params.id;
       const staffData: Staff = req.body;
-      console.log(id)
-      console.log(userId)
 
-      const updateStaffData: Staff = await this.staff.updateStaff(id, userId, staffData);
+      const updateStaffData: Staff = await this.staff.updateStaff(userId, staffData);
       res.status(200).json({ data: updateStaffData, message: 'Data updated successfully' });
     } catch (error) {
       next(error);
@@ -89,11 +86,11 @@ export class StaffController {
 
   public uploadStaffImage = async (req: MulterRequest, res: Response, next: NextFunction) => {
     try {
-      const id: number = req.user.id
       const userId: string = req.user.userid;
       const files = req.file;
       const imageUrl = await photoUpload(userId, files);
-      const uploadedStaffImage: Staff = await this.staff.updateStaff(id, userId, { image: imageUrl });
+
+      const uploadedStaffImage: Staff = await this.staff.updateStaff(userId, { image: imageUrl });
       res.status(200).json({ data: uploadedStaffImage, message: 'Staff image uploaded successfully' });
     } catch (error) {
       next(error);

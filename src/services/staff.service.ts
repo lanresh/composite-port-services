@@ -25,7 +25,7 @@ export class StaffService extends Repository<StaffEntity> {
     const createStaffData: Staff = await getConnection().query(
       `INSERT INTO staff_entity
                 (userid, firstname, middlename, lastname, dob, "stateOfOrigin", lga, sex, marital_status, address, home_phone, cell_phone, email, "nextOfKin", relationship, "addressOfNOK", "emailOfNOK", "phoneOfNOK", date_employed, deptid, gradeid, branchcode, employee_status, role, staff_type, bank_name, account_name, account_number)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25) RETURNING *`,
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28) RETURNING *`,
       [
         userId,
         staffData.firstname,
@@ -76,13 +76,13 @@ export class StaffService extends Repository<StaffEntity> {
     return staff[0];
   }
 
-  public async updateStaff(id: number, userId: string, staffData: Partial<Staff>): Promise<Staff> {
-    const findStaff: Staff = await StaffEntity.findOne({ where: { id: id, userid: userId } });
+  public async updateStaff(userId: string, staffData: Partial<Staff>): Promise<Staff> {
+    const findStaff: Staff = await StaffEntity.findOne({ where: { userid: userId } });
     if (!findStaff) throw new HttpException(409, "User doesn't exist");
 
-    await StaffEntity.update({ id: id, userid: userId }, staffData);
+    await StaffEntity.update({ userid: userId }, staffData);
 
-    const updateStaff: Staff = await StaffEntity.findOne({ where: { id: id, userid: userId } });
+    const updateStaff: Staff = await StaffEntity.findOne({ where: { userid: userId } });
     return updateStaff;
   }
 
