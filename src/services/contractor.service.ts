@@ -41,7 +41,7 @@ export class ContractorService extends Repository<ContractorEntity> {
   }
 
   public async findContractorById(contractorId: number): Promise<Contractor> {
-    const contractor: Contractor[] = await getConnection().query('SELECT * FROM contractor_entity WHERE contractor_id = $1', [contractorId]);
+    const contractor: Contractor[] = await getConnection().query('SELECT * FROM contractor_entity WHERE id = $1', [contractorId]);
     if (!contractor.length) throw new HttpException(409, 'Contractor not found');
     return contractor[0];
   }
