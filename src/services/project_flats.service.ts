@@ -34,9 +34,7 @@ export class ProjectFlatService extends Repository<ProjectFlatsEntity> {
   }
 
   public async findProjectFlatById(projectFlatId: number): Promise<ProjectFlats> {
-    const projectFlats: ProjectFlats[] = await getConnection().query('SELECT * FROM public.project_flats_entity WHERE flat_id = $1', [
-      projectFlatId,
-    ]);
+    const projectFlats: ProjectFlats[] = await getConnection().query('SELECT * FROM public.project_flats_entity WHERE flat_id = $1', [projectFlatId]);
     if (!projectFlats.length) throw new HttpException(409, 'Project flat not found');
 
     return projectFlats[0];
@@ -55,7 +53,16 @@ export class ProjectFlatService extends Repository<ProjectFlatsEntity> {
     const projectFlat: ProjectFlatsEntity = await ProjectFlatsEntity.findOne({ where: { flat_id: projectFlatId } });
     if (!projectFlat) throw new HttpException(409, 'Project flat not found');
 
-    await ProjectFlatsEntity.update({ flat_id: projectFlatId }, projectFlatData);
+    // Get the existing status value from the database
+    const existingStatus: ProjectFlats['status'] = projectFlat.status;
+
+    // Set the default value for the status field if it's not included in projectFlatData
+    const updatedProjectFlatData: ProjectFlats = { ...projectFlatData };
+    if (!updatedProjectFlatData.status) {
+      updatedProjectFlatData.status = existingStatus; // Use the existing status value as the default
+    }
+
+    await ProjectFlatsEntity.update({ flat_id: projectFlatId }, updatedProjectFlatData);
     const updatedProjectFlat: ProjectFlatsEntity = await ProjectFlatsEntity.findOne({ where: { flat_id: projectFlatId } });
     return updatedProjectFlat;
   }
