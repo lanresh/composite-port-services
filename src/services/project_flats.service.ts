@@ -53,13 +53,22 @@ export class ProjectFlatService extends Repository<ProjectFlatsEntity> {
     const projectFlat: ProjectFlatsEntity = await ProjectFlatsEntity.findOne({ where: { flat_id: projectFlatId } });
     if (!projectFlat) throw new HttpException(409, 'Project flat not found');
 
-    // Get the existing status value from the database
-    const existingStatus: ProjectFlats['status'] = projectFlat.status;
-
     // Set the default value for the status field if it's not included in projectFlatData
     const updatedProjectFlatData: ProjectFlats = { ...projectFlatData };
     if (!updatedProjectFlatData.status) {
-      updatedProjectFlatData.status = existingStatus; // Use the existing status value as the default
+      updatedProjectFlatData.status = projectFlat.status; // Use the existing status value as the default
+    }
+    if (!updatedProjectFlatData.project_name) {
+      updatedProjectFlatData.project_name = projectFlat.project_name;
+    }
+    if (!updatedProjectFlatData.project_code) {
+      updatedProjectFlatData.project_code = projectFlat.project_code;
+    }
+    if (!updatedProjectFlatData.flat_desc) {
+      updatedProjectFlatData.flat_desc = projectFlat.flat_desc;
+    }
+    if (!updatedProjectFlatData.comment) {
+      updatedProjectFlatData.comment = projectFlat.comment;
     }
 
     await ProjectFlatsEntity.update({ flat_id: projectFlatId }, updatedProjectFlatData);
