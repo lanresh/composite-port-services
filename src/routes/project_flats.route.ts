@@ -18,7 +18,7 @@ export class ProjectFlatsRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateProjectFlatsDto), this.project_flats.createProjectFlats);
     this.router.get(`${this.path}`, AuthMiddleware, this.project_flats.getProjectFlats);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.project_flats.getProjectFlat);
-    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.project_flats.getProjectFlatsByProjectCode);
+    this.router.get(`${this.path}/project-code/code`, AuthMiddleware, this.project_flats.getProjectFlatsByProjectCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, ValidationMiddleware(CreateProjectFlatsDto, true), this.project_flats.updateProjectFlats);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.project_flats.deleteProjectFlats);
   }
