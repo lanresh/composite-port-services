@@ -23,7 +23,7 @@ export class CashAdvanceBreakdownService extends Repository<CashAdvanceBreakdown
 
   public async findAllCashAdvanceBreakdowns(): Promise<CashAdvanceBreakdown[]> {
     return await getConnection().query(
-      `SELECT cb.*, CONCAT(st.firstname, ' ', st.lastname) as added_by FROM public.cash_advance_breakdown_entity cb JOIN staff_entity st ON cb.added_by = st.userid`,
+      `SELECT cb.*, CONCAT(st.firstname,' ', st.lastname) as added_by FROM public.cash_advance_breakdown_entity cb JOIN staff_entity st ON cb.added_by = st.userid`,
     );
   }
 
