@@ -17,7 +17,8 @@ const createToken = (user: User, expiresIn: number = 60 * 60): TokenData => {
 };
 
 const createCookie = (tokenData: TokenData): string => {
-  return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+  // return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+  return `${tokenData.token}`;
 };
 
 @EntityRepository(UserEntity)
