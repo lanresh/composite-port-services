@@ -144,7 +144,7 @@ export class CreateRequestDto {
   public tool_name: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   public approved_by: string;
 
