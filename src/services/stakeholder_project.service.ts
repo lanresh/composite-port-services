@@ -46,7 +46,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
       const project_code = await generateCode();
       const connection = getConnection();
       const query = `
-        INSERT INTO stakeholder_project_entity(stakeholder_code, stakeholder_project_code, stakeholder_amount, approved_amount, other_amount, createdBy, comment, status)
+        INSERT INTO stakeholder_project_entity(stakeholder_code, stakeholder_project_code, stakeholder_amount, approved_amount, other_amount, "createdBy", comment, status)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *
       `;
