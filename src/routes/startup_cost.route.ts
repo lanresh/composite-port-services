@@ -18,7 +18,7 @@ export class StartupCostRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateStartupCostDto), this.startup_cost.createStartUpCost);
     this.router.get(`${this.path}`, AuthMiddleware, this.startup_cost.getStartUpCosts);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.startup_cost.getStartUpCost);
-    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.startup_cost.getStartUpCostByCode);
+    this.router.get(`${this.path}/project-code/code`, AuthMiddleware, this.startup_cost.getStartUpCostByCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, ValidationMiddleware(CreateStartupCostDto, true), this.startup_cost.updateStartUpCost);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.startup_cost.deleteStartUpCost);
   }
