@@ -2,7 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, Uniq
 import { User } from '@/interfaces/users.interface';
 
 @Entity()
-export class UserEntity extends BaseEntity implements User {
+export class UsersEntity extends BaseEntity implements User {
   @PrimaryGeneratedColumn()
   id: number;
 

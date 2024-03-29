@@ -1,12 +1,12 @@
 import { compare, hash } from 'bcrypt';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { Service } from 'typedi';
-import { UserEntity } from '@entities/users.entity';
+import { UsersEntity } from '@entities/users.entity';
 import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 
-@EntityRepository(UserEntity)
-export class UserService extends Repository<UserEntity> {
+@EntityRepository(UsersEntity)
+export class UserService extends Repository<UsersEntity> {
   //   public async findAllUser(): Promise<User[]> {
   //     const users: User[] = await UserEntity.find();
   //     return users;
@@ -44,27 +44,27 @@ export class UserService extends Repository<UserEntity> {
   }
 
   public async updateUser(userData: User): Promise<User> {
-    const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+    const findUser: User = await UsersEntity.findOne({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     const hashedPassword = await hash(userData.password, 10);
-    await UserEntity.update({ email: userData.email }, { ...userData, password: hashedPassword });
+    await UsersEntity.update({ email: userData.email }, { ...userData, password: hashedPassword });
 
-    const updateUser: User = await UserEntity.findOne({ where: { email: userData.email } });
+    const updateUser: User = await UsersEntity.findOne({ where: { email: userData.email } });
     return updateUser;
   }
 
   public async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<User> {
-    const findUser: User = await UserEntity.findOne({ where: { userid: userId } });
+    const findUser: User = await UsersEntity.findOne({ where: { userid: userId } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     const isPasswordMatching: boolean = await compare(oldPassword, findUser.password);
     if (!isPasswordMatching) throw new HttpException(409, 'Old Password not matching');
 
     const hashedPassword = await hash(newPassword, 10);
-    await UserEntity.update({ userid: userId }, { password: hashedPassword });
+    await UsersEntity.update({ userid: userId }, { password: hashedPassword });
 
-    const updateUser: User = await UserEntity.findOne({ where: { userid: userId } });
+    const updateUser: User = await UsersEntity.findOne({ where: { userid: userId } });
     return updateUser;
   }
 

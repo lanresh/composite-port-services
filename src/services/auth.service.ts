@@ -2,7 +2,7 @@ import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { SECRET_KEY } from '@config';
-import { UserEntity } from '@entities/users.entity';
+import { UsersEntity } from '@entities/users.entity';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
@@ -21,8 +21,8 @@ const createCookie = (tokenData: TokenData): string => {
   return `${tokenData.token}`;
 };
 
-@EntityRepository(UserEntity)
-export class AuthService extends Repository<UserEntity> {
+@EntityRepository(UsersEntity)
+export class AuthService extends Repository<UsersEntity> {
   public async createUser(userId: string, userData): Promise<User> {
     const findUser: User[] = await getConnection().query('SELECT email FROM users_entity WHERE email = $1', [userData.email]);
     if (findUser.length) throw new HttpException(409, `This email ${userData.email} already exists`);
