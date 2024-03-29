@@ -3,6 +3,8 @@ import { ClientEntity } from '@entities/client.entity';
 import { Client } from '@interfaces/client.interface';
 import { HttpException } from '@exceptions/HttpException';
 import { AuthService } from './auth.service';
+import { UsersEntity } from '@/entities/users.entity';
+import { User } from '@/interfaces/users.interface';
 
 const generateUserId = async () => {
   const count = await getConnection().getRepository(ClientEntity).count();
@@ -42,6 +44,9 @@ export class ClientService extends Repository<ClientEntity> {
     try {
       const findClient: Client|undefined = await ClientEntity.findOne({ where: { email: clientData.email } });
       if (findClient) throw new HttpException(409, `Client with ${clientData.email} already exist`);
+
+      const findUser: User|undefined = await UsersEntity.findOne({ where: { email: clientData.email } });
+      if (findUser) throw new HttpException(409, `Client with ${clientData.email} already exist as a user and cannot be created as a client`);
   
       // generate user ID
       const userId = await generateUserId();

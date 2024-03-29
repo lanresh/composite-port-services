@@ -18,6 +18,9 @@ export class StaffService extends Repository<StaffEntity> {
     const findStaff: Staff[] = await getConnection().query('SELECT * FROM staff_entity WHERE email = $1', [staffData.email]);
     if (findStaff.length) throw new HttpException(409, `Staff with ${staffData.email} already exist`);
 
+    const findUser: Staff[] = await getConnection().query('SELECT * FROM users_entity WHERE email = $1', [staffData.email]);
+    if (findUser.length) throw new HttpException(409, `Staff with ${staffData.email} already exist as a User and can not be created as a Staff`);
+
     // generate user ID
     const userId = await generateUserId();
 
