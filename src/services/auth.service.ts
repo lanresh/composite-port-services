@@ -9,7 +9,7 @@ import { User } from '@interfaces/users.interface';
 import { Staff } from '@/interfaces/staff.interface';
 import sendResetLink from '@/helpers/email.helper';
 
-const createToken = (user: User, expiresIn: number = 60 * 60): TokenData => {
+const createToken = (user: User, expiresIn: number = 6 * 60 * 60): TokenData => {
   const dataStoredInToken: DataStoredInToken = { userid: user.userid, id: user.id };
   const secretKey: string = SECRET_KEY;
 
