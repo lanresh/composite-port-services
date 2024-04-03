@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsOptional } from 'class-validator';
 
 export class CreateClientDto {
   @IsString()
@@ -29,8 +29,8 @@ export class CreateClientDto {
   @IsNotEmpty()
   public state: string;
 
+  @IsOptional()
   @IsString()
+  @IsNotEmpty()
   public activation_code: string;
-
 }
-
