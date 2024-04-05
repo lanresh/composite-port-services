@@ -46,7 +46,7 @@ export class WorkerService extends Repository<WorkerEntity> {
       const connection = getConnection();
       const query = `
         INSERT INTO worker_entity(worker_code, worker_name, worker_company, worker_address, worker_email, worker_mobile, worker_home_phone, worker_ofc_phone, service_type, section, worker_source, site_management, project_code, worker_service, worker_service_charge, amount_paid, outstanding_balance, date_assigned_to_project, comment, bank_name, account_name, account_number)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
         RETURNING *
       `;
       const result = await connection.query(query, [
