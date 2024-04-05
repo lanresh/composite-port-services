@@ -19,6 +19,7 @@ export class WorkerJobsRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, AuthMiddleware, this.workerJobsController.findAllWorkerJobs);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.workerJobsController.findWorkerJobById);
+    this.router.get(`${this.path}/worker/:workerCode`, AuthMiddleware, this.workerJobsController.getWorkerJobsByWorker);
     this.router.post(`${this.path}`, AuthMiddleware, this.workerJobsController.createWorkerJob);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.workerJobsController.updateWorkerJob);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.workerJobsController.deleteWorkerJob);
