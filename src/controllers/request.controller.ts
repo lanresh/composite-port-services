@@ -25,6 +25,16 @@ export class RequestController {
     }
   };
 
+  public getAllUserRequests = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.params.id;
+      const requestsData: RequestEntity[] = await this.request.findRequestsByUser(userId);
+      res.status(200).json({ data: requestsData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getRequest = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const requestId: number = +req.params.id;
