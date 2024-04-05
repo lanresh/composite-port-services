@@ -40,6 +40,12 @@ export class WorkerJobsService extends Repository<WorkerJobsEntity> {
     }
   }
 
+  public async findWorkerJobsByWorker(workerCode: string): Promise<WorkerJobs[]> {
+    const query = `SELECT * FROM worker_jobs_entity WHERE worker_code = $1`;
+    const result = await getConnection().query(query, [workerCode]);
+    return result;
+  }
+
   public async createWorkerJob(workerJobData: Partial<WorkerJobs>): Promise<WorkerJobs> {
     try {
       const jobCode = await generateCode();
