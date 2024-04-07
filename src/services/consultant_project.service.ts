@@ -7,11 +7,11 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 export class ConsultantProjectService extends Repository<ConsultantProjectEntity> {
   public async createConsultantProject(consultantProjectData: Partial<ConsultantProject>): Promise<ConsultantProject> {
     const query = `INSERT INTO public.consultant_project_entity(
-            client_id, project_id, project_code, project_name)
+            consultant_id, project_id, project_code, project_name)
             VALUES ($1, $2, $3, $4) RETURNING *`;
 
     const createConsultantProjectData: ConsultantProject = await getConnection().query(query, [
-      consultantProjectData.client_id,
+      consultantProjectData.consultant_id,
       consultantProjectData.project_id,
       consultantProjectData.project_code,
       consultantProjectData.project_name,
@@ -32,8 +32,8 @@ export class ConsultantProjectService extends Repository<ConsultantProjectEntity
     return consultantProject[0];
   }
 
-  public async findAllConsultantProjectByClientId(clientId: string): Promise<ConsultantProject[]> {
-    return getConnection().query('SELECT * FROM public.consultant_project_entity WHERE client_id = $1', [clientId]);
+  public async findAllConsultantProjectByConsultantId(consultantId: string): Promise<ConsultantProject[]> {
+    return getConnection().query('SELECT * FROM public.consultant_project_entity WHERE consultant_id = $1', [consultantId]);
   }
 
   public async findAllConsultantProjectByProjectId(projectId: string): Promise<ConsultantProject[]> {

@@ -35,10 +35,10 @@ export class ConsultantProjectController {
     }
   };
 
-  public findAllConsultantProjectByClientId = async (req: Request, res: Response, next: NextFunction) => {
+  public findAllConsultantProjectByConsultantId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const clientId: string = req.params.clientId;
-      const consultantProjectData: ConsultantProject[] = await this.consultantProject.findAllConsultantProjectByClientId(clientId);
+      const consultantId: string = req.params.clientId;
+      const consultantProjectData: ConsultantProject[] = await this.consultantProject.findAllConsultantProjectByConsultantId(consultantId);
       res.status(200).json({ data: consultantProjectData, message: 'Data fetched successfully' });
     } catch (error) {
       next(error);
