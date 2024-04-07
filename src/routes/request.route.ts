@@ -18,6 +18,7 @@ export class RequestRoute implements Routes {
         this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateRequestDto), this.request.createRequest);
         this.router.get(`${this.path}`, AuthMiddleware, this.request.getAllRequests);
         this.router.get(`${this.path}/:id`, AuthMiddleware, this.request.getRequest);
+        this.router.get(`${this.path}/user/:id`, AuthMiddleware, this.request.getAllUserRequests);
         this.router.put(`${this.path}/:id`, AuthMiddleware, this.request.updateRequest);
         this.router.delete(`${this.path}/:id`, AuthMiddleware, this.request.deleteRequest);
     }

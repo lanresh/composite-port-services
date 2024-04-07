@@ -67,7 +67,7 @@ export class RequestService extends Repository<RequestEntity> {
   }
 
   public async findAllRequests(): Promise<Request[]> {
-    return getConnection().query('SELECT * FROM request_entity');
+    return await getConnection().query('SELECT * FROM request_entity');
   }
 
   public async findRequestById(requestId: number): Promise<Request> {
@@ -75,6 +75,10 @@ export class RequestService extends Repository<RequestEntity> {
     if (!requests.length) throw new HttpException(409, "Request doesn't exist");
 
     return requests[0];
+  }
+
+  public async findRequestsByUser(userId: string): Promise<Request[]> {
+    return await getConnection().query('SELECT * FROM request_entity WHERE staff_id = $1', [userId]);
   }
 
   public async updateRequest(requestId: number, requestData: Request): Promise<Request> {

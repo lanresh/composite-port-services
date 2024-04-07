@@ -24,6 +24,8 @@ import { TenantRoute } from './routes/tenant.route';
 import { WorkerJobsRoute } from './routes/worker_jobs.route';
 import { WorkerRoute } from './routes/worker.route';
 import { ToolFromStoreRoute } from './routes/tool_from_store.route';
+import { ConsultantRoute } from './routes/consultant.route';
+import { ConsultantProjectRoute } from './routes/consultant_project.route';
 
 ValidateEnv();
 
@@ -52,6 +54,8 @@ const app = new App([
   new WorkerJobsRoute(),
   new WorkerRoute(),
   new ToolFromStoreRoute(),
+  new ConsultantRoute(),
+  new ConsultantProjectRoute(),
 ]);
 
 app.listen();
