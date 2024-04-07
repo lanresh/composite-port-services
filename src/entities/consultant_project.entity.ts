@@ -7,7 +7,7 @@ export class ConsultantProjectEntity extends BaseEntity implements ConsultantPro
   id: number;
 
   @Column({ nullable: true })
-  client_id: string;
+  consultant_id: string;
 
   @Column({ nullable: true })
   project_id: string;
