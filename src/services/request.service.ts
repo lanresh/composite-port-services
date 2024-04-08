@@ -67,7 +67,7 @@ export class RequestService extends Repository<RequestEntity> {
   }
 
   public async findAllRequests(): Promise<Request[]> {
-    return await getConnection().query('SELECT * FROM request_entity');
+    return await getConnection().query('SELECT re.*, se.image FROM request_entity re LEFT JOIN staff_entity se ON re.staff_id = se.userid');
   }
 
   public async findRequestById(requestId: number): Promise<Request> {

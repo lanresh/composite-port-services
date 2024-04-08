@@ -41,8 +41,8 @@ export class AuthService extends Repository<UsersEntity> {
 
     const hashedPassword = await hash(password, 10);
     const createUserData: User = await getConnection().query(
-      `INSERT INTO users_entity(userid, email, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, 'Active', 0, now()) RETURNING *`,
-      [userId, userData.email, hashedPassword, userType],
+      `INSERT INTO users_entity(userid, email, username, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, 'Active', 0, now()) RETURNING *`,
+      [userId, userData.email, userData.username, hashedPassword, userType],
     );
 
     return createUserData[0];
