@@ -25,11 +25,11 @@ export class ClientProjectService extends Repository<ClientProjectEntity> {
   }
 
   public async findClientProjectsByClientId(clientId: string): Promise<ClientProject[]> {
-    return await getConnection().query('SELECT cpe.*, pe.project_duration, pe.start_date, pe.end_date, pe.status FROM public.client_project_entity cpe JOIN public.project_entity pe ON cpe.project_id = pe.project_id WHERE cpe.client_id = $1', [clientId]);
+    return await getConnection().query('SELECT cpe.*, pe.project_duration, pe.start_date, pe.end_date, pe.status FROM public.client_project_entity cpe JOIN public.project_entity pe ON cpe.project_id = pe.id WHERE cpe.client_id = $1', [clientId]);
   }
 
   public async findClientProjectsByProjectId(projectId: string): Promise<ClientProject[]> {
-    return await getConnection().query('SELECT cpe.*, pe.project_duration, pe.start_date, pe.end_date, pe.status FROM public.client_project_entity cpe JOIN public.project_entity pe ON cpe.project_id = pe.project_id WHERE cpe.project_id = $1', [projectId]);
+    return await getConnection().query('SELECT cpe.*, pe.project_duration, pe.start_date, pe.end_date, pe.status FROM public.client_project_entity cpe JOIN public.project_entity pe ON cpe.project_id = pe.id WHERE cpe.project_id = $1', [projectId]);
   }
 
   public async findClientProjectsById(id: number): Promise<ClientProject> {
