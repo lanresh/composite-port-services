@@ -13,7 +13,7 @@ export class ClientProjectRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.clientProjectController.findAllClientProjects);
-    this.router.get(`${this.path}/:id`, this.clientProjectController.findClientProjectsByClientId);
+    this.router.get(`${this.path}/client/:id`, this.clientProjectController.findClientProjectsByClientId);
     this.router.get(`${this.path}/project/:id`, this.clientProjectController.findClientProjectsByProjectId);
     this.router.get(`${this.path}/:id`, this.clientProjectController.findClientProjectsById);
     this.router.post(`${this.path}`, this.clientProjectController.createClientProject);
