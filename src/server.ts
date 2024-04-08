@@ -26,6 +26,8 @@ import { WorkerRoute } from './routes/worker.route';
 import { ToolFromStoreRoute } from './routes/tool_from_store.route';
 import { ConsultantRoute } from './routes/consultant.route';
 import { ConsultantProjectRoute } from './routes/consultant_project.route';
+import { ClientFlatRoute } from './routes/client_flat.route';
+import { ClientProjectRoute } from './routes/client_project.route';
 
 ValidateEnv();
 
@@ -56,6 +58,8 @@ const app = new App([
   new ToolFromStoreRoute(),
   new ConsultantRoute(),
   new ConsultantProjectRoute(),
+  new ClientFlatRoute(),
+  new ClientProjectRoute(),
 ]);
 
 app.listen();
