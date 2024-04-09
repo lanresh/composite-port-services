@@ -15,7 +15,9 @@ export interface CashAdvance {
     amount_recorded: number;
     balance: number;
     status: status;
-    purpose: string;
+    description: string;
+    decision: string;
+    decision_reason: string;
     bank_to: string;
     payment_method: string
 }

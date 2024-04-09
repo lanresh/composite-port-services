@@ -42,7 +42,13 @@ export class CashAdvanceEntity extends BaseEntity implements CashAdvance {
   status: status;
 
   @Column({ nullable: true })
-  purpose: string;
+  description: string;
+
+  @Column({ nullable: true })
+  decision: string;
+
+  @Column({ nullable: true })
+  decision_reason: string;
 
   @Column({ nullable: true })
   bank_to: string;
