@@ -37,6 +37,16 @@ export class TenantController {
     }
   };
 
+  public getAllUpcomingDueDates = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tenantsData: Tenant[] = await this.tenant.findAllUpcomingDueDates();
+
+      res.status(200).json({ data: tenantsData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   public updateTenant = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tenantId: number = +req.params.id;
