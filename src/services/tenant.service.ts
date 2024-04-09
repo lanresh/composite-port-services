@@ -50,6 +50,25 @@ export class TenantService extends Repository<TenantEntity> {
     return tenant[0];
   }
 
+  public async findAllUpcomingDueDates(): Promise<Tenant[]> {
+    return await getConnection().query(`SELECT *,
+      CASE
+          WHEN rent_payment ILIKE 'yearly' THEN "createdAt" + INTERVAL '1 year'
+          WHEN rent_payment ILIKE 'monthly' THEN "createdAt" + INTERVAL '1 month'
+          WHEN rent_payment ILIKE 'quarterly' THEN "createdAt" + INTERVAL '3 months'
+          ELSE "createdAt"
+      END AS due_date
+    FROM
+      public.tenant_entity
+    WHERE
+      CASE
+          WHEN rent_payment ILIKE 'yearly' THEN "createdAt" + INTERVAL '1 year'
+          WHEN rent_payment ILIKE 'monthly' THEN "createdAt" + INTERVAL '1 month'
+          WHEN rent_payment ILIKE 'quarterly' THEN "createdAt" + INTERVAL '3 months'
+          ELSE "createdAt"
+      END > CURRENT_TIMESTAMP`);
+  }
+
   public async updateTenant(tenantId: number, tenantData: Tenant): Promise<Tenant> {
     const findTenant: Tenant = await TenantEntity.findOne({ where: { tenant_id: tenantId } });
     if (!findTenant) throw new HttpException(409, `Tenant with ID ${tenantId} does not exist`);
