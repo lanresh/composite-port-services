@@ -1,15 +1,8 @@
 import { ProjectEntity } from '@/entities/project.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Project } from '@/interfaces/project.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
-
-const generateProjectCode = async () => {
-  const count = await getConnection().getRepository(ProjectEntity).count();
-
-  //generate project code
-  const projectCode = 'proj-' + (count + 1).toString().padStart(4, '0');
-  return projectCode;
-};
 
 const duration = (start: string, end: string) => {
   // Parse the date strings into Date objects
@@ -29,7 +22,7 @@ const duration = (start: string, end: string) => {
 @EntityRepository(ProjectEntity)
 export class ProjectService extends Repository<ProjectEntity> {
   public async createProject(userId: string, projectData: Project): Promise<Project> {
-    const project_code = await generateProjectCode();
+    const project_code = await generateRandomCode('project_entity', 'project_code', 'proj');
 
     const project_duration = duration(projectData.start_date, projectData.end_date);
 

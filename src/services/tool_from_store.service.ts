@@ -2,14 +2,7 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { ToolFromStoreEntity } from '@entities/tool_from_store.entity';
 import { ToolFromStore } from '@interfaces/tool_from_store.interface';
 import { HttpException } from '@exceptions/HttpException';
-
-const generateCode = async () => {
-    const count = await getConnection().getRepository(ToolFromStoreEntity).count();
-  
-    //generate user id
-    const code = 'TFS-' + (count + 1).toString().padStart(4, '0');
-    return code;
-  };
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(ToolFromStoreEntity)
 export class ToolFromStoreService extends Repository<ToolFromStoreEntity> {
@@ -42,7 +35,7 @@ export class ToolFromStoreService extends Repository<ToolFromStoreEntity> {
 
   public async createToolFromStore(toolData: Partial<ToolFromStore>): Promise<ToolFromStore> {
     try {
-      const toolCode = await generateCode();
+      const toolCode = await generateRandomCode('tool_from_store_entity', 'tool_from_store_code', 'tfs');
       const connection = getConnection();
       const query = `
         INSERT INTO tool_from_store_entity(tool_from_store_code, tool_name, picked_by, picked_on, status, returned_on, project_name, project_code, request_type, comment)

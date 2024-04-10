@@ -2,14 +2,7 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { WorkerJobsEntity } from '@entities/worker_jobs.entity';
 import { WorkerJobs } from '@interfaces/worker_jobs.interface';
 import { HttpException } from '@exceptions/HttpException';
-
-const generateCode = async () => {
-    const count = await getConnection().getRepository(WorkerJobsEntity).count();
-  
-    //generate user id
-    const code = 'WJ-' + (count + 1).toString().padStart(4, '0');
-    return code;
-  };
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(WorkerJobsEntity)
 export class WorkerJobsService extends Repository<WorkerJobsEntity> {
@@ -48,7 +41,7 @@ export class WorkerJobsService extends Repository<WorkerJobsEntity> {
 
   public async createWorkerJob(workerJobData: Partial<WorkerJobs>): Promise<WorkerJobs> {
     try {
-      const jobCode = await generateCode();
+      const jobCode = await generateRandomCode('worker_jobs_entity', 'job_code', 'wjb');
       const connection = getConnection();
       const query = `
         INSERT INTO worker_jobs_entity(job_code, worker_code, project_code, worker_service, worker_service_charge, amount_paid, outstanding_balance, comment)

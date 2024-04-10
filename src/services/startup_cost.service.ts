@@ -2,18 +2,12 @@ import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { StartupCostEntity } from '../entities/start_up_cost.entity';
 import { StartupCost } from '@/interfaces/start_up_cost.interface';
 import { HttpException } from '@/exceptions/HttpException';
-
-const generateStartUpCode = async () => {
-  const count = await getConnection().getRepository(StartupCostEntity).count();
-
-  //generate startup code
-  return `sc-${(count + 1).toString().padStart(4, '0')}`;
-};
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(StartupCostEntity)
 export class StartUpCostService extends Repository<StartupCostEntity> {
   public async createStartUpCost(startUpCostData: StartupCost): Promise<StartupCost> {
-    const start_up_code = await generateStartUpCode();
+    const start_up_code = await generateRandomCode('startup_cost_entity', 'startup_code', 'start');
     const query = `INSERT INTO public.startup_cost_entity(
             startup_code, project_code, startup_desc, startup_type, startup_cost, comment)
             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;

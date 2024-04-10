@@ -1,20 +1,13 @@
 import { SupplierToolsMachineryEntity } from '@/entities/supplier_tools_machinery.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { SupplierToolsMachinery } from '@/interfaces/supplier_tools_machinery.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
-
-const generateToolCode = async () => {
-  const count = await getConnection().getRepository(SupplierToolsMachineryEntity).count();
-
-  //generate user id
-  const tool_code = 'tool-' + (count + 1).toString().padStart(4, '0');
-  return tool_code;
-};
 
 @EntityRepository(SupplierToolsMachineryEntity)
 export class SupplierToolsMachineryService extends Repository<SupplierToolsMachineryEntity> {
   public async createSupplierToolsMachinery(userId: string, supplierToolsMachineryData: SupplierToolsMachinery): Promise<SupplierToolsMachinery> {
-    const tool_code: string = await generateToolCode();
+    const tool_code: string = await generateRandomCode('supplier_tools_machinery_entity', 'tool_code', 'tool');
 
     const query = `INSERT INTO public.supplier_tools_machinery_entity(
             tool_code, supplier_code, supplier_name, tool_type, description, others, procurement_type, created_by, comment)

@@ -1,20 +1,14 @@
 import { ConsultantEntity } from '@/entities/consultant.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Consultant } from '@/interfaces/consultant.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 
-const generateCode = async () => {
-  const count = await getConnection().getRepository(ConsultantEntity).count();
-
-  //generate consultant code
-  const code = 'cons-' + (count + 1).toString().padStart(4, '0');
-  return code;
-};
 
 @EntityRepository(ConsultantEntity)
 export class ConsultantService extends Repository<ConsultantEntity> {
   public async createConsultant(consultantData: Partial<Consultant>): Promise<Consultant> {
-    const consultant_code = await generateCode();
+    const consultant_code = await generateRandomCode('consultant_entity', 'consultant_code', 'cons');
     const query = `INSERT INTO public.consultant_entity(
             consultant_code, name, type, contact, email, website)
             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;

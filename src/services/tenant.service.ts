@@ -1,19 +1,14 @@
 import { TenantEntity } from '@/entities/tenants.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Tenant } from '@/interfaces/tenants.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
-
-const generateTenantCode = async (): Promise<string> => {
-  const count = await getConnection().getRepository(TenantEntity).count();
-  const tenant_code = 'ten-' + (count + 1).toString().padStart(4, '0');
-  return tenant_code;
-};
 
 @EntityRepository(TenantEntity)
 export class TenantService extends Repository<TenantEntity> {
   public async createTenant(tenantData: Tenant): Promise<Tenant> {
     // generate tenant code
-    const tenant_code = await generateTenantCode();
+    const tenant_code = await generateRandomCode('tenant_entity', 'tenant_code', 'ten');
     const query = `INSERT INTO public.tenant_entity(
             tenant_code, title, full_name, phone_number, email, password, project_name, project_details, flat_description, flat_code, annual_rent, comment, status, rent_payment, reminder, fees)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`;
@@ -44,7 +39,13 @@ export class TenantService extends Repository<TenantEntity> {
   }
 
   public async findTenantById(tenantId: number): Promise<Tenant> {
-    const tenant: Tenant[] = await getConnection().query(`SELECT * FROM public.tenant_entity WHERE tenant_id = $1`, [tenantId]);
+    const tenant: Tenant[] = await getConnection().query(`SELECT *, 
+    CASE
+      WHEN rent_payment ILIKE 'yearly' THEN "createdAt" + INTERVAL '1 year'
+      WHEN rent_payment ILIKE 'monthly' THEN "createdAt" + INTERVAL '1 month'
+      WHEN rent_payment ILIKE 'quarterly' THEN "createdAt" + INTERVAL '3 months'
+    ELSE "createdAt"
+    END AS due_date FROM public.tenant_entity WHERE tenant_id = $1`, [tenantId]);
     if (!tenant.length) throw new HttpException(409, `Tenant with ID ${tenantId} does not exist`);
 
     return tenant[0];
