@@ -18,10 +18,6 @@ export class CreateTenantDto {
 
   @IsString()
   @IsNotEmpty()
-  public password: string;
-
-  @IsString()
-  @IsNotEmpty()
   public project_name: string;
 
   @IsString()
