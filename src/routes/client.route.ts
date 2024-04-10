@@ -4,6 +4,7 @@ import { ValidationMiddleware } from '@middlewares/validation.middleware';
 import { ClientController } from '@/controllers/client.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { CreateClientDto } from '@/dtos/client.dto';
+import { upload } from '@/middlewares/multer.middleware';
 
 export class ClientRoute implements Routes {
   public path = '/client';
@@ -15,9 +16,12 @@ export class ClientRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`,AuthMiddleware,this.clientController.findAllClients);
-    this.router.get(`${this.path}/:id`,AuthMiddleware, this.clientController.findClientById);
-    this.router.post(`${this.path}`,AuthMiddleware,ValidationMiddleware(CreateClientDto), this.clientController.createClient);
-    this.router.put(`${this.path}/:id`,AuthMiddleware, this.clientController.updateClient);
-    this.router.delete(`${this.path}/:id`,AuthMiddleware, this.clientController.deleteClient);
-}}
+    this.router.get(`${this.path}`, AuthMiddleware, this.clientController.findAllClients);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.clientController.findClientById);
+    this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateClientDto), this.clientController.createClient);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.clientController.updateClient);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.clientController.deleteClient);
+    this.router.post(`${this.path}/images`, AuthMiddleware, upload.array('images'), this.clientController.uploadClientImage);
+    this.router.get(`${this.path}/images/:id`, AuthMiddleware, this.clientController.findAllClientImagesByProjectId);
+  }
+}

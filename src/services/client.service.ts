@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersEntity } from '@/entities/users.entity';
 import { User } from '@/interfaces/users.interface';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
+import { ClientImages } from '@/interfaces/client_images.interface';
 
 @EntityRepository(ClientEntity)
 export class ClientService extends Repository<ClientEntity> {
@@ -93,5 +94,22 @@ export class ClientService extends Repository<ClientEntity> {
       }
       throw new HttpException(500, 'Internal server error');
     }
+  }
+
+  public async uploadClientImage(clientId: string, image: string, projectId: string, projectCode: string): Promise<ClientImages> {
+    const query = `INSERT INTO public.client_images_entity(
+      client_id, image, project_id, project_code)
+      VALUES ($1, $2, $3, $4) RETURNING *`;
+
+    const createClientImage: ClientImages = await getConnection().query(query, [clientId, image, projectId, projectCode]);
+
+    return createClientImage[0];
+  }
+
+  public async findClientImagesByProjectId(projectId: string): Promise<ClientImages[]> {
+    return await getConnection().query(
+      `SELECT ci.*, CONCAT(c.first_name,' ', c.last_name) AS added_by FROM client_images_entity ci JOIN client_entity c ON ci.client_id = c.userid WHERE ci.project_id = $1 GROUP BY ci.client_id`,
+      [projectId],
+    );
   }
 }
