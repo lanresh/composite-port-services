@@ -2,14 +2,7 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { StakeholderEntity } from '@entities/stakeholder.entity';
 import { Stakeholder } from '@interfaces/stakeholder.interface';
 import { HttpException } from '@exceptions/HttpException';
-
-const generateCode = async () => {
-    const count = await getConnection().getRepository(StakeholderEntity).count();
-  
-    //generate user id
-    const code = 'SH-' + (count + 1).toString().padStart(4, '0');
-    return code;
-  };
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 
 @EntityRepository(StakeholderEntity)
@@ -43,7 +36,7 @@ export class StakeholderService extends Repository<StakeholderEntity> {
 
   public async createStakeholder(stakeholderData: Partial<Stakeholder>): Promise<Stakeholder> {
     try {
-      const stakeholder_code = await generateCode();
+      const stakeholder_code = await generateRandomCode('stakeholder_entity', 'stakeholder_code', 'stk');
       const connection = getConnection();
       const query = `
         INSERT INTO stakeholder_entity(stakeholder_code, stakeholder_name, stakeholder_address, stakeholder_ofc_phone, government_agencies, non_government_agencies, other_agency, contact_person, contact_mobile, contact_home_phone, comment)

@@ -1,20 +1,13 @@
 import { SupplierEntity } from '@/entities/supplier.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Supplier } from '@/interfaces/supplier.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
-
-const generateSupplierCode = async () => {
-  const count = await getConnection().getRepository(SupplierEntity).count();
-
-  //generate user id
-  const supplier_code = 'supp-' + (count + 1).toString().padStart(4, '0');
-  return supplier_code;
-};
 
 @EntityRepository(SupplierEntity)
 export class SupplierService extends Repository<SupplierEntity> {
   public async createSupplier(supplierData: Supplier): Promise<Supplier> {
-    const supplier_code: string = await generateSupplierCode();
+    const supplier_code: string = await generateRandomCode('supplier_entity', 'supplier_code', 'supp');
 
     const query = `INSERT INTO public.supplier_entity(
             supplier_code, supplier_name, supplier_address, supplier_ofc_phone, contact_person, contact_mobile, contact_home_phone, comment)

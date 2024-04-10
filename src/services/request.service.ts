@@ -1,19 +1,13 @@
 import { RequestEntity } from '@/entities/request.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Request } from '@/interfaces/request.interface';
 import { EntityRepository, getConnection, Repository } from 'typeorm';
-
-export const generateRequestCode = async (): Promise<string> => {
-  const count = await getConnection().getRepository(RequestEntity).count();
-  //generate user id
-  const request_code = 'req-' + (count + 1).toString().padStart(4, '0');
-  return request_code;
-};
 
 @EntityRepository(RequestEntity)
 export class RequestService extends Repository<RequestEntity> {
   public async createRequest(requestData: Request): Promise<Request> {
-    const request_code: string = await generateRequestCode();
+    const request_code: string = await generateRandomCode('request_entity', 'request_code', 'req');
     const query = `INSERT INTO public.request_entity(
             request_code, carttemp_sess, staff_id, staff_name, staff_email, request_type, project_name, project_code, supplier_code, supplier_name, supplier_material, 
             description, quantity, unit_price, total_price, worker_name, worker_code, worker_service, amount, job_code, comment, response, status, date, company, 

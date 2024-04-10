@@ -2,15 +2,8 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { StakeholderProjectEntity } from '@entities/stakeholder_project.entity';
 import { StakeholderProject } from '@interfaces/stakeholder_project.interface';
 import { HttpException } from '@exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
-
-const generateCode = async () => {
-    const count = await getConnection().getRepository(StakeholderProjectEntity).count();
-  
-    //generate user id
-    const code = 'SHP-' + (count + 1).toString().padStart(4, '0');
-    return code;
-  };
 
 @EntityRepository(StakeholderProjectEntity)
 export class StakeholderProjectService extends Repository<StakeholderProjectEntity> {
@@ -43,7 +36,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
 
   public async createStakeholderProject(userId: string,projectData: Partial<StakeholderProject>): Promise<StakeholderProject> {
     try {
-      const project_code = await generateCode();
+      const project_code = await generateRandomCode('stakeholder_project_entity', 'stakeholder_project_code', 'shp');
       const connection = getConnection();
       const query = `
         INSERT INTO stakeholder_project_entity(stakeholder_code, stakeholder_project_code, stakeholder_amount, approved_amount, other_amount, "createdBy", comment, status)

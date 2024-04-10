@@ -71,6 +71,17 @@ export class SupplierMaterialController {
     }
   };
 
+  public getMaterialDescriptionBySupplierCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const supplierCode = req.query.supplierCode as string;
+      const materialDescription: SupplierMaterials[] = await this.supplierMaterial.findMaterialDescriptionBySupplierCode(supplierCode);
+
+      res.status(200).json({ data: materialDescription, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateSupplierMaterial = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const supplierMaterialId: number = +req.params.id;

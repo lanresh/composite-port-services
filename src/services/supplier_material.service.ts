@@ -1,23 +1,17 @@
 import { MaterialEntity } from '@/entities/material.entity';
 import { SupplierMaterialsEntity } from '@/entities/supplier_materials.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Material } from '@/interfaces/material.interface';
 import { MaterialSubType } from '@/interfaces/material_subtype.interface';
 import { MaterialType } from '@/interfaces/material_type.interface';
 import { SupplierMaterials } from '@/interfaces/supplier_materials.interface';
-import { Repository, getConnection } from 'typeorm';
+import { Repository, getConnection, EntityRepository } from 'typeorm';
 
-const generateMaterialCode = async () => {
-  const count = await getConnection().getRepository(SupplierMaterialsEntity).count();
-
-  //generate user id
-  const mat_code = 'mat-' + (count + 1).toString().padStart(4, '0');
-  return mat_code;
-};
-
+@EntityRepository()
 export class SupplierMaterialService extends Repository<SupplierMaterialsEntity> {
   public async createSupplierMaterial(materialData: SupplierMaterials): Promise<SupplierMaterials> {
-    const mat_code: string = await generateMaterialCode();
+    const mat_code: string = await generateRandomCode('supplier_materials_entity', 'mat_code', 'mat');
     const query = `INSERT INTO public.supplier_materials_entity(
             mat_code, supplier_code, supplier_name, mat_desc, project_code, quantity, unit_price, total_price)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
@@ -73,6 +67,10 @@ export class SupplierMaterialService extends Repository<SupplierMaterialsEntity>
     );
 
     return materialDescription;
+  }
+
+  public async findMaterialDescriptionBySupplierCode(supplierCode: string): Promise<SupplierMaterials[]> {
+    return await getConnection().query(`SELECT * FROM public.material_entity WHERE supplier_code = $1`, [supplierCode]);
   }
 
   public async updateSupplierMaterial(materialId: number, materialData: SupplierMaterials): Promise<SupplierMaterials> {

@@ -21,6 +21,7 @@ export class SupplierMaterialRoute implements Routes {
     this.router.get(`${this.path}/types/all`, AuthMiddleware, this.supplierMaterial.getMaterialTypes);
     this.router.get(`${this.path}/sub-type/:id`, AuthMiddleware, this.supplierMaterial.getMaterialSubTypes);
     this.router.get(`${this.path}/type/description`, AuthMiddleware, this.supplierMaterial.getMaterialDescription);
+    this.router.get(`${this.path}/supplier/description`, AuthMiddleware, this.supplierMaterial.getMaterialDescriptionBySupplierCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.updateSupplierMaterial);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.deleteSupplierMaterial);
   }

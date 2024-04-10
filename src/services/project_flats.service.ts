@@ -2,17 +2,12 @@ import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { ProjectFlatsEntity } from '../entities/project_flats.entity';
 import { HttpException } from '@/exceptions/HttpException';
 import { ProjectFlats } from '@/interfaces/project_flats.interface';
-
-const generateProjectFlatCode = async (): Promise<string> => {
-  const count = await getConnection().getRepository(ProjectFlatsEntity).count();
-  //generate startup code
-  return `pf-${(count + 1).toString().padStart(4, '0')}`;
-};
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(ProjectFlatsEntity)
 export class ProjectFlatService extends Repository<ProjectFlatsEntity> {
   public async createProjectFlat(projectFlatData: ProjectFlats): Promise<ProjectFlats> {
-    const project_flat_code = await generateProjectFlatCode();
+    const project_flat_code = await generateRandomCode('project_flats_entity', 'flat_code', 'pf');
     const query = `INSERT INTO public.project_flats_entity(
             flat_code, project_name, project_code, flat_desc, comment, status)
             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;

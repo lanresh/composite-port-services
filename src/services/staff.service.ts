@@ -3,14 +3,7 @@ import { HttpException } from '@/exceptions/HttpException';
 import { Staff } from '@/interfaces/staff.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { AuthService } from './auth.service';
-
-const generateUserId = async () => {
-  const count = await getConnection().getRepository(StaffEntity).count();
-
-  //generate user id
-  const userId = 'usr-' + (count + 1).toString().padStart(4, '0');
-  return userId;
-};
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(StaffEntity)
 export class StaffService extends Repository<StaffEntity> {
@@ -22,7 +15,7 @@ export class StaffService extends Repository<StaffEntity> {
     if (findUser.length) throw new HttpException(409, `Staff with ${staffData.email} already exist as a User and can not be created as a Staff`);
 
     // generate user ID
-    const userId = await generateUserId();
+    const userId = await generateRandomCode('staff_entity', 'userid', 'staff');
 
     //create staff data
     const createStaffData: Staff = await getConnection().query(

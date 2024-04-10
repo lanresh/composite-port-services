@@ -1,20 +1,14 @@
 import { ContractorEntity } from '@/entities/contractor.entity';
 import { HttpException } from '@/exceptions/HttpException';
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 import { Contractor } from '@/interfaces/contractor.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 
-const generateCode = async () => {
-  const count = await getConnection().getRepository(ContractorEntity).count();
-
-  //generate contractor code
-  const code = 'con-' + (count + 1).toString().padStart(4, '0');
-  return code;
-};
 
 @EntityRepository(ContractorEntity)
 export class ContractorService extends Repository<ContractorEntity> {
   public async createContractor(contractorData: Partial<Contractor>): Promise<Contractor> {
-    const contractor_code = await generateCode();
+    const contractor_code = await generateRandomCode('contractor_entity', 'contractor_code', 'con');
     const query = `INSERT INTO public.contractor_entity(
             contractor_code, contractor_name, contractor_service, contractor_address, contractor_ofc_phone, contact_person, contact_mobile, contact_home_phone, email, website, comment)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;

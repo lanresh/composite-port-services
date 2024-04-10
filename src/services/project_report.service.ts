@@ -2,14 +2,7 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { ProjectReportEntity } from '@entities/project_report.entity';
 import { ProjectReport } from '@interfaces/project_report.interface';
 import { HttpException } from '@exceptions/HttpException';
-
-const generateCode = async () => {
-  const count = await getConnection().getRepository(ProjectReportEntity).count();
-
-  //generate user id
-  const code = 'REP-' + (count + 1).toString().padStart(4, '0');
-  return code;
-};
+import { generateRandomCode } from '@/helpers/code_generator.helper';
 
 @EntityRepository(ProjectReportEntity)
 export class ProjectReportService extends Repository<ProjectReportEntity> {
@@ -39,7 +32,7 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
 
   public async createProjectReport(userId: string, reportData: Partial<ProjectReport>): Promise<ProjectReport> {
     try {
-      const report_code = await generateCode();
+      const report_code = await generateRandomCode('project_report_entity', 'report_code', 'pr');
       const connection = getConnection();
       const query = `
         INSERT INTO project_report_entity(report_code, report_type, created_for, project_name, project_code, project_supervisor, report_summary, challenges, solutions, recommendation, weekly_projection, materials_required_for_projection, materials_on_site, status, submitted_by, submitted_on, visitor, weather, photograph_id, "createdBy")
