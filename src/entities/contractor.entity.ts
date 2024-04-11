@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Contractor } from '@/interfaces/contractor.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class ContractorEntity extends BaseEntity implements Contractor {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['contractor_code'])
   contractor_code: string;
 
   @Column({ nullable: true })

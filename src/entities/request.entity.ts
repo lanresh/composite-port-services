@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Request } from '@/interfaces/request.interface';
 
 export enum STATUS {
@@ -14,6 +14,7 @@ export class RequestEntity extends BaseEntity implements Request {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['request_code'])
   request_code: string;
 
   @Column({ nullable: true })

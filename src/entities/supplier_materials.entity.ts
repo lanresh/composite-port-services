@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { SupplierMaterials } from '@/interfaces/supplier_materials.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class SupplierMaterialsEntity extends BaseEntity implements SupplierMater
   mat_id: number;
 
   @Column({ nullable: true })
+  @Unique(['mat_code'])
   mat_code: string;
 
   @Column({ nullable: true })

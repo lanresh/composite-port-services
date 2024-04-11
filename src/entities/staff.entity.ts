@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Staff } from '@/interfaces/staff.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class StaffEntity extends BaseEntity implements Staff {
   id: number;
 
   @PrimaryColumn()
+  @Unique(['userid'])
   userid: string;
 
   @Column({ nullable: true })

@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Tenant } from '@/interfaces/tenants.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class TenantEntity extends BaseEntity implements Tenant {
   tenant_id: number;
 
   @Column({ nullable: true })
+  @Unique(['tenant_code'])
   tenant_code: string;
 
   @Column({ nullable: true })

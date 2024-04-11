@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Supplier } from '@/interfaces/supplier.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class SupplierEntity extends BaseEntity implements Supplier {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['supplier_code'])
   supplier_code: string;
 
   @Column({ nullable: true })

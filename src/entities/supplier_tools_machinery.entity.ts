@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { SupplierToolsMachinery } from '@/interfaces/supplier_tools_machinery.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class SupplierToolsMachineryEntity extends BaseEntity implements Supplier
   tool_id: number;
 
   @Column({ nullable: true })
+  @Unique(['tool_code'])
   tool_code: string;
 
   @Column({ nullable: true })
