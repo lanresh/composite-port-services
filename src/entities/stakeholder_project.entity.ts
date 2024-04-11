@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { StakeholderProject } from '@/interfaces/stakeholder_project.interface';
 
 @Entity()
@@ -10,6 +10,7 @@ export class StakeholderProjectEntity extends BaseEntity implements StakeholderP
   stakeholder_code: string;
 
   @Column({ nullable: true })
+  @Unique(['stakeholder_project_code'])
   stakeholder_project_code: string;
 
   @Column( { nullable: true, type: 'decimal', default: 0.0, precision: 10, scale: 2 })

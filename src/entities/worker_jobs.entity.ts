@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { WorkerJobs } from '@/interfaces/worker_jobs.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class WorkerJobsEntity extends BaseEntity implements WorkerJobs {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['job_code'])
   job_code: string;
 
   @Column({ nullable: true })

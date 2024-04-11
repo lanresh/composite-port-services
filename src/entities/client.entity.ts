@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Client } from '@/interfaces/client.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class ClientEntity extends BaseEntity implements Client {
   client_id: number;
 
   @Column()
+  @Unique(['userid'])
   userid: string;
 
   @Column()

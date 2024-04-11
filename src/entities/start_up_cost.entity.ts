@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { StartupCost } from '@/interfaces/start_up_cost.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class StartupCostEntity extends BaseEntity implements StartupCost {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['startup_code'])
   startup_code: string;
 
   @Column({ nullable: true })

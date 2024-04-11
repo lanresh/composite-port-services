@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ToolFromStore } from '@/interfaces/tool_from_store.interface';
 
 @Entity()
@@ -7,6 +7,7 @@ export class ToolFromStoreEntity extends BaseEntity implements ToolFromStore {
   id: number;
 
   @Column({ nullable: true })
+  @Unique(['tool_from_store_code'])
   tool_from_store_code: string;
 
   @Column({ nullable: true })
