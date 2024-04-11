@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity,Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { CashAdvance } from '@/interfaces/cash_advance.interface';
 
 export enum status {
@@ -21,6 +21,7 @@ export class CashAdvanceEntity extends BaseEntity implements CashAdvance {
   cash_advance_type: string;
 
   @Column({ nullable: true })
+  @Unique(['request_code'])
   request_code: string;
 
   @Column({ nullable: true })
@@ -56,6 +57,12 @@ export class CashAdvanceEntity extends BaseEntity implements CashAdvance {
   @Column({ nullable: true })
   payment_method: string;
 
+  @Column({ nullable: true })
+  action_type: string;
+
+  @Column({ nullable: true })
+  action_by: string;
+  
   @CreateDateColumn()
   createdAt: Date;
 

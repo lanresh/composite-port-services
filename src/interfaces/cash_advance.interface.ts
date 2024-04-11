@@ -19,5 +19,7 @@ export interface CashAdvance {
     decision: string;
     decision_reason: string;
     bank_to: string;
-    payment_method: string
+    payment_method: string;
+    action_type: string;
+    action_by: string;
 }
