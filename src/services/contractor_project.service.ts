@@ -38,6 +38,15 @@ export class ContractorProjectService extends Repository<ContractorProjectEntity
     return contractorProject[0];
   }
 
+  public async findContractorProjectsByProjectCode(projectCode: string): Promise<ContractorProject[]> {
+    const contractorProject: ContractorProject[] = await getConnection().query(
+      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid WHERE cp.contractor_project_code = $1 AND cp.status ILIKE 'approved'`,
+      [projectCode],
+    );
+
+    return contractorProject;
+  }
+
   public async updateContractorProject(contractorProjectId: number, contractorProjectData: Partial<ContractorProject>): Promise<ContractorProject> {
     const findContractorProject: ContractorProject = await ContractorProjectEntity.findOne({ where: { id: contractorProjectId } });
     if (!findContractorProject) throw new HttpException(409, "Contractor project doesn't exist");

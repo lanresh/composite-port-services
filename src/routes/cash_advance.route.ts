@@ -18,6 +18,7 @@ export class CashAdvanceRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateCashAdvanceDto), this.cash_advance.createCashAdvance);
     this.router.get(`${this.path}`, AuthMiddleware, this.cash_advance.getCashAdvances);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.cash_advance.getCashAdvance);
+    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.cash_advance.getCashAdvanceByProjectCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.cash_advance.updateCashAdvance);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.cash_advance.deleteCashAdvance);
   }

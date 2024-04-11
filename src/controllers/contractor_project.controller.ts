@@ -36,6 +36,16 @@ export class ContractorProjectController {
     }
   };
 
+  public getContractorProjectsByProjectCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectCode: string = req.params.code;
+      const contractorProjectData: ContractorProject[] = await this.contractorProject.findContractorProjectsByProjectCode(projectCode);
+      res.status(200).json({ data: contractorProjectData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateContractorProject = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const contractorProjectId: number = +req.params.id;

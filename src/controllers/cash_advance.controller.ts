@@ -35,6 +35,16 @@ export class CashAdvanceController {
     }
   };
 
+  public getCashAdvanceByProjectCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectCode: string = req.params.code;
+      const cashAdvanceData: CashAdvance[] = await this.cash_advance.findCashAdvanceByProjectCode(projectCode);
+      res.status(200).json({ data: cashAdvanceData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateCashAdvance = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cashId: number = +req.params.id;
