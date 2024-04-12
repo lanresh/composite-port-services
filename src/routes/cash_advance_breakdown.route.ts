@@ -18,6 +18,7 @@ export class CashAdvanceBreakdownRoute implements Routes {
         this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateCashAdvanceBreakdownDto), this.cash_advance_breakdown.createCashAdvanceBreakdown);
         this.router.get(`${this.path}`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdowns);
         this.router.get(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdown);
+        this.router.get(`${this.path}/request-code/:code`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdownsByRequestCode);
         this.router.put(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.updateCashAdvanceBreakdown);
         this.router.delete(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.deleteCashAdvanceBreakdown);
     }

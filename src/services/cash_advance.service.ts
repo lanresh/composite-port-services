@@ -7,7 +7,7 @@ import { HttpException } from '@/exceptions/HttpException';
 export class CashAdvanceService extends Repository<CashAdvanceEntity> {
   public async createCashAdvance(cashAdvanceData: CashAdvance): Promise<CashAdvance> {
     const query = `INSERT INTO public.cash_advance_entity(
-            project_code, project_name, cash_advance_type, request_code, staff_id, staff_name, amount_collected, amount_recorded, balance, status, purpose, bank_to, payment_method, action_type)
+            project_code, project_name, cash_advance_type, request_code, staff_id, staff_name, amount_collected, amount_recorded, balance, status, description, bank_to, payment_method, action_type)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ON CONFLICT (request_code) DO NOTHING RETURNING *`;
 
     const createCashAdvanceData: CashAdvance[] = await getConnection().query(query, [
@@ -31,7 +31,9 @@ export class CashAdvanceService extends Repository<CashAdvanceEntity> {
   }
 
   public async findAllCashAdvances(): Promise<CashAdvance[]> {
-    return await getConnection().query('SELECT ca.*, st.image FROM public.cash_advance_entity ca JOIN staff_entity st ON ca.staff_id = st.userid');
+    return await getConnection().query(
+      'SELECT ca.*, st.image FROM public.cash_advance_entity ca LEFT JOIN staff_entity st ON ca.staff_id = st.userid',
+    );
   }
 
   public async findCashAdvanceById(cashId: number): Promise<CashAdvance> {
@@ -54,8 +56,13 @@ export class CashAdvanceService extends Repository<CashAdvanceEntity> {
 
     // Set the default value for the status field if it's not included in cashAdvanceData
     const updatedCashAdvanceData: CashAdvance = { ...cashAdvanceData };
+
     if (updatedCashAdvanceData.amount_recorded) {
-      updatedCashAdvanceData.amount_recorded = cashAdvance.amount_recorded + updatedCashAdvanceData.amount_recorded;
+      let existingAmountRecorded = 0;
+      if (typeof cashAdvance.amount_recorded === 'string') {
+        existingAmountRecorded = parseFloat(cashAdvance.amount_recorded);
+      }
+      updatedCashAdvanceData.amount_recorded = existingAmountRecorded + updatedCashAdvanceData.amount_recorded;
       updatedCashAdvanceData.balance = cashAdvance.amount_collected - updatedCashAdvanceData.amount_recorded;
     }
 
