@@ -4,7 +4,6 @@ import { StakeholderProject } from '@interfaces/stakeholder_project.interface';
 import { HttpException } from '@exceptions/HttpException';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
 
-
 @EntityRepository(StakeholderProjectEntity)
 export class StakeholderProjectService extends Repository<StakeholderProjectEntity> {
   public async findAllStakeholderProjects(): Promise<StakeholderProject[]> {
@@ -20,13 +19,10 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
 
   public async findStakeholderProjectById(projectId: number): Promise<StakeholderProject | string> {
     try {
-      const project = await getConnection().query(
-        'SELECT * FROM stakeholder_project_entity WHERE id = $1',
-        [projectId]
-      );
+      const project = await getConnection().query('SELECT * FROM stakeholder_project_entity WHERE id = $1', [projectId]);
       const result = project.length ? project[0] : undefined;
       if (!result) {
-        return "No stakeholder project found with this ID.";
+        return 'No stakeholder project found with this ID.';
       }
       return result;
     } catch (error) {
@@ -34,9 +30,15 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
     }
   }
 
-  public async createStakeholderProject(userId: string,projectData: Partial<StakeholderProject>): Promise<StakeholderProject> {
+  public async findStakeholderProjectByCode(projectCode: string): Promise<StakeholderProject[] | string> {
+    return await getConnection().query(
+      `SELECT sp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM stakeholder_project_entity sp JOIN staff_entity st ON sp."createdBy" = st.userid WHERE stakeholder_project_code = $1 AND sp.status ILIKE 'approved'`,
+      [projectCode],
+    );
+  }
+
+  public async createStakeholderProject(userId: string, projectData: Partial<StakeholderProject>): Promise<StakeholderProject> {
     try {
-      const project_code = await generateRandomCode('stakeholder_project_entity', 'stakeholder_project_code', 'shp');
       const connection = getConnection();
       const query = `
         INSERT INTO stakeholder_project_entity(stakeholder_code, stakeholder_project_code, stakeholder_amount, approved_amount, other_amount, "createdBy", comment, status)
@@ -45,7 +47,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
       `;
       const result = await connection.query(query, [
         projectData.stakeholder_code,
-        project_code,
+        projectData.stakeholder_project_code,
         projectData.stakeholder_amount,
         projectData.approved_amount,
         projectData.other_amount,
@@ -59,11 +61,10 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
     }
   }
 
-
   public async updateStakeholderProject(projectId: number, projectData: Partial<StakeholderProject>): Promise<StakeholderProject> {
     try {
       const findProject: StakeholderProject | undefined = await StakeholderProjectEntity.findOne({ where: { id: projectId } });
-      if (!findProject) throw new HttpException(409,"Stakeholder project doesn't exist");
+      if (!findProject) throw new HttpException(409, "Stakeholder project doesn't exist");
 
       await StakeholderProjectEntity.update(projectId, { ...projectData });
 
