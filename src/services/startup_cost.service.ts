@@ -36,7 +36,7 @@ export class StartUpCostService extends Repository<StartupCostEntity> {
   }
 
   public async findStartUpCostByProjectCode(projectCode: string): Promise<number> {
-    const startUpCost: number = await getConnection().query('SELECT SUM(startup_cost) FROM public.startup_cost_entity WHERE project_code = $1', [
+    const startUpCost: number = await getConnection().query('SELECT * FROM public.startup_cost_entity WHERE project_code = $1', [
       projectCode,
     ]);
     return startUpCost;

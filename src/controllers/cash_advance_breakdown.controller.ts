@@ -39,6 +39,16 @@ export class CashAdvanceBreakdownController {
     }
   };
 
+  public getCashAdvanceBreakdownsByRequestCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const requestCode: string = req.params.code;
+      const cashAdvanceBreakdownData: CashAdvanceBreakdown[] = await this.cash_advance_breakdown.findAllCashAdvanceBreakdownsByRequestCode(requestCode);
+      res.status(200).json({ data: cashAdvanceBreakdownData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   public updateCashAdvanceBreakdown = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cashAdvanceBreakdownId: number = +req.params.id;
