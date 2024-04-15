@@ -11,10 +11,6 @@ export class CreateProjectDto {
 
   @IsString()
   @IsNotEmpty()
-  project_location: string;
-
-  @IsString()
-  @IsNotEmpty()
   address: string;
 
   @IsString()
@@ -37,17 +33,10 @@ export class CreateProjectDto {
   @IsNotEmpty()
   end_date: string;
 
-  @IsString()
-  @IsNotEmpty()
-  comment: string;
 
   @IsString()
   @IsNotEmpty()
   status: string;
-
-  @IsString()
-  @IsNotEmpty()
-  date_added: string;
 
   @IsString()
   @IsNotEmpty()
