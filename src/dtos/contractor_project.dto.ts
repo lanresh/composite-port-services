@@ -18,6 +18,7 @@ export class createContractorProjectDto {
   @IsNotEmpty()
   public approved_amount: number;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public service: string;
