@@ -40,7 +40,7 @@ export class ContractorProjectService extends Repository<ContractorProjectEntity
 
   public async findContractorProjectsByProjectCode(projectCode: string): Promise<ContractorProject[]> {
     const contractorProject: ContractorProject[] = await getConnection().query(
-      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid WHERE cp.contractor_project_code = $1 AND cp.status ILIKE 'approved'`,
+      `SELECT cp.*, ce.contractor_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid JOIN contractor_entity ce ON cp.contractor_code = ce.contractor_code WHERE cp.contractor_project_code = $1 AND cp.status ILIKE 'approved'`,
       [projectCode],
     );
 
