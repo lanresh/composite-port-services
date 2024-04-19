@@ -30,6 +30,7 @@ import { ClientFlatRoute } from './routes/client_flat.route';
 import { ClientProjectRoute } from './routes/client_project.route';
 import { ProjectTeamRoute } from './routes/project_team.route';
 import { ProjectCommentRoute } from './routes/project_comment.route';
+import { MaterialRoute } from './routes/material.route';
 
 ValidateEnv();
 
@@ -64,6 +65,7 @@ const app = new App([
   new ClientProjectRoute(),
   new ProjectTeamRoute(),
   new ProjectCommentRoute(),
+  new MaterialRoute(),
 ]);
 
 app.listen();
