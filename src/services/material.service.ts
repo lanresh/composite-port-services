@@ -51,7 +51,18 @@ export class MaterialService extends Repository<MaterialEntity> {
     const findMaterial: Material = await MaterialEntity.findOne({ where: { id: materialId } });
     if (!findMaterial) throw new HttpException(409, "Material doesn't exist");
 
-    await MaterialEntity.update({ id: materialId }, materialData);
+    // Set the default value for the status field if it's not included in cashAdvanceData
+    const updatedMaterialData: Material = { ...materialData };
+
+    if (updatedMaterialData.quantity && updatedMaterialData.unit_price) {
+      updatedMaterialData.total_price = updatedMaterialData.quantity * updatedMaterialData.unit_price;
+    } else if (updatedMaterialData.quantity && !updatedMaterialData.unit_price) {
+      updatedMaterialData.total_price = updatedMaterialData.quantity * findMaterial.unit_price;
+    } else if (!updatedMaterialData.quantity && updatedMaterialData.unit_price) {
+      updatedMaterialData.total_price = findMaterial.quantity * updatedMaterialData.unit_price;
+    }
+
+    await MaterialEntity.update({ id: materialId }, updatedMaterialData);
     const updatedMaterial: Material = await MaterialEntity.findOne({ where: { id: materialId } });
     return updatedMaterial;
   }
