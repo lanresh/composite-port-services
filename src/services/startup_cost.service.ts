@@ -35,10 +35,8 @@ export class StartUpCostService extends Repository<StartupCostEntity> {
     return startUpCosts[0];
   }
 
-  public async findStartUpCostByProjectCode(projectCode: string): Promise<number> {
-    const startUpCost: number = await getConnection().query('SELECT * FROM public.startup_cost_entity WHERE project_code = $1', [
-      projectCode,
-    ]);
+  public async findStartUpCostByProjectCode(projectCode: string): Promise<StartupCost[]> {
+    const startUpCost: StartupCost[] = await getConnection().query('SELECT * FROM public.startup_cost_entity WHERE project_code = $1', [projectCode]);
     return startUpCost;
   }
 
