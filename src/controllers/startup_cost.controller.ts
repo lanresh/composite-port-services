@@ -38,7 +38,7 @@ export class StartupCostController {
   public getStartUpCostByCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const projectCode: string = req.params.code;
-      const startUpCostData: number = await this.startup_cost.findStartUpCostByProjectCode(projectCode);
+      const startUpCostData: StartupCost[] = await this.startup_cost.findStartUpCostByProjectCode(projectCode);
       res.status(200).json({ data: startUpCostData, message: 'Data fetched successfully' });
     } catch (error) {
       next(error);
