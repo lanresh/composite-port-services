@@ -31,6 +31,7 @@ import { ClientProjectRoute } from './routes/client_project.route';
 import { ProjectTeamRoute } from './routes/project_team.route';
 import { ProjectCommentRoute } from './routes/project_comment.route';
 import { MaterialRoute } from './routes/material.route';
+import { WorkerProjectRoute } from './routes/worker_project.route';
 
 ValidateEnv();
 
@@ -66,6 +67,7 @@ const app = new App([
   new ProjectTeamRoute(),
   new ProjectCommentRoute(),
   new MaterialRoute(),
+  new WorkerProjectRoute(),
 ]);
 
 app.listen();
