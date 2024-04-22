@@ -37,7 +37,7 @@ export class ConsultantProjectService extends Repository<ConsultantProjectEntity
   }
 
   public async findAllConsultantProjectByProjectCode(projectCode: string): Promise<ConsultantProject[]> {
-    return getConnection().query('SELECT cp.*, ce.consultant_name FROM public.consultant_project_entity cp JOIN public.consultant_entity ce ON cp.consultant_id = ce.consultant_code WHERE cp.project_code = $1', [projectCode]);
+    return getConnection().query('SELECT cp.*, ce.name FROM public.consultant_project_entity cp JOIN public.consultant_entity ce ON cp.consultant_id = ce.consultant_code WHERE cp.project_code = $1', [projectCode]);
   }
 
   public async updateConsultantProject(consultantProjectId: number, consultantProjectData: Partial<ConsultantProject>): Promise<ConsultantProject> {
