@@ -14,6 +14,7 @@ export class WorkerProjectService extends Repository<ProjectWorkerEntity> {
       workerProjectData.project_name,
       workerProjectData.service_type,
       workerProjectData.worker_code,
+      workerProjectData.worker_name,
     ]);
 
     return createWorkerProjectData[0];
@@ -23,14 +24,14 @@ export class WorkerProjectService extends Repository<ProjectWorkerEntity> {
     return await getConnection().query('SELECT * FROM public.project_worker_entity');
   }
 
-//   public async findWorkerProjectById(workerProjectId: number): Promise<ProjectWorker> {
-//     const workerProjects: ProjectWorker[] = await getConnection().query('SELECT * FROM public.project_worker_entity WHERE id = $1', [
-//       workerProjectId,
-//     ]);
-//     if (!workerProjects.length) throw new HttpException(409, 'Worker project not found');
+  //   public async findWorkerProjectById(workerProjectId: number): Promise<ProjectWorker> {
+  //     const workerProjects: ProjectWorker[] = await getConnection().query('SELECT * FROM public.project_worker_entity WHERE id = $1', [
+  //       workerProjectId,
+  //     ]);
+  //     if (!workerProjects.length) throw new HttpException(409, 'Worker project not found');
 
-//     return workerProjects[0];
-//   }
+  //     return workerProjects[0];
+  //   }
 
   public async findWorkerProjectByProjectCode(projectCode: string): Promise<ProjectWorker[]> {
     const workerProjects: ProjectWorker[] = await getConnection().query(
