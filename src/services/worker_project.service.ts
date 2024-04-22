@@ -35,7 +35,7 @@ export class WorkerProjectService extends Repository<ProjectWorkerEntity> {
 
   public async findWorkerProjectByProjectCode(projectCode: string): Promise<ProjectWorker[]> {
     const workerProjects: ProjectWorker[] = await getConnection().query(
-      'SELECT pw.*, w.id, w.worker_email, worker_home_phone, worker_ofc_phone FROM public.project_worker_entity pw JOIN worker_entity w ON pw.worker_code = w.worker_code WHERE project_code = $1',
+      'SELECT pw.*, w.id, w.worker_email, worker_home_phone, worker_ofc_phone FROM public.project_worker_entity pw JOIN worker_entity w ON pw.worker_code = w.worker_code WHERE pw.project_code = $1',
       [projectCode],
     );
     return workerProjects;
