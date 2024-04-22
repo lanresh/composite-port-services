@@ -29,7 +29,7 @@ export class ProjectTeamController {
 
   public getProjectTeamByProjectCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projectCode: string = req.params.id;
+      const projectCode: string = req.params.code;
       const projectTeamData: ProjectTeam[] = await this.projectTeam.findProjectTeamByProjectCode(projectCode);
 
       res.status(200).json({ data: projectTeamData, message: 'Data fetched successfully' });
