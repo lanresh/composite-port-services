@@ -37,6 +37,15 @@ export class ClientEntity extends BaseEntity implements Client {
   @Column({ nullable: true })
   image: string;
 
+  @Column({ nullable: true })
+  id_type: string;
+
+  @Column({ nullable: true })
+  id_number: string;
+
+  @Column({ nullable: true })
+  id_image: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

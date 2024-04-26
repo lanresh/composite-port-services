@@ -10,4 +10,8 @@ export interface Client {
     state: string;
     activation_code: string;
     image: string;
+    id_type: string;
+    id_number: string;
+    id_image: string;
+
 }

@@ -7,6 +7,7 @@ export interface Tenant {
     email: string;
     password: string;
     project_name: string;
+    project_code: string;
     project_details: string;
     flat_description: string;
     flat_code: string;

@@ -29,6 +29,9 @@ export class TenantEntity extends BaseEntity implements Tenant {
   project_name: string;
 
   @Column({ nullable: true })
+  project_code: string;
+
+  @Column({ nullable: true })
   project_details: string;
 
   @Column({ nullable: true })
