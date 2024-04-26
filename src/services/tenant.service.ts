@@ -10,8 +10,8 @@ export class TenantService extends Repository<TenantEntity> {
     // generate tenant code
     const tenant_code = await generateRandomCode('tenant_entity', 'tenant_code', 'ten');
     const query = `INSERT INTO public.tenant_entity(
-            tenant_code, title, full_name, phone_number, email, password, project_name, project_details, flat_description, flat_code, annual_rent, comment, status, rent_payment, reminder, fees)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`;
+            tenant_code, title, full_name, phone_number, email, password, project_name, project_code, project_details, flat_description, flat_code, annual_rent, comment, status, rent_payment, reminder, fees)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`;
 
     const createTenantData: Tenant = await getConnection().query(query, [
       tenant_code,
@@ -21,6 +21,7 @@ export class TenantService extends Repository<TenantEntity> {
       tenantData.email,
       tenantData.password,
       tenantData.project_name,
+      tenantData.project_code,
       tenantData.project_details,
       tenantData.flat_description,
       tenantData.flat_code,
@@ -68,6 +69,10 @@ export class TenantService extends Repository<TenantEntity> {
           WHEN rent_payment ILIKE 'quarterly' THEN "createdAt" + INTERVAL '3 months'
           ELSE "createdAt"
       END > CURRENT_TIMESTAMP`);
+  }
+
+  public async findTenantByProjectCode(projectCode: string): Promise<Tenant[]> {
+    return await getConnection().query(`SELECT * FROM public.tenant_entity WHERE project_code = $1`, [projectCode]);
   }
 
   public async updateTenant(tenantId: number, tenantData: Tenant): Promise<Tenant> {

@@ -45,7 +45,17 @@ export class TenantController {
     } catch (error) {
       next(error);
     }
-  }
+  };
+
+  public getTenantByProjectCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectCode: string = req.params.code;
+      const tenantData: Tenant[] = await this.tenant.findTenantByProjectCode(projectCode);
+      res.status(200).json({ data: tenantData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public updateTenant = async (req: Request, res: Response, next: NextFunction) => {
     try {
