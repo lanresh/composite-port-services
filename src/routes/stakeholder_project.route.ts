@@ -16,6 +16,7 @@ export class StakeholderProjectRoute implements Routes {
     this.router.get(`${this.path}`, AuthMiddleware, this.StakeholderProjectController.findAllStakeholderProjects);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectById);
     this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectByCode);
+    this.router.get(`${this.path}/stakeholder-code/:code`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectsByStakeholderCode);
     this.router.post(`${this.path}`, AuthMiddleware, this.StakeholderProjectController.createStakeholderProject);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.StakeholderProjectController.updateStakeholderProject);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.StakeholderProjectController.deleteStakeholderProject);

@@ -35,6 +35,16 @@ export class StakeholderProjectController {
     }
   };
 
+  public findStakeholderProjectsByStakeholderCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const stakeholderCode = req.params.code;
+      const stakeholderProjectByCode = await this.stakeholderProjectService.findStakeholderProjectsByStakeholderCode(stakeholderCode);
+      res.status(200).json({ data: stakeholderProjectByCode, message: 'stakeholder found' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createStakeholderProject = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const stakeholderId = req.user.userid;
