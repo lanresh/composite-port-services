@@ -67,7 +67,7 @@ export class UserController {
   public uploadFile = async (req: MulterRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = req.user.userid;
-      const files = req.files;
+      const files = req.file;
       const updateUserData: string = await photoUpload(userId, files);
 
       res.status(200).json({ data: updateUserData, message: 'File Uploaded Successfully' });
