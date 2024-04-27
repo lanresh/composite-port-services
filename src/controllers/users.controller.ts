@@ -3,6 +3,8 @@ import { Container } from 'typedi';
 import { User } from '@interfaces/users.interface';
 import { UserService } from '@services/users.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import { MulterRequest } from '@/interfaces/multer.interface';
+import { photoUpload } from '@/helpers/s3.helper';
 
 export class UserController {
   public user = new UserService();
@@ -57,6 +59,18 @@ export class UserController {
       const updateUserData: User = await this.user.changePassword(userId, userData.oldPassword, userData.newPassword);
 
       res.status(200).json({ data: updateUserData, message: 'Password Changed Successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public uploadFile = async (req: MulterRequest, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user.userid;
+      const files = req.files;
+      const updateUserData: string = await photoUpload(userId, files);
+
+      res.status(200).json({ data: updateUserData, message: 'File Uploaded Successfully' });
     } catch (error) {
       next(error);
     }
