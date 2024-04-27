@@ -39,7 +39,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
 
   public async findStakeholderProjectsByStakeholderCode(stakeholderCode: string): Promise<StakeholderProject[]> {
     return await getConnection().query(
-      `SELECT sp.*, se.stakeholder_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM stakeholder_project_entity sp JOIN staff_entity st ON sp."createdBy" = st.userid JOIN stakeholder_entity se ON sp.stakeholder_code = se.stakeholder_code WHERE sp.stakeholder_code = $1`,
+      `SELECT sp.*, se.stakeholder_name, pe.project_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM stakeholder_project_entity sp JOIN staff_entity st ON sp."createdBy" = st.userid JOIN stakeholder_entity se ON sp.stakeholder_code = se.stakeholder_code JOIN project_entity pe ON sp.stakeholder_project_code = pe.project_code WHERE sp.stakeholder_code = $1`,
       [stakeholderCode],
     );
   }
