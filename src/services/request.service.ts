@@ -12,8 +12,8 @@ export class RequestService extends Repository<RequestEntity> {
             request_code, carttemp_sess, staff_id, staff_name, staff_email, request_type, project_name, project_code, supplier_code, supplier_name, supplier_material, 
             description, quantity, unit_price, total_price, worker_name, worker_code, worker_service, amount, job_code, comment, response, status, date, company, 
             company_address, contact_person, contact_mobile, ofc_phone, cash_advance_purpose, tool_name, approved_by, approved_on, approved_amount, approved_quantity, 
-            approved_unit_price, approved_total_amount, tool_machinery_type, inventory_type_id, supervisor_comment)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40) RETURNING *`;
+            approved_unit_price, approved_total_amount, tool_machinery_type, inventory_type_id, supervisor_comment, payment_method, bank)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40, $41, $42) RETURNING *`;
     const createRequestData: Request = await getConnection().query(query, [
       request_code,
       requestData.carttemp_sess,
@@ -55,6 +55,8 @@ export class RequestService extends Repository<RequestEntity> {
       requestData.tool_machinery_type,
       requestData.inventory_type_id,
       requestData.supervisor_comment,
+      requestData.payment_method,
+      requestData.bank,
     ]);
 
     return createRequestData[0];
