@@ -134,6 +134,12 @@ export class RequestEntity extends BaseEntity implements Request {
   @Column({ nullable: true })
   supervisor_comment: string;
 
+  @Column({ nullable: true })
+  payment_method: string;
+
+  @Column({ nullable: true })
+  bank: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

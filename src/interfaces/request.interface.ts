@@ -47,5 +47,8 @@ export interface Request {
     tool_machinery_type: string;
     inventory_type_id: number;
     supervisor_comment: string;
+    payment_method: string;
+    bank:string;
+    
 }
 
