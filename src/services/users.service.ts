@@ -62,7 +62,7 @@ export class UserService extends Repository<UsersEntity> {
     if (!isPasswordMatching) throw new HttpException(409, 'Old Password not matching');
 
     const hashedPassword = await hash(newPassword, 10);
-    await UsersEntity.update({ userid: userId }, { password: hashedPassword });
+    await UsersEntity.update({ userid: userId }, { password: hashedPassword, pwd_status: 1 });
 
     const updateUser: User = await UsersEntity.findOne({ where: { userid: userId } });
     return updateUser;
