@@ -32,6 +32,7 @@ import { ProjectTeamRoute } from './routes/project_team.route';
 import { ProjectCommentRoute } from './routes/project_comment.route';
 import { MaterialRoute } from './routes/material.route';
 import { WorkerProjectRoute } from './routes/worker_project.route';
+import { RequestCommentRoute } from './routes/request_comment.route';
 
 ValidateEnv();
 
@@ -68,6 +69,7 @@ const app = new App([
   new ProjectCommentRoute(),
   new MaterialRoute(),
   new WorkerProjectRoute(),
+  new RequestCommentRoute(),
 ]);
 
 app.listen();
