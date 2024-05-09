@@ -18,7 +18,7 @@ export class ClientController {
 
   public findClientById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const clientId = Number(req.params.id);
+      const clientId = req.params.id;
       const clientData: Client = await this.clientService.findClientById(clientId);
 
       res.status(200).json({ data: clientData, message: 'client found successfully' });

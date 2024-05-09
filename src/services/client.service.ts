@@ -19,9 +19,9 @@ export class ClientService extends Repository<ClientEntity> {
     }
   }
 
-  public async findClientById(clientId: number): Promise<Client | undefined> {
+  public async findClientById(clientId: string): Promise<Client | undefined> {
     try {
-      const clientById = await getConnection().query('SELECT * FROM client_entity WHERE client_id = $1', [clientId]);
+      const clientById = await getConnection().query('SELECT * FROM client_entity WHERE userid = $1', [clientId]);
       const result = clientById.length ? clientById[0] : undefined;
       return result;
     } catch (error) {
