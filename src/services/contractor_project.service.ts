@@ -24,7 +24,7 @@ export class ContractorProjectService extends Repository<ContractorProjectEntity
 
   public async findAllContractorProject(): Promise<ContractorProject[]> {
     return getConnection().query(
-      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid`,
+      `SELECT cp.*, pe.project_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid JOIN project_entity pe ON cp.contractor_project_code = pe.project_code`,
     );
   }
 
