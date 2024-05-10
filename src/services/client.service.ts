@@ -69,14 +69,14 @@ export class ClientService extends Repository<ClientEntity> {
     }
   }
 
-  public async updateClient(clientId: number, clientData: Partial<Client>): Promise<Client> {
+  public async updateClient(clientId: string, clientData: Partial<Client>): Promise<Client> {
     try {
-      const findClient: Client | undefined = await ClientEntity.findOne({ where: { client_id: clientId } });
+      const findClient: Client | undefined = await ClientEntity.findOne({ where: { userid: clientId } });
       if (!findClient) throw new HttpException(404, 'Client not found');
 
-      await ClientEntity.update(clientId, { ...clientData });
+      await ClientEntity.update({userid: clientId}, { ...clientData });
 
-      const updatedClient: Client | undefined = await ClientEntity.findOne({ where: { client_id: clientId } });
+      const updatedClient: Client | undefined = await ClientEntity.findOne({ where: { userid: clientId } });
       return updatedClient;
     } catch (error) {
       if (error instanceof HttpException) {

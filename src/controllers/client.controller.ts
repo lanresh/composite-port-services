@@ -39,7 +39,7 @@ export class ClientController {
 
   public updateClient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const clientId = Number(req.params.id);
+      const clientId = req.params.id;
       const clientData: Client = req.body;
       const updateClientData: Client = await this.clientService.updateClient(clientId, clientData);
       res.status(200).json({ data: updateClientData, message: 'client updated successfully' });
