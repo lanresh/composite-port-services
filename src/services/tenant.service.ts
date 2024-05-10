@@ -9,10 +9,8 @@ export class TenantService extends Repository<TenantEntity> {
   public async createTenant(tenantData: Tenant): Promise<Tenant> {
     // generate tenant code
     const tenant_code = await generateRandomCode('tenant_entity', 'tenant_code', 'ten');
-    console.log(tenantData.fees);
-    console.log(typeof tenantData.fees);
-    
-    
+
+
     const query = `INSERT INTO public.tenant_entity(
             tenant_code, title, full_name, phone_number, email, password, project_name, project_code, project_details, flat_description, flat_code, annual_rent, comment, status, rent_payment, reminder, fees)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`;
