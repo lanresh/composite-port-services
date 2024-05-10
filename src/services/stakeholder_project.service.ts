@@ -9,7 +9,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
   public async findAllStakeholderProjects(): Promise<StakeholderProject[]> {
     try {
       const allStakeholderProjects = await getConnection().query(`
-        SELECT * FROM stakeholder_project_entity
+        SELECT spe.*, pe.project_name FROM stakeholder_project_entity spe JOIN project_entity pe ON spe.stakeholder_project_code = pe.project_code
       `);
       return allStakeholderProjects;
     } catch (error) {
