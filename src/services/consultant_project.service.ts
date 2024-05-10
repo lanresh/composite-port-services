@@ -6,6 +6,9 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 @EntityRepository(ConsultantProjectEntity)
 export class ConsultantProjectService extends Repository<ConsultantProjectEntity> {
   public async createConsultantProject(consultantProjectData: Partial<ConsultantProject>): Promise<ConsultantProject> {
+    const findConsultant: ConsultantProject = await ConsultantProjectEntity.findOne({ where: {consultant_id: consultantProjectData.consultant_id, project_id: consultantProjectData.project_id} });
+    if (findConsultant) throw new HttpException(409, "Consultant has already been added to this project"); 
+
     const query = `INSERT INTO public.consultant_project_entity(
             consultant_id, project_id, project_code, project_name)
             VALUES ($1, $2, $3, $4) RETURNING *`;
