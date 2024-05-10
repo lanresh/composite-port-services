@@ -1,3 +1,8 @@
+export type fees = {
+    type: string;
+    value: number;
+}
+
 export interface Tenant {
     tenant_id: number;
     tenant_code: string;
@@ -16,6 +21,5 @@ export interface Tenant {
     status: string;
     rent_payment: string;
     reminder: string;
-    fees : string;
-    
+    fees : fees[]; 
 }

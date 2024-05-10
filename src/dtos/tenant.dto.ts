@@ -1,5 +1,10 @@
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 
+export type fees = {
+  type: string;
+  value: number;
+}
+
 export class CreateTenantDto {
   @IsString()
   @IsNotEmpty()
@@ -52,7 +57,6 @@ export class CreateTenantDto {
   @IsNotEmpty()
   public reminder: string;
 
-  @IsString()
   @IsNotEmpty()
-  public fees: string;
+  public fees: fees[];
 }

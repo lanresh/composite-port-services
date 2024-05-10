@@ -1,6 +1,11 @@
 import { BaseEntity, Entity, Unique, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Tenant } from '@/interfaces/tenants.interface';
 
+export type fees = {
+  type: string;
+  value: number;
+}
+
 @Entity()
 export class TenantEntity extends BaseEntity implements Tenant {
   @PrimaryGeneratedColumn()
@@ -55,8 +60,8 @@ export class TenantEntity extends BaseEntity implements Tenant {
   @Column({ nullable: true })
   reminder: string;
 
-  @Column({type: 'text', nullable: true })
-  fees: string;
+  @Column({type: 'jsonb', nullable: true })
+  fees: Array<fees>;
 
   @CreateDateColumn()
   createdAt: Date;
