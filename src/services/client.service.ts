@@ -112,7 +112,7 @@ export class ClientService extends Repository<ClientEntity> {
 
   public async findClientImagesByProjectId(projectId: string): Promise<ClientImages[]> {
     return await getConnection().query(
-      `SELECT ci.*, CONCAT(c.first_name,' ', c.last_name) AS added_by FROM client_images_entity ci JOIN client_entity c ON ci.client_id = c.userid WHERE ci.project_id = $1 GROUP BY ci.client_id`,
+      `SELECT ci.*, CONCAT(c.first_name,' ', c.last_name) AS added_by FROM client_images_entity ci LEFT JOIN client_entity c ON ci.client_id = c.userid WHERE ci.project_id = $1 GROUP BY ci.client_id, ci.id, c.first_name, c.last_name`,
       [projectId],
     );
   }
