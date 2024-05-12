@@ -82,4 +82,51 @@ export class ProjectService extends Repository<ProjectEntity> {
 
     return deletedProjectData[0];
   }
+
+  public async getProjectSummary(projectCode: string): Promise<Project> {
+    const query = `SELECT pe.project_code, 
+           sd.startup_cost, 
+           shd.stakeholder_amount, 
+           cd.contractor_amount, 
+           md.material_amount, 
+           rd.machinery_approved_amount, 
+           rd.labour_approved_amount, 
+           rd.cash_advance_approved_amount 
+      FROM project_entity pe 
+      JOIN (
+        SELECT project_code, SUM(startup_cost) AS startup_cost
+        FROM startup_cost_entity
+        WHERE project_code = $1
+        GROUP BY project_code
+      ) sd ON pe.project_code = sd.project_code
+      JOIN (
+        SELECT stakeholder_project_code, SUM(approved_amount) AS stakeholder_amount
+        FROM stakeholder_project_entity
+        WHERE stakeholder_project_code = $1
+        GROUP BY stakeholder_project_code
+      ) shd ON pe.project_code = shd.stakeholder_project_code
+      JOIN (
+        SELECT contractor_project_code, SUM(approved_amount) AS contractor_amount
+        FROM contractor_project_entity
+        WHERE contractor_project_code = $1
+        GROUP BY contractor_project_code
+      ) cd ON pe.project_code = cd.contractor_project_code
+      JOIN (
+        SELECT project_code, SUM(total_price) AS material_amount
+        FROM material_entity
+        WHERE project_code = $1
+        GROUP BY project_code
+      ) md ON pe.project_code = md.project_code
+      JOIN (
+        SELECT project_code, 
+               SUM(CASE WHEN request_type in ('Tools and Machine Buy', 'Tools and Machine Store', 'Tools and Machine Rent') THEN approved_amount ELSE 0 END) AS machinery_approved_amount,
+               SUM(CASE WHEN request_type = 'labour' THEN approved_amount ELSE 0 END) AS labour_approved_amount,
+               SUM(CASE WHEN request_type in ('Cash Advance Office', 'Cash Advance Project') THEN approved_amount ELSE 0 END) AS cash_advance_approved_amount
+        FROM request_entity
+        WHERE project_code = $1
+        GROUP BY project_code
+      ) rd ON pe.project_code = rd.project_code
+      WHERE pe.project_code = $1`;
+    return await getConnection().query(query, [projectCode]);
+  }
 }

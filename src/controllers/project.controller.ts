@@ -61,4 +61,14 @@ export class ProjectController {
       next(error);
     }
   };
+
+  public getProjectSummary = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectCode: string = req.params.code;
+      const projectData: Project = await this.project.getProjectSummary(projectCode);
+      res.status(200).json({ data: projectData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

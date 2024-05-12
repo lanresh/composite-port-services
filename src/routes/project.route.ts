@@ -20,5 +20,6 @@ export class ProjectRoute implements Routes {
     this.router.get(`${this.path}/:id(\\d+)`, AuthMiddleware, this.project.getProject);
     this.router.put(`${this.path}/:id(\\d+)`, AuthMiddleware, this.project.updateProject);
     this.router.delete(`${this.path}/:id(\\d+)`, AuthMiddleware, this.project.deleteProject);
+    this.router.get(`${this.path}/summary/:code`, AuthMiddleware, this.project.getProjectSummary);
   }
 }
