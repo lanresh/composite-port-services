@@ -64,8 +64,7 @@ export class DashboardService {
            SUM(CASE WHEN request_type in ('Cash Advance Office', 'Cash Advance Project') THEN approved_amount ELSE 0 END) AS cash_advance_approved_amount
     FROM request_entity
     GROUP BY project_code
-  ) rd ON pe.project_code = rd.project_code;
-  WHERE pe.status NOT ILIKE 'completed'`);
+  ) rd ON pe.project_code = rd.project_code WHERE pe.status NOT ILIKE 'completed'`);
   }
 
   public async findAllPendingRequest(): Promise<Request[]> {
