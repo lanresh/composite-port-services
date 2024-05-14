@@ -28,7 +28,7 @@ export class DashboardService {
 
   public async findAllPendingProjects(): Promise<Project[]> {
     // return await getConnection().query(`SELECT * FROM project_entity WHERE status NOT ILIKE 'completed'`);
-    return await getConnection().query(`SELECT pe.project_code, 
+    return await getConnection().query(`SELECT pe.project_code, pe.project_name,
        sd.startup_cost, 
        shd.stakeholder_amount, 
        cd.contractor_amount, 
