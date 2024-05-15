@@ -27,7 +27,7 @@ async function updateCashAdvanceFields(data): Promise<void> {
 @EntityRepository(CashAdvanceBreakdownEntity)
 export class CashAdvanceBreakdownService extends Repository<CashAdvanceBreakdownEntity> {
   public async createCashAdvanceBreakdown(userId: string, cashAdvanceBreakdownData: CashAdvanceBreakdown): Promise<CashAdvanceBreakdown> {
-    await updateCashAdvanceFields(cashAdvanceBreakdownData);
+   
     const query = `INSERT INTO public.cash_advance_breakdown_entity(
             request_code, description, amount, added_by, comment)
             VALUES ($1, $2, $3, $4, $5) RETURNING *`;
@@ -39,6 +39,8 @@ export class CashAdvanceBreakdownService extends Repository<CashAdvanceBreakdown
       userId,
       cashAdvanceBreakdownData.comment,
     ]);
+
+    await updateCashAdvanceFields(cashAdvanceBreakdownData);
 
     return createCashAdvanceBreakdownData[0];
   }
