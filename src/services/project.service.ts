@@ -119,7 +119,7 @@ export class ProjectService extends Repository<ProjectEntity> {
       ) md ON pe.project_code = md.project_code
       JOIN (
         SELECT project_code, 
-               SUM(CASE WHEN request_type in ('Tools and Machine Buy', 'Tools and Machine Store', 'Tools and Machine Rent') THEN approved_amount ELSE 0 END) AS machinery_approved_amount,
+               SUM(CASE WHEN request_type in ('Tools and Machinery Buy', 'Tools and Machinery Rent') THEN approved_amount ELSE 0 END) AS machinery_approved_amount,
                SUM(CASE WHEN request_type = 'labour' THEN approved_amount ELSE 0 END) AS labour_approved_amount,
                SUM(CASE WHEN request_type in ('Cash Advance Office', 'Cash Advance Project') THEN approved_amount ELSE 0 END) AS cash_advance_approved_amount
         FROM request_entity
