@@ -22,7 +22,7 @@ export class InventoryService extends Repository<InventoryEntity> {
 
   public async findInventoryById(inventoryId: number): Promise<Inventory | string> {
     try {
-      const inventory = await getConnection().query(`SELECT inv.*, concat(st.firstname, ' ', st.lastname) as created_by FROM inventory_entity inv JOIN staff_entity st ON inv.created_by = st.userid WHERE inventory_id = $1', [inventoryId]`);
+      const inventory = await getConnection().query(`SELECT inv.*, concat(st.firstname, ' ', st.lastname) as created_by FROM inventory_entity inv JOIN staff_entity st ON inv.created_by = st.userid WHERE inventory_id = $1`, [inventoryId]);
       const result = inventory.length ? inventory[0] : undefined;
       if (!result) {
         return 'No inventory found with this ID.';
