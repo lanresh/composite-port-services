@@ -72,7 +72,7 @@ export class ProjectController {
     }
   };
 
-  public async getProjectsBySupervisor(req: Request, res: Response, next: NextFunction) {
+  public getProjectsBySupervisor = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const supervisorId = req.params.id;
       const projects = await this.project.findProjectBySupervisorId(supervisorId);
