@@ -74,7 +74,7 @@ export class ProjectController {
 
   public async getProjectsBySupervisor(req: Request, res: Response, next: NextFunction) {
     try {
-      const supervisorId = req.params.supervisorId;
+      const supervisorId = req.params.id;
       const projects = await this.project.findProjectBySupervisorId(supervisorId);
       res.status(200).json({ data: projects, message: 'Projects fetched successfully' });
     } catch (error) {
