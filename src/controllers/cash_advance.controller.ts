@@ -67,4 +67,24 @@ export class CashAdvanceController {
       next(error);
     }
   };
+
+  public getCashAdvanceByStaff = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const staffId: string = req.params.id;
+      const cashAdvanceData: CashAdvance[] = await this.cash_advance.getCashAdvanceByStaffId(staffId);
+      res.status(200).json({ data: cashAdvanceData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getCashAdvanceBySupervisor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const supervisorId: string = req.params.id;
+      const cashAdvanceData: CashAdvance[] = await this.cash_advance.getCashAdvanceBySupervisorId(supervisorId);
+      res.status(200).json({ data: cashAdvanceData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

@@ -79,4 +79,13 @@ export class CashAdvanceService extends Repository<CashAdvanceEntity> {
 
     return deleteCashAdvance[0];
   }
+
+  public async getCashAdvanceByStaffId(staffId: string): Promise<CashAdvance[]> {
+    return await getConnection().query('SELECT * FROM public.cash_advance_entity WHERE staff_id = $1', [staffId]);
+  }
+
+  public async getCashAdvanceBySupervisorId(supervisorId: string): Promise<CashAdvance[]> {
+    const query = `SELECT ca.*, pt.staff_name FROM public.cash_advance_entity ca JOIN project_team_entity pt ON ca.project_code = pt.project_code WHERE pt.staff_id = $1`;
+    return await getConnection().query(query, [supervisorId]);
+  }
 }

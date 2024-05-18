@@ -67,4 +67,14 @@ export class RequestController {
       next(error);
     }
   };
+
+  public getAllSupervisorRequest = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const supervisorId = req.params.id;
+      const requestsData: RequestEntity[] = await this.request.getRequestBySupervisor(supervisorId);
+      res.status(200).json({ data: requestsData, message: 'Data fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

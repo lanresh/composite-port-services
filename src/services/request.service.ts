@@ -91,4 +91,9 @@ export class RequestService extends Repository<RequestEntity> {
     if (!deletedRequest.length) throw new HttpException(409, "Request doesn't exist");
     return deletedRequest[0];
   }
+
+  public async getRequestBySupervisor(userId: string): Promise<Request[]> {
+    const query = `SELECT re.*, pt.staff_name FROM request_entity re JOIN project_team_entity pt ON re.project_code = pt.project_code WHERE pt.staff_id = $1`;
+    return await getConnection().query(query, [userId]);
+  }
 }

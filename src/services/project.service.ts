@@ -129,4 +129,9 @@ export class ProjectService extends Repository<ProjectEntity> {
       WHERE pe.project_code = $1`;
     return await getConnection().query(query, [projectCode]);
   }
+
+  public async findProjectBySupervisorId(supervisorId: string): Promise<Project[]> {
+    const query = `SELECT * FROM project_entity WHERE supervisor_id = $1`;
+    return await getConnection().query(query, [supervisorId]);
+  }
 }
