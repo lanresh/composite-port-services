@@ -22,4 +22,5 @@ export interface CashAdvance {
     payment_method: string;
     action_type: string;
     action_by: string;
+    unused_cash: number;
 }

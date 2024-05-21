@@ -62,6 +62,9 @@ export class CashAdvanceEntity extends BaseEntity implements CashAdvance {
 
   @Column({ nullable: true })
   action_by: string;
+
+  @Column({ nullable: true, type: 'decimal', default: 0.0, precision: 10, scale: 2  })
+  unused_cash: number;
   
   @CreateDateColumn()
   createdAt: Date;
