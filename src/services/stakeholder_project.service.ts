@@ -9,7 +9,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
   public async findAllStakeholderProjects(): Promise<StakeholderProject[]> {
     try {
       const allStakeholderProjects = await getConnection().query(`
-        SELECT spe.*, pe.project_name FROM stakeholder_project_entity spe JOIN project_entity pe ON spe.stakeholder_project_code = pe.project_code
+        SELECT spe.*, se.stakeholder_name, pe.project_name FROM stakeholder_project_entity spe JOIN project_entity pe ON spe.stakeholder_project_code = pe.project_code JOIN stakeholder_entity se ON spe.stakeholder_code = se.stakeholder_code
       `);
       return allStakeholderProjects;
     } catch (error) {
@@ -19,7 +19,7 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
 
   public async findStakeholderProjectById(projectId: number): Promise<StakeholderProject | string> {
     try {
-      const project = await getConnection().query('SELECT * FROM stakeholder_project_entity WHERE id = $1', [projectId]);
+      const project = await getConnection().query('SELECT spe.*, se.stakeholder_name, pe.project_name FROM stakeholder_project_entity spe JOIN project_entity pe ON spe.stakeholder_project_code = pe.project_code JOIN stakeholder_entity se ON spe.stakeholder_code = se.stakeholder_code WHERE id = $1', [projectId]);
       const result = project.length ? project[0] : undefined;
       if (!result) {
         return 'No stakeholder project found with this ID.';
