@@ -93,31 +93,31 @@ export class ProjectService extends Repository<ProjectEntity> {
            rd.labour_approved_amount, 
            rd.cash_advance_approved_amount 
       FROM project_entity pe 
-      JOIN (
+      LEFT JOIN (
         SELECT project_code, SUM(startup_cost) AS startup_cost
         FROM startup_cost_entity
         WHERE project_code = $1
         GROUP BY project_code
       ) sd ON pe.project_code = sd.project_code
-      JOIN (
+      LEFT JOIN (
         SELECT stakeholder_project_code, SUM(approved_amount) AS stakeholder_amount
         FROM stakeholder_project_entity
         WHERE stakeholder_project_code = $1
         GROUP BY stakeholder_project_code
       ) shd ON pe.project_code = shd.stakeholder_project_code
-      JOIN (
+      LEFT JOIN (
         SELECT contractor_project_code, SUM(approved_amount) AS contractor_amount
         FROM contractor_project_entity
         WHERE contractor_project_code = $1
         GROUP BY contractor_project_code
       ) cd ON pe.project_code = cd.contractor_project_code
-      JOIN (
+      LEFT JOIN (
         SELECT project_code, SUM(total_price) AS material_amount
         FROM material_entity
         WHERE project_code = $1
         GROUP BY project_code
       ) md ON pe.project_code = md.project_code
-      JOIN (
+      LEFT JOIN (
         SELECT project_code, 
                SUM(CASE WHEN request_type in ('Tools and Machinery Buy', 'Tools and Machinery Rent') THEN approved_amount ELSE 0 END) AS machinery_approved_amount,
                SUM(CASE WHEN request_type = 'labour' THEN approved_amount ELSE 0 END) AS labour_approved_amount,
