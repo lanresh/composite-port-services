@@ -24,13 +24,13 @@ export class ContractorProjectService extends Repository<ContractorProjectEntity
 
   public async findAllContractorProject(): Promise<ContractorProject[]> {
     return getConnection().query(
-      `SELECT cp.*, pe.project_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid JOIN project_entity pe ON cp.contractor_project_code = pe.project_code`,
+      `SELECT cp.*, ce.contractor_name, pe.project_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid JOIN project_entity pe ON cp.contractor_project_code = pe.project_code JOIN contractor_entity ce ON cp.contractor_code = ce.contractor_code`,
     );
   }
 
   public async findContractorProjectById(contractorProjectId: number): Promise<ContractorProject> {
     const contractorProject: ContractorProject[] = await getConnection().query(
-      `SELECT cp.*, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid WHERE cp.id = $1`,
+      `SELECT cp.*, ce.contractor_name, pe.project_name, CONCAT(st.firstname, ' ', st.lastname) as created_by FROM contractor_project_entity cp JOIN staff_entity st ON cp."createdBy" = st.userid JOIN project_entity pe ON cp.contractor_project_code = pe.project_code JOIN contractor_entity ce ON cp.contractor_code = ce.contractor_code WHERE cp.id = $1`,
       [contractorProjectId],
     );
     if (!contractorProject.length) throw new HttpException(409, 'Contractor project not found');
