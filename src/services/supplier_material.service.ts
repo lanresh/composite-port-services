@@ -70,7 +70,7 @@ export class SupplierMaterialService extends Repository<SupplierMaterialsEntity>
   }
 
   public async findMaterialDescriptionBySupplierCode(supplierCode: string): Promise<SupplierMaterials[]> {
-    return await getConnection().query(`SELECT * FROM public.material_entity WHERE supplier_code = $1`, [supplierCode]);
+    return await getConnection().query(`SELECT * FROM public.supplier_materials_entity WHERE supplier_code = $1`, [supplierCode]);
   }
 
   public async updateSupplierMaterial(materialId: number, materialData: SupplierMaterials): Promise<SupplierMaterials> {
