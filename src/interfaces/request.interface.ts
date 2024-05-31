@@ -49,6 +49,7 @@ export interface Request {
     supervisor_comment: string;
     payment_method: string;
     bank:string;
-    
+    account_number:string;
+    account_name:string;  
 }
 

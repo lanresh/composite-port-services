@@ -140,6 +140,12 @@ export class RequestEntity extends BaseEntity implements Request {
   @Column({ nullable: true })
   bank: string;
 
+  @Column({ nullable: true })
+  account_number: string;
+
+  @Column({ nullable: true })
+  account_name: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
