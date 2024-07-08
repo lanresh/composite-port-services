@@ -31,6 +31,12 @@ export class SupplierEntity extends BaseEntity implements Supplier {
   @Column({ nullable: true })
   comment: string;
 
+  @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
+  website: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

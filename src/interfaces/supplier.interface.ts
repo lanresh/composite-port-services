@@ -8,6 +8,8 @@ export interface Supplier {
     contact_mobile: string;
     contact_home_phone: string;
     comment: string;
+    email: string;
+    website: string;
 }
 
 

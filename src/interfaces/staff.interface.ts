@@ -30,6 +30,8 @@ export interface Staff {
     account_name: string;
     account_number: string;
     image: string;
+    secondary_email: string;
+    employment_type: string;
 }
   
   
