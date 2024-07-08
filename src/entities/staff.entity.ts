@@ -94,6 +94,12 @@ export class StaffEntity extends BaseEntity implements Staff {
   @Column({ nullable: true })
   image: string;
 
+  @Column({ nullable: true })
+  secondary_email: string;
+
+  @Column({ nullable: true })
+  employment_type: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
