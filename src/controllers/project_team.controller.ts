@@ -37,4 +37,15 @@ export class ProjectTeamController {
       next(error);
     }
   };
+
+  public deleteProjectTeamMember = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectCode: string = req.params.code;
+      const staffId: string = req.params.staffId;
+      const deletedProjectTeam: ProjectTeam = await this.projectTeam.deleteProjectTeamMember(projectCode, staffId);
+      res.status(200).json({ data: deletedProjectTeam, message: 'Project team member deleted successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

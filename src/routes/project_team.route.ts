@@ -16,5 +16,6 @@ export class ProjectTeamRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, this.projectTeam.createProjectTeam);
     this.router.get(`${this.path}`, AuthMiddleware, this.projectTeam.getAllProjectTeam);
     this.router.get(`${this.path}/:code`, AuthMiddleware, this.projectTeam.getProjectTeamByProjectCode);
+    this.router.delete(`${this.path}/:code/:staffId`, AuthMiddleware, this.projectTeam.deleteProjectTeamMember);
   }
 }

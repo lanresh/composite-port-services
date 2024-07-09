@@ -34,4 +34,13 @@ export class ProjectTeamService extends Repository<ProjectTeamEntity> {
       [projectCode],
     );
   }
+
+  public async deleteProjectTeamMember(projectCode: string, staffId: string): Promise<ProjectTeam> {
+    const deletedProjectTeam: ProjectTeam[] = await getConnection().query(
+      `DELETE FROM project_team_entity WHERE project_code = $1 AND staff_id = $2 RETURNING *`,
+      [projectCode, staffId],
+    );
+    if (!deletedProjectTeam.length) throw new HttpException(409, "Project team member doesn't exist");
+    return deletedProjectTeam[0];
+  }
 }
