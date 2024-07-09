@@ -10,8 +10,8 @@ export class SupplierService extends Repository<SupplierEntity> {
     const supplier_code: string = await generateRandomCode('supplier_entity', 'supplier_code', 'supp');
 
     const query = `INSERT INTO public.supplier_entity(
-            supplier_code, supplier_name, supplier_address, supplier_ofc_phone, contact_person, contact_mobile, contact_home_phone, comment)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+            supplier_code, supplier_name, supplier_address, supplier_ofc_phone, contact_person, contact_mobile, contact_home_phone, comment, email, website)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
 
     const createSupplierData: Supplier = await getConnection().query(query, [
       supplier_code,
@@ -22,6 +22,8 @@ export class SupplierService extends Repository<SupplierEntity> {
       supplierData.contact_mobile,
       supplierData.contact_home_phone,
       supplierData.comment,
+      supplierData.email,
+      supplierData.website,
     ]);
 
     return createSupplierData[0];

@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsOptional } from 'class-validator';
 
 export class CreateStaffDto {
   @IsString()
@@ -103,4 +103,14 @@ export class CreateStaffDto {
   @IsString()
   @IsNotEmpty()
   public user_type: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  public secondary_email: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  public employment_type: string;
 }

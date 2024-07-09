@@ -20,8 +20,8 @@ export class StaffService extends Repository<StaffEntity> {
     //create staff data
     const createStaffData: Staff = await getConnection().query(
       `INSERT INTO staff_entity
-                (userid, firstname, middlename, lastname, dob, "stateOfOrigin", lga, sex, marital_status, address, home_phone, cell_phone, email, "nextOfKin", relationship, "addressOfNOK", "emailOfNOK", "phoneOfNOK", date_employed, deptid, gradeid, branchcode, employee_status, role, staff_type, bank_name, account_name, account_number)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28) RETURNING *`,
+                (userid, firstname, middlename, lastname, dob, "stateOfOrigin", lga, sex, marital_status, address, home_phone, cell_phone, email, "nextOfKin", relationship, "addressOfNOK", "emailOfNOK", "phoneOfNOK", date_employed, deptid, gradeid, branchcode, employee_status, role, staff_type, bank_name, account_name, account_number, secondary_email, employment_type)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30) RETURNING *`,
       [
         userId,
         staffData.firstname,
@@ -51,6 +51,8 @@ export class StaffService extends Repository<StaffEntity> {
         staffData.bank_name,
         staffData.account_name,
         staffData.account_number,
+        staffData.secondary_email,
+        staffData.employment_type,
       ],
     );
 

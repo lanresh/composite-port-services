@@ -37,7 +37,7 @@ export class ProjectFlatService extends Repository<ProjectFlatsEntity> {
 
   public async findProjectFlatByProjectCode(projectCode: string): Promise<ProjectFlats[]> {
     const projectFlats: ProjectFlats[] = await getConnection().query(
-      'SELECT flat_id, flat_code, flat_desc FROM public.project_flats_entity WHERE project_code = $1',
+      'SELECT * FROM public.project_flats_entity WHERE project_code = $1',
       [projectCode],
     );
 
