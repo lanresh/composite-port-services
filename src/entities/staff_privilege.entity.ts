@@ -1,7 +1,8 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from 'typeorm';
 import { StaffPrivilege } from '@/interfaces/staff_privilege.interface';
 
 @Entity()
+@Unique(['staff_id', 'type'])
 export class StaffPrivilegeEntity extends BaseEntity implements StaffPrivilege {
   @PrimaryGeneratedColumn()
   id: number;
