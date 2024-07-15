@@ -4,6 +4,7 @@ import { MulterRequest } from '@/interfaces/multer.interface';
 import { Staff } from '@/interfaces/staff.interface';
 import { StaffService } from '@/services/staff.service';
 import { NextFunction, Request, Response } from 'express';
+import { StaffPrivilege } from '@/interfaces/staff_privilege.interface';
 
 export class StaffController {
   public staff = new StaffService();
@@ -92,6 +93,16 @@ export class StaffController {
 
       const uploadedStaffImage: Staff = await this.staff.updateStaff(userId, { image: imageUrl });
       res.status(200).json({ data: uploadedStaffImage, message: 'Staff image uploaded successfully' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public assignPrivileges = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const privilegeData: StaffPrivilege = req.body;
+      const createPrivilegeData: StaffPrivilege = await this.staff.grantStaffPrivilege(privilegeData);
+      res.status(200).json({ data: createPrivilegeData, message: 'Privilege granted successfully' });
     } catch (error) {
       next(error);
     }
