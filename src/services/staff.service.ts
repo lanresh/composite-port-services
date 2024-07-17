@@ -115,12 +115,20 @@ export class StaffService extends Repository<StaffEntity> {
       [
         privilegeData.staff_id,
         privilegeData.type,
-        privilegeData.can_view,
-        privilegeData.can_edit,
-        privilegeData.can_delete,
-        privilegeData.can_create,
+        privilegeData.can_view || 0,
+        privilegeData.can_edit || 0,
+        privilegeData.can_delete || 0,
+        privilegeData.can_create || 0,
       ],
     );
     return createPrivilegeData[0];
+  }
+
+  public async getStaffPrivileges(staffId: string): Promise<StaffPrivilege[]> {
+    const privileges: StaffPrivilege[] = await getConnection().query(
+      'SELECT * FROM staff_privilege_entity WHERE staff_id = $1',
+      [staffId],
+    );
+    return privileges;
   }
 }

@@ -2,6 +2,7 @@ import { Routes } from '@/interfaces/routes.interface';
 import { ProjectTeamController } from '@/controllers/project_team.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 
 export class ProjectTeamRoute implements Routes {
   public path = '/project-teams';
@@ -13,9 +14,9 @@ export class ProjectTeamRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, this.projectTeam.createProjectTeam);
-    this.router.get(`${this.path}`, AuthMiddleware, this.projectTeam.getAllProjectTeam);
-    this.router.get(`${this.path}/:code`, AuthMiddleware, this.projectTeam.getProjectTeamByProjectCode);
-    this.router.delete(`${this.path}/:code/:staffId`, AuthMiddleware, this.projectTeam.deleteProjectTeamMember);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.projectTeam.createProjectTeam);
+    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectTeam.getAllProjectTeam);
+    this.router.get(`${this.path}/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectTeam.getProjectTeamByProjectCode);
+    this.router.delete(`${this.path}/:code/:staffId`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.projectTeam.deleteProjectTeamMember);
   }
 }

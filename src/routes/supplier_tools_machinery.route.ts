@@ -2,6 +2,7 @@ import { SupplierToolMachineryController } from '@/controllers/supplier_tools_ma
 import { CreateSupplierToolsMachineryDto } from '@/dtos/supplier_tools_machinery.dto';
 import { Routes } from '@/interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -16,11 +17,11 @@ export class SupplierToolsMachineryRoute implements Routes {
     }
 
     private initializeRoutes() {
-        this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateSupplierToolsMachineryDto), this.supplierToolsMachinery.createSupplierToolMachinery);
-        this.router.get(`${this.path}`, AuthMiddleware, this.supplierToolsMachinery.getAllSupplierToolsMachinery);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.getSupplierToolMachinery);
-        this.router.put(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.updateSupplierToolMachinery);
-        this.router.delete(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.deleteSupplierToolMachinery);
+        this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'supplier'), ValidationMiddleware(CreateSupplierToolsMachineryDto), this.supplierToolsMachinery.createSupplierToolMachinery);
+        this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplierToolsMachinery.getAllSupplierToolsMachinery);
+        this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplierToolsMachinery.getSupplierToolMachinery);
+        this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'supplier'), this.supplierToolsMachinery.updateSupplierToolMachinery);
+        this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'supplier'), this.supplierToolsMachinery.deleteSupplierToolMachinery);
     }
 
 }

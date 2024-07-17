@@ -3,6 +3,7 @@ import { CreateStaffDto } from '@/dtos/staff.dto';
 import { Routes } from '@/interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { upload } from '@/middlewares/multer.middleware';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -16,14 +17,15 @@ export class StaffRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateStaffDto), this.staff.createStaff);
-    this.router.get(`${this.path}`, AuthMiddleware, this.staff.getAllStaffs);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, this.staff.getStaff);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, this.staff.updateStaff);
-    this.router.get(`${this.path}/roles/all`, AuthMiddleware, this.staff.getRoles);
-    this.router.get(`${this.path}/role/all`, AuthMiddleware, this.staff.getStaffsByRole);
-    this.router.put(`${this.path}/image/upload`, AuthMiddleware, upload.single('image'), this.staff.uploadStaffImage);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.staff.deleteStaff);
-    this.router.post(`${this.path}/privileges`, AuthMiddleware, this.staff.assignPrivileges);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'staff'), ValidationMiddleware(CreateStaffDto), this.staff.createStaff);
+    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getAllStaffs);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getStaff);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'staff'), this.staff.updateStaff);
+    this.router.get(`${this.path}/roles/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getRoles);
+    this.router.get(`${this.path}/role/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getStaffsByRole);
+    this.router.put(`${this.path}/image/upload`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'staff'), upload.single('image'), this.staff.uploadStaffImage);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'staff'), this.staff.deleteStaff);
+    this.router.post(`${this.path}/privileges`, AuthMiddleware, PrivilegeMiddleware('can_create', 'staff'), this.staff.assignPrivileges);
+    this.router.get(`${this.path}/privileges/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getPrivileges);
   }
 }

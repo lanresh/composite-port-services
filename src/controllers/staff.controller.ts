@@ -107,4 +107,14 @@ export class StaffController {
       next(error);
     }
   }
+
+  public getPrivileges = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const staffId: string = req.params.id;
+      const privilegesData: StaffPrivilege[] = await this.staff.getStaffPrivileges(staffId);
+      res.status(200).json({ data: privilegesData, message: 'Privileges fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

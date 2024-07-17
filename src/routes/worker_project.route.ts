@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { Routes } from '@interfaces/routes.interface';
 import { WorkerProjectController } from '@/controllers/worker_project.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 
 export class WorkerProjectRoute implements Routes {
   public path = '/worker-projects';
@@ -13,9 +14,9 @@ export class WorkerProjectRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, this.workerProject.findAllWorkerProjects);
-    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.workerProject.findWorkerProjectByProjectCode);
-    this.router.post(`${this.path}`, AuthMiddleware, this.workerProject.createWorkerProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.workerProject.deleteWorkerProject);
+    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'worker'), this.workerProject.findAllWorkerProjects);
+    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'worker'), this.workerProject.findWorkerProjectByProjectCode);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'worker'), this.workerProject.createWorkerProject);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'worker'), this.workerProject.deleteWorkerProject);
   }
 }

@@ -2,6 +2,7 @@ import { TenantController } from '@/controllers/tenant.controller';
 import { CreateTenantDto } from '@/dtos/tenant.dto';
 import { Routes } from '@/interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -15,12 +16,12 @@ export class TenantRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateTenantDto), this.tenant.createTenant);
-    this.router.get(`${this.path}`, AuthMiddleware, this.tenant.getAllTenants);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, this.tenant.getTenant);
-    this.router.get(`${this.path}/due/all`, AuthMiddleware, this.tenant.getAllUpcomingDueDates);
-    this.router.get(`${this.path}/project/:code`, AuthMiddleware, this.tenant.getTenantByProjectCode);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, this.tenant.updateTenant);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.tenant.deleteTenant);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'facility'), ValidationMiddleware(CreateTenantDto), this.tenant.createTenant);
+    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'facility'), this.tenant.getAllTenants);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'facility'), this.tenant.getTenant);
+    this.router.get(`${this.path}/due/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'facility'), this.tenant.getAllUpcomingDueDates);
+    this.router.get(`${this.path}/project/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'facility'), this.tenant.getTenantByProjectCode);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'facility'), this.tenant.updateTenant);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'facility'), this.tenant.deleteTenant);
   }
 }

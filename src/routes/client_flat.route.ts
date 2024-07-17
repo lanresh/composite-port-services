@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { Routes } from '@interfaces/routes.interface';
 import { ClientFlatController } from '@/controllers/client_flat.controller';
+import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 
 export class ClientFlatRoute implements Routes {
   public path = '/client-flat';
@@ -12,11 +14,11 @@ export class ClientFlatRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.clientFlatController.findAllClientFlats);
-    this.router.get(`${this.path}/client/:id`, this.clientFlatController.findClientFlatsByClientId);
-    this.router.get(`${this.path}/:id`, this.clientFlatController.findClientFlatsById);
-    this.router.post(`${this.path}`, this.clientFlatController.createClientFlat);
-    this.router.put(`${this.path}/:id`, this.clientFlatController.updateClientFlat);
-    this.router.delete(`${this.path}/:id`, this.clientFlatController.deleteClientFlat);
+    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientFlatController.findAllClientFlats);
+    this.router.get(`${this.path}/client/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientFlatController.findClientFlatsByClientId);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientFlatController.findClientFlatsById);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'client'), this.clientFlatController.createClientFlat);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'client'), this.clientFlatController.updateClientFlat);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'client'), this.clientFlatController.deleteClientFlat);
   }
 }
