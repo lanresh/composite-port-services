@@ -109,19 +109,24 @@ export class StaffService extends Repository<StaffEntity> {
     return deletedStaff[0];
   }
 
-  public async grantStaffPrivilege(privilegeData: StaffPrivilege): Promise<StaffPrivilege> {
+  public async grantStaffPrivilege(privilegeData: StaffPrivilege[]): Promise<StaffPrivilege[]> {
+    const data: StaffPrivilege[] = [];
+    for (const privilege of privilegeData) {
     const createPrivilegeData: StaffPrivilege = await getConnection().query(
       'INSERT INTO staff_privilege_entity (staff_id, type, can_view, can_edit, can_delete, can_create) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (staff_id, type) DO UPDATE SET can_view = $3, can_edit = $4, can_delete = $5, can_create = $6 RETURNING *',
       [
-        privilegeData.staff_id,
-        privilegeData.type,
-        privilegeData.can_view || 0,
-        privilegeData.can_edit || 0,
-        privilegeData.can_delete || 0,
-        privilegeData.can_create || 0,
+        privilege.staff_id,
+        privilege.type,
+        privilege.can_view || 0,
+        privilege.can_edit || 0,
+        privilege.can_delete || 0,
+        privilege.can_create || 0,
       ],
     );
-    return createPrivilegeData[0];
+
+    data.push(createPrivilegeData[0]);
+    }
+    return data;
   }
 
   public async getStaffPrivileges(staffId: string): Promise<StaffPrivilege[]> {

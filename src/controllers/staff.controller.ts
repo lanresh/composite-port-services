@@ -100,8 +100,8 @@ export class StaffController {
 
   public assignPrivileges = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const privilegeData: StaffPrivilege = req.body;
-      const createPrivilegeData: StaffPrivilege = await this.staff.grantStaffPrivilege(privilegeData);
+      const privilegeData: StaffPrivilege[] = req.body;
+      const createPrivilegeData: StaffPrivilege[] = await this.staff.grantStaffPrivilege(privilegeData);
       res.status(200).json({ data: createPrivilegeData, message: 'Privilege granted successfully' });
     } catch (error) {
       next(error);
