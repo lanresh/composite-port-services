@@ -19,7 +19,7 @@ export class StaffRoute implements Routes {
   private initializeRoutes() {
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'staff'), ValidationMiddleware(CreateStaffDto), this.staff.createStaff);
     this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getAllStaffs);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getStaff);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.staff.getStaff);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'staff'), this.staff.updateStaff);
     this.router.get(`${this.path}/roles/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getRoles);
     this.router.get(`${this.path}/role/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getStaffsByRole);
