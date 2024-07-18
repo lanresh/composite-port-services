@@ -22,14 +22,16 @@ export const PrivilegeMiddleware = (action: string, type: string) => async (req:
         const Authorization = getAuthorization(req);
         if (Authorization) {
             const { userid } = (await verify(Authorization, SECRET_KEY)) as DataStoredInToken;
+            const getStaffRole = await getConnection().query(
+                `SELECT user_type FROM users_entity WHERE userid = $1`, [userid]
+            )
+
             const getStaffPrivilege = await getConnection().query(
-                `SELECT sp.${action}, us.user_type FROM staff_privilege_entity sp JOIN users_entity us ON sp.staff_id = us.userid WHERE sp.staff_id = $1 AND sp.type = $2`,
+                `SELECT ${action} FROM staff_privilege_entity WHERE staff_id = $1 AND type = $2`,
                 [userid, type]
             )
 
-            console.log(getStaffPrivilege)
-
-            if (getStaffPrivilege.length && (getStaffPrivilege[0][action] === 1 || getStaffPrivilege[0].user_type.toLowerCase() === 'admin')) {
+            if (getStaffRole[0].user_type.toLowerCase() === 'admin' || (getStaffPrivilege.length && getStaffPrivilege[0][action] === 1)) {
                 next();
             } else {
                 next(new HttpException(403, 'You do not have permission to carry out this function'));
