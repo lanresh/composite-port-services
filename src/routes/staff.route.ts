@@ -26,6 +26,6 @@ export class StaffRoute implements Routes {
     this.router.put(`${this.path}/image/upload`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'staff'), upload.single('image'), this.staff.uploadStaffImage);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'staff'), this.staff.deleteStaff);
     this.router.post(`${this.path}/privileges`, AuthMiddleware, PrivilegeMiddleware('can_create', 'staff'), this.staff.assignPrivileges);
-    this.router.get(`${this.path}/privileges/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'staff'), this.staff.getPrivileges);
+    this.router.get(`${this.path}/privileges/:id`, AuthMiddleware, this.staff.getPrivileges);
   }
 }
