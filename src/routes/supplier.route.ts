@@ -18,8 +18,8 @@ export class SupplierRoute implements Routes {
 
     private initializeRoutes() {
         this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'supplier'), ValidationMiddleware(CreateSupplierDto), this.supplier.createSupplier);
-        this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplier.getAllSuppliers);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplier.getSupplier);
+        this.router.get(`${this.path}`, AuthMiddleware, this.supplier.getAllSuppliers);
+        this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplier.getSupplier);
         this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'supplier'), this.supplier.updateSupplier);
         this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'supplier'), this.supplier.deleteSupplier);
     }

@@ -15,8 +15,8 @@ export class ProjectCommentRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.projectComment.createProjectComment);
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectComment.findAllProjectComment);
-    this.router.get(`${this.path}/project/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectComment.findProjectCommentByProjectCode);
-    this.router.get(`${this.path}/client/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectComment.findProjectCommentByClientId);
+    this.router.get(`${this.path}`, AuthMiddleware, this.projectComment.findAllProjectComment);
+    this.router.get(`${this.path}/project/:id`, AuthMiddleware, this.projectComment.findProjectCommentByProjectCode);
+    this.router.get(`${this.path}/client/:id`, AuthMiddleware, this.projectComment.findProjectCommentByClientId);
   }
 }

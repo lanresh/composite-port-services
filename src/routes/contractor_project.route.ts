@@ -22,10 +22,10 @@ export class ContractorProjectRoute implements Routes {
       ValidationMiddleware(createContractorProjectDto),
       this.contractorProject.createContractorProject,
     );
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'contractor'), this.contractorProject.findAllContractorProject);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'contractor'), this.contractorProject.getContractorProject);
-    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'contractor'), this.contractorProject.getContractorProjectsByProjectCode);
-    this.router.get(`${this.path}/contractor-code/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'contractor'), this.contractorProject.getContractorProjectsByContractorCode);
+    this.router.get(`${this.path}`, AuthMiddleware, this.contractorProject.findAllContractorProject);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.contractorProject.getContractorProject);
+    this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByProjectCode);
+    this.router.get(`${this.path}/contractor-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByContractorCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'contractor'), this.contractorProject.updateContractorProject);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'contractor'), this.contractorProject.deleteContractorProject);
   }

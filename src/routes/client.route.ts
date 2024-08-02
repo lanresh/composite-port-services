@@ -17,8 +17,8 @@ export class ClientRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientController.findAllClients);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientController.findClientById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.clientController.findAllClients);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.clientController.findClientById);
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'client'), ValidationMiddleware(CreateClientDto), this.clientController.createClient);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.clientController.updateClient);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'client'), this.clientController.deleteClient);

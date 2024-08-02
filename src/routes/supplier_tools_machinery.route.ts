@@ -18,8 +18,8 @@ export class SupplierToolsMachineryRoute implements Routes {
 
     private initializeRoutes() {
         this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'supplier'), ValidationMiddleware(CreateSupplierToolsMachineryDto), this.supplierToolsMachinery.createSupplierToolMachinery);
-        this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplierToolsMachinery.getAllSupplierToolsMachinery);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'supplier'), this.supplierToolsMachinery.getSupplierToolMachinery);
+        this.router.get(`${this.path}`, AuthMiddleware, this.supplierToolsMachinery.getAllSupplierToolsMachinery);
+        this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.getSupplierToolMachinery);
         this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'supplier'), this.supplierToolsMachinery.updateSupplierToolMachinery);
         this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'supplier'), this.supplierToolsMachinery.deleteSupplierToolMachinery);
     }

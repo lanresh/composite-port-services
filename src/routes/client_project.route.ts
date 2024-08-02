@@ -14,10 +14,10 @@ export class ClientProjectRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientProjectController.findAllClientProjects);
-    this.router.get(`${this.path}/client/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientProjectController.findClientProjectsByClientId);
-    this.router.get(`${this.path}/project/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientProjectController.findClientProjectsByProjectId);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'client'), this.clientProjectController.findClientProjectsById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.clientProjectController.findAllClientProjects);
+    this.router.get(`${this.path}/client/:id`, AuthMiddleware, this.clientProjectController.findClientProjectsByClientId);
+    this.router.get(`${this.path}/project/:id`, AuthMiddleware, this.clientProjectController.findClientProjectsByProjectId);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.clientProjectController.findClientProjectsById);
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'client'), this.clientProjectController.createClientProject);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'client'), this.clientProjectController.updateClientProject);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'client'), this.clientProjectController.deleteClientProject);

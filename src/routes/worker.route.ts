@@ -18,8 +18,8 @@ export class WorkerRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'worker'), this.workerController.findAllWorkers);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'worker'), this.workerController.findWorkerById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.workerController.findAllWorkers);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.workerController.findWorkerById);
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'worker'), this.workerController.createWorker);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'worker'), this.workerController.updateWorker);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'worker'), this.workerController.deleteWorker);  

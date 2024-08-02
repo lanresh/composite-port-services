@@ -17,8 +17,8 @@ export class ConsultantRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'consultant'), ValidationMiddleware(CreateConsultantDto), this.consultant.createConsultant);
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'consultant'), this.consultant.getAllConsultants);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'consultant'), this.consultant.getConsultant);
+    this.router.get(`${this.path}`, AuthMiddleware, this.consultant.getAllConsultants);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.consultant.getConsultant);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'consultant'), this.consultant.updateConsultant);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'consultant'), this.consultant.deleteConsultant);
   }

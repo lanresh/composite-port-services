@@ -15,12 +15,12 @@ export class InventoryRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'inventory'), this.inventory.createInventory);
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'inventory'), this.inventory.findAllInventory);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'inventory'), this.inventory.findInventoryById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.inventory.findAllInventory);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.inventory.findInventoryById);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'inventory'), this.inventory.updateInventory);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'inventory'), this.inventory.deleteInventory);
-    this.router.get(`${this.path}/types/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'inventory'), this.inventory.getAllInventoryTypes);
-    this.router.get(`${this.path}/type/all`, AuthMiddleware, PrivilegeMiddleware('can_view', 'inventory'), this.inventory.getInventoryByType);
+    this.router.get(`${this.path}/types/all`, AuthMiddleware, this.inventory.getAllInventoryTypes);
+    this.router.get(`${this.path}/type/all`, AuthMiddleware, this.inventory.getInventoryByType);
    
   }
 }

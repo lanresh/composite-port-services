@@ -17,8 +17,8 @@ export class ProjectReportRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectReport.findAllProjectReports);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectReport.findProjectReportById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.projectReport.findAllProjectReports);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.projectReport.findProjectReportById);
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.projectReport.createProjectReport);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.projectReport.updateProjectReport);
     this.router.put(`${this.path}/images/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), upload.array('images'), this.projectReport.uploadProjectReportImages);

@@ -18,8 +18,8 @@ export class StakeholderRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'stakeholder'), this.StakeholderController.findAllStakeholders);
-    this.router.get(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_view', 'stakeholder'), this.StakeholderController.findStakeholderById);
+    this.router.get(`${this.path}`, AuthMiddleware, this.StakeholderController.findAllStakeholders);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.StakeholderController.findStakeholderById);
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'stakeholder'), this.StakeholderController.createStakeholder);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'stakeholder'), this.StakeholderController.updateStakeholder);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'stakeholder'), this.StakeholderController.deleteStakeholder);  

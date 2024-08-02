@@ -15,8 +15,8 @@ export class ProjectTeamRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.projectTeam.createProjectTeam);
-    this.router.get(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectTeam.getAllProjectTeam);
-    this.router.get(`${this.path}/:code`, AuthMiddleware, PrivilegeMiddleware('can_view', 'project'), this.projectTeam.getProjectTeamByProjectCode);
+    this.router.get(`${this.path}`, AuthMiddleware, this.projectTeam.getAllProjectTeam);
+    this.router.get(`${this.path}/:code`, AuthMiddleware, this.projectTeam.getProjectTeamByProjectCode);
     this.router.delete(`${this.path}/:code/:staffId`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.projectTeam.deleteProjectTeamMember);
   }
 }
