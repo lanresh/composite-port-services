@@ -26,6 +26,7 @@ export class CreateSupplierToolsMachineryDto {
   @IsNotEmpty()
   public procurement_type: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public comment: string;

@@ -17,6 +17,7 @@ export class CreateSupplierDto {
     @IsNotEmpty()
     public contact_person: string;
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     public comment: string;
@@ -25,6 +26,7 @@ export class CreateSupplierDto {
     @IsNotEmpty()
     public contact_mobile: string;
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     public contact_home_phone: string;

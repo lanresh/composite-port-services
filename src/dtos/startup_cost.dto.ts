@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateStartupCostDto {
   @IsString()
@@ -17,6 +17,7 @@ export class CreateStartupCostDto {
   @IsNotEmpty()
   public startup_cost: number;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public comment: string;

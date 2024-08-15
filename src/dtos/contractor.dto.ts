@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateContractorDto {
   @IsString()
@@ -21,22 +21,27 @@ export class CreateContractorDto {
   @IsNotEmpty()
   public contact_person: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contact_mobile: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contact_home_phone: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public email: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public website: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public comment: string;

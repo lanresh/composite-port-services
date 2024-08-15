@@ -23,6 +23,7 @@ export class createContractorProjectDto {
   @IsNotEmpty()
   public service: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public comment: string;
