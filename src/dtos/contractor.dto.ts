@@ -1,22 +1,27 @@
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateContractorDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contractor_name: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contractor_service: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contractor_address: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contractor_ofc_phone: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public contact_person: string;

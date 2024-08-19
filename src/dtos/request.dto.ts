@@ -6,10 +6,12 @@ export class CreateRequestDto {
   @IsNotEmpty()
   public carttemp_sess: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public staff_id: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public staff_name: string;
