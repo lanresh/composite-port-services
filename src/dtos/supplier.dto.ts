@@ -30,7 +30,6 @@ export class CreateSupplierDto {
     public contact_home_phone: string;
 
     @IsOptional()
-    @IsEmail()
     public email: string;
 
     @IsOptional()
