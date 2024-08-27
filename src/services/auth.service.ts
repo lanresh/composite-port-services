@@ -8,6 +8,7 @@ import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { Staff } from '@/interfaces/staff.interface';
 import sendResetLink from '@/helpers/email.helper';
+import { sendWelcomeEmail } from '@/helpers/postmark_email.helper';
 
 const createToken = (user: User, expiresIn: number = 6 * 60 * 60): TokenData => {
   const dataStoredInToken: DataStoredInToken = { userid: user.userid, id: user.id };
@@ -44,7 +45,15 @@ export class AuthService extends Repository<UsersEntity> {
       `INSERT INTO users_entity(userid, email, username, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, $5, 'Active', 0, now()) RETURNING *`,
       [userId, userData.email, userData.username, hashedPassword, userType],
     );
+    
+    let name: string;
+    if (userType === 'Client') {
+      name = userData.first_name + ' ' + userData.last_name;
+    } else {
+      name = userData.firstname + ' ' + userData.lastname;
+    }
 
+    await sendWelcomeEmail(userData.email, 37095765, name, password);
     return createUserData[0];
   }
 
