@@ -32,6 +32,7 @@ export interface Staff {
     image: string;
     secondary_email: string;
     employment_type: string;
+    username?: string;
 }
   
   

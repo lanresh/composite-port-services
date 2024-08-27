@@ -88,17 +88,17 @@ export class CreateStaffDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public deptid: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public gradeid: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public branchcode: string;
 
   @IsOptional()
@@ -125,16 +125,20 @@ export class CreateStaffDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public user_type: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public secondary_email: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public employment_type: string;
+
+  @IsOptional()
+  @IsString()
+  public username?: string;
 }
