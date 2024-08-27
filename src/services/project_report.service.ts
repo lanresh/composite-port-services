@@ -3,6 +3,7 @@ import { ProjectReportEntity } from '@entities/project_report.entity';
 import { ProjectReport } from '@interfaces/project_report.interface';
 import { HttpException } from '@exceptions/HttpException';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
+import sendEmail from '@/helpers/postmark_email.helper';
 
 @EntityRepository(ProjectReportEntity)
 export class ProjectReportService extends Repository<ProjectReportEntity> {
@@ -61,6 +62,10 @@ export class ProjectReportService extends Repository<ProjectReportEntity> {
         reportData.photograph_id,
         userId,
       ]);
+      const staff_name = await getConnection().query("SELECT concat(firstname, ' ', lastname) as name FROM staff_entity WHERE userid = $1", [userId]);
+      const user = await getConnection().query("SELECT email FROM users_entity WHERE user_type ILIKE 'admin'");
+      const emails = user.map((email) => email.email);
+      await sendEmail(emails, 36142495, staff_name[0].name, reportData.project_name);
       return result[0];
     } catch (error) {
       throw error;
