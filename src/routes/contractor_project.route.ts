@@ -18,7 +18,7 @@ export class ContractorProjectRoute implements Routes {
   private initializeRoutes() {
     this.router.post(
       `${this.path}`,
-      AuthMiddleware, PrivilegeMiddleware('can_create', 'contractor'),
+      AuthMiddleware, PrivilegeMiddleware('can_create', 'project'),
       ValidationMiddleware(createContractorProjectDto),
       this.contractorProject.createContractorProject,
     );
