@@ -75,8 +75,9 @@ export class CashAdvanceBreakdownService extends Repository<CashAdvanceBreakdown
     cashAdvanceBreakdownData: CashAdvanceBreakdown,
   ): Promise<CashAdvanceBreakdown> {
     await this.findCashAdvanceBreakdownById(cashAdvanceBreakdownId);
-    await updateCashAdvanceFields(cashAdvanceBreakdownData);
+    // await updateCashAdvanceFields(cashAdvanceBreakdownData);
     await CashAdvanceBreakdownEntity.update({ id: cashAdvanceBreakdownId }, cashAdvanceBreakdownData);
+    await updateCashAdvanceFields(cashAdvanceBreakdownData);
 
     const updateCashAdvanceBreakdown: CashAdvanceBreakdown = await this.findCashAdvanceBreakdownById(cashAdvanceBreakdownId);
     return updateCashAdvanceBreakdown;
