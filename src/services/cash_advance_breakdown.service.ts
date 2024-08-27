@@ -21,7 +21,9 @@ async function updateCashAdvanceFields(data): Promise<void> {
     cashAdvance.action_type = 'request iou'; //don't forget to update to action_type
   }
 
-  await CashAdvanceEntity.update({ request_code: data.request_code }, cashAdvance);
+
+  await CashAdvanceEntity.update({ request_code: data.request_code }, {...cashAdvance});
+  // await CashAdvanceEntity.update({ request_code: data.request_code }, cashAdvance);
 }
 
 @EntityRepository(CashAdvanceBreakdownEntity)

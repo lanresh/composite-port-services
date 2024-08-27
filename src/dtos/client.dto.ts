@@ -18,12 +18,12 @@ export class CreateClientDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public phone_number: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public mobile_number: string;
 
   @IsOptional()

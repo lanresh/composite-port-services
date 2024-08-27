@@ -17,6 +17,6 @@ export class CreateCashAdvanceBreakdownDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public comment: string;
 }
