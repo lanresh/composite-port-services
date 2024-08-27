@@ -16,7 +16,7 @@ export class WorkerProjectRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, AuthMiddleware, this.workerProject.findAllWorkerProjects);
     this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.workerProject.findWorkerProjectByProjectCode);
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'worker'), this.workerProject.createWorkerProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'worker'), this.workerProject.deleteWorkerProject);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.workerProject.createWorkerProject);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.workerProject.deleteWorkerProject);
   }
 }

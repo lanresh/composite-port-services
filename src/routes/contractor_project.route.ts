@@ -26,7 +26,7 @@ export class ContractorProjectRoute implements Routes {
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.contractorProject.getContractorProject);
     this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByProjectCode);
     this.router.get(`${this.path}/contractor-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByContractorCode);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'contractor'), this.contractorProject.updateContractorProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'contractor'), this.contractorProject.deleteContractorProject);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.contractorProject.updateContractorProject);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.contractorProject.deleteContractorProject);
   }
 }

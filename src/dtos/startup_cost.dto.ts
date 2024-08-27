@@ -22,6 +22,6 @@ export class CreateStartupCostDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public comment: string;
 }

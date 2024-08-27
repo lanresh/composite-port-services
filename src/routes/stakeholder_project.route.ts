@@ -18,8 +18,8 @@ export class StakeholderProjectRoute implements Routes {
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectById);
     this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectByCode);
     this.router.get(`${this.path}/stakeholder-code/:code`, AuthMiddleware, this.StakeholderProjectController.findStakeholderProjectsByStakeholderCode);
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'stakeholder'), this.StakeholderProjectController.createStakeholderProject);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'stakeholder'), this.StakeholderProjectController.updateStakeholderProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'stakeholder'), this.StakeholderProjectController.deleteStakeholderProject);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.StakeholderProjectController.createStakeholderProject);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.StakeholderProjectController.updateStakeholderProject);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.StakeholderProjectController.deleteStakeholderProject);
   }
 }
