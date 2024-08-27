@@ -33,6 +33,6 @@ export class CreateSupplierToolsMachineryDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public comment: string;
 }
