@@ -14,7 +14,7 @@ export async function sendWelcomeEmail(email: string, templateId: number, name: 
           "name": name,
           "email": email,
           "password": password,
-          "report_link": "http://compositepropertydevelopment.com/login"
+          "report_link": "https://composite-portal-dusky.vercel.app/login"
     },
     "TrackOpens": true
   };
@@ -39,7 +39,7 @@ export default async function sendEmail(email: string[], templateId: number, sta
       "TemplateModel": {
           "staff_name": staff_name,
           "project_name": project_name,
-          "report_link": "http://compositepropertydevelopment.com/login"
+          "report_link": "https://composite-portal-dusky.vercel.app/login"
     },
     "TrackOpens": true
   };
