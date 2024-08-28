@@ -14,7 +14,7 @@ export class ConsultantProjectRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'consultant'), this.consultantProject.createConsultantProject);
+    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), this.consultantProject.createConsultantProject);
     this.router.get(`${this.path}`, AuthMiddleware, this.consultantProject.findAllConsultantProject);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.consultantProject.findConsultantProjectById);
     this.router.get(`${this.path}/consultant/:id`, AuthMiddleware, this.consultantProject.findAllConsultantProjectByConsultantId);
