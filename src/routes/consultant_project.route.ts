@@ -19,7 +19,7 @@ export class ConsultantProjectRoute implements Routes {
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.consultantProject.findConsultantProjectById);
     this.router.get(`${this.path}/consultant/:id`, AuthMiddleware, this.consultantProject.findAllConsultantProjectByConsultantId);
     this.router.get(`${this.path}/project/:code`, AuthMiddleware, this.consultantProject.findAllConsultantProjectByProjectCode);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'consultant'), this.consultantProject.updateConsultantProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'consultant'), this.consultantProject.deleteConsultantProject);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.consultantProject.updateConsultantProject);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.consultantProject.deleteConsultantProject);
   }
 }
