@@ -2,6 +2,7 @@ import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { ContractorProjectEntity } from '../entities/contractor_project.entity';
 import { ContractorProject } from '@/interfaces/contractor_project.interface';
 import { HttpException } from '@/exceptions/HttpException';
+import { sendUserEmail } from '@/helpers/postmark_email.helper';
 
 @EntityRepository(ContractorProjectEntity)
 export class ContractorProjectService extends Repository<ContractorProjectEntity> {
@@ -18,6 +19,20 @@ export class ContractorProjectService extends Repository<ContractorProjectEntity
       userId,
       contractorProjectData.comment,
     ]);
+
+    const contractor_name = await getConnection().query(
+      `SELECT ce.contractor_name FROM contractor_entity ce WHERE ce.contractor_code = $1`,
+      [contractorProjectData.contractor_code],
+    );
+    const project_name = await getConnection().query(
+      `SELECT pe.project_name FROM project_entity pe WHERE pe.project_code = $1`,
+      [contractorProjectData.contractor_project_code],
+    );
+
+    const body = `A Contractor (${contractor_name[0].contractor_name}) has been added to project ${project_name[0].project_name} and require your approval.`;
+    const user = await getConnection().query("SELECT email FROM users_entity WHERE user_type ILIKE 'admin'");
+    const emails = user.map((email: { email: string }) => email.email);
+    await sendUserEmail(emails, 37108171, body, 'Pending Approval: Contractor Added to Project');
 
     return createContractorProjectData[0];
   }

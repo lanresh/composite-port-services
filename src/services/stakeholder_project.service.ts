@@ -3,6 +3,7 @@ import { StakeholderProjectEntity } from '@entities/stakeholder_project.entity';
 import { StakeholderProject } from '@interfaces/stakeholder_project.interface';
 import { HttpException } from '@exceptions/HttpException';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
+import { sendUserEmail } from '@/helpers/postmark_email.helper';
 
 @EntityRepository(StakeholderProjectEntity)
 export class StakeholderProjectService extends Repository<StakeholderProjectEntity> {
@@ -62,6 +63,20 @@ export class StakeholderProjectService extends Repository<StakeholderProjectEnti
         projectData.comment,
         projectData.status,
       ]);
+
+      const stakeholder_name = await getConnection().query(
+        `SELECT stakeholder_name FROM stakeholder_entity WHERE stakeholder_code = $1`,
+        [projectData.stakeholder_code],
+      );
+      const project_name = await getConnection().query(
+        `SELECT pe.project_name FROM project_entity pe WHERE pe.project_code = $1`,
+        [projectData.stakeholder_project_code],
+      );
+  
+      const body = `A Stakeholder (${stakeholder_name[0].stakeholder_name}) has been added to project ${project_name[0].project_name} and require your approval.`;
+      const user = await getConnection().query("SELECT email FROM users_entity WHERE user_type ILIKE 'admin'");
+      const emails = user.map((email: { email: string }) => email.email);
+      await sendUserEmail(emails, 37108171, body, 'Pending Approval: Stakeholder Added to Project');
       return result[0];
     } catch (error) {
       throw error;

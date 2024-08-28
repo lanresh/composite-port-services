@@ -1,7 +1,9 @@
 import { TenantEntity } from '@/entities/tenants.entity';
 import { HttpException } from '@/exceptions/HttpException';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
+import { sendTenantEmail } from '@/helpers/postmark_email.helper';
 import { Tenant } from '@/interfaces/tenants.interface';
+import { calculateDueDate } from '@/utils/due_date';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 
 @EntityRepository(TenantEntity)
@@ -33,7 +35,11 @@ export class TenantService extends Repository<TenantEntity> {
       tenantData.rent_payment,
       tenantData.reminder,
       JSON.stringify(tenantData.fees)
-    ]);
+    ])
+
+    const due_date = await calculateDueDate(tenantData.rent_payment.toLowerCase());
+    await sendTenantEmail(tenantData, due_date);
+
     return createTenantData[0];
   }
 

@@ -1,6 +1,7 @@
 import { RequestEntity } from '@/entities/request.entity';
 import { HttpException } from '@/exceptions/HttpException';
 import { generateRandomCode } from '@/helpers/code_generator.helper';
+import { sendUserEmail } from '@/helpers/postmark_email.helper';
 import { Request } from '@/interfaces/request.interface';
 import { EntityRepository, getConnection, Repository } from 'typeorm';
 
@@ -60,6 +61,11 @@ export class RequestService extends Repository<RequestEntity> {
       requestData.account_number,
       requestData.account_name,
     ]);
+
+    const body = `A new ${requestData.request_type} request has been submitted for ${requestData.project_name} and requires attention`
+    const user = await getConnection().query("SELECT email FROM users_entity WHERE user_type ILIKE 'admin' OR user_type ILIKE 'supervisor'");
+    const emails = user.map((email: { email: string }) => email.email);
+    await sendUserEmail(emails, 37108171, body, 'New Request Received');
 
     return createRequestData[0];
   }

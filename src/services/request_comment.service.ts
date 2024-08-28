@@ -2,6 +2,7 @@ import { RequestCommentEntity } from '@/entities/request_comment.entity';
 import { RequestComment } from '@/interfaces/request_comment.interface';
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { HttpException } from '@exceptions/HttpException';
+import { sendUserEmail } from '@/helpers/postmark_email.helper';
 
 @EntityRepository(RequestCommentEntity)
 export class RequestCommentService extends Repository<RequestCommentEntity> {
@@ -14,6 +15,16 @@ export class RequestCommentService extends Repository<RequestCommentEntity> {
       userId,
       requestCommentData.comment,
     ]);
+
+    const request_type = await getConnection().query(
+      `SELECT request_type, project_name FROM request_entity WHERE request_code = $1`,
+      [requestCommentData.request_code],
+    );
+
+    const body = `A new comment has been added to a ${request_type[0].request_type} request for ${request_type[0].project_name}.`;
+    const user = await getConnection().query("SELECT email FROM users_entity WHERE user_type NOT ILIKE 'client'");
+    const emails = user.map((email: { email: string }) => email.email);
+    await sendUserEmail(emails, 37108171, body, 'New Comment Added to Request');
 
     return createRequestCommentData[0];
   }
