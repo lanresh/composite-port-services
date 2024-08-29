@@ -122,12 +122,12 @@ export class CreateRequestDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public contact_person: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   public contact_mobile: string;
 
   @IsOptional()
