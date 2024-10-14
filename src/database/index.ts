@@ -9,6 +9,7 @@ export const dbConfig: ConnectionOptions = {
   host: POSTGRES_HOST,
   port: +POSTGRES_PORT,
   database: POSTGRES_DATABASE,
+  ssl: { rejectUnauthorized: false },
   synchronize: false,
   logging: false,
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
