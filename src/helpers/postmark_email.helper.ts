@@ -16,7 +16,7 @@ export async function sendWelcomeEmail(email: string, templateId: number, name: 
           "name": name,
           "email": email,
           "password": password,
-          "report_link": "https://composite-portal-dusky.vercel.app/login"
+          "report_link": "https://main.d1mvra5i7l3l24.amplifyapp.com/login"
     },
     "TrackOpens": true
   };
@@ -41,7 +41,7 @@ export async function sendUserEmail(email: string[], templateId: number, body: s
       "TemplateModel": {
           "subject": subject,
           "body": body,
-          "report_link": "https://composite-portal-dusky.vercel.app/login"
+          "report_link": "https://main.d1mvra5i7l3l24.amplifyapp.com/login"
     },
     "TrackOpens": true
   };
@@ -130,7 +130,7 @@ export default async function sendEmail(email: string[], templateId: number, sta
       "TemplateModel": {
           "staff_name": staff_name,
           "project_name": project_name,
-          "report_link": "https://composite-portal-dusky.vercel.app/login"
+          "report_link": "https://main.d1mvra5i7l3l24.amplifyapp.com/login"
     },
     "TrackOpens": true
   };
