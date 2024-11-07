@@ -83,9 +83,6 @@ tenantData.fees.forEach(fee => {
     case "electricity":
       templateModel.electricity_fee = fee.value;
       break;
-    case "other_fee":
-      templateModel.other_fee = fee.value;
-      break;
     default:
       // Handle any unexpected fee types if necessary
       break;
@@ -104,7 +101,6 @@ tenantData.fees.forEach(fee => {
           "facility_fee": templateModel.facility_fee,
           "diesel_fee": templateModel.diesel_fee,
           "electricity_fee": templateModel.electricity_fee,
-          "other_fee": templateModel.other_fee,
           "due_date": due_date
     },
     "TrackOpens": true
