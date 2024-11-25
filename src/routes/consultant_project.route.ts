@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Routes } from '@/interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { Router } from 'express';

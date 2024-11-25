@@ -10,7 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "module": "commonjs",
-    "pretty": true,
+    "pretty": false,
     "sourceMap": true,
     "declaration": true,
     "outDir": "dist",

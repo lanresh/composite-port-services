@@ -16,7 +16,13 @@ export class ProjectRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'project'), ValidationMiddleware(CreateProjectDto), this.project.createProject);
+    this.router.post(
+      `${this.path}`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_create', 'project'),
+      ValidationMiddleware(CreateProjectDto),
+      this.project.createProject,
+    );
     this.router.get(`${this.path}`, AuthMiddleware, this.project.getAllProject);
     this.router.get(`${this.path}/:id(\\d+)`, AuthMiddleware, this.project.getProject);
     this.router.put(`${this.path}/:id(\\d+)`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.project.updateProject);

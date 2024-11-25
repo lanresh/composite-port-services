@@ -16,7 +16,13 @@ export class TenantRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'facility'), ValidationMiddleware(CreateTenantDto), this.tenant.createTenant);
+    this.router.post(
+      `${this.path}`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_create', 'facility'),
+      ValidationMiddleware(CreateTenantDto),
+      this.tenant.createTenant,
+    );
     this.router.get(`${this.path}`, AuthMiddleware, this.tenant.getAllTenants);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.tenant.getTenant);
     this.router.get(`${this.path}/due/all`, AuthMiddleware, this.tenant.getAllUpcomingDueDates);

@@ -6,22 +6,36 @@ import { PrivilegeMiddleware } from '@/middlewares/privilege.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
-
 export class SupplierToolsMachineryRoute implements Routes {
-    public path = '/suppliers/tools/machinery';
-    public router = Router();
-    public supplierToolsMachinery = new SupplierToolMachineryController();
-    
-    constructor() {
-        this.initializeRoutes();
-    }
+  public path = '/suppliers/tools/machinery';
+  public router = Router();
+  public supplierToolsMachinery = new SupplierToolMachineryController();
 
-    private initializeRoutes() {
-        this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'supplier'), ValidationMiddleware(CreateSupplierToolsMachineryDto), this.supplierToolsMachinery.createSupplierToolMachinery);
-        this.router.get(`${this.path}`, AuthMiddleware, this.supplierToolsMachinery.getAllSupplierToolsMachinery);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.getSupplierToolMachinery);
-        this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'supplier'), this.supplierToolsMachinery.updateSupplierToolMachinery);
-        this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'supplier'), this.supplierToolsMachinery.deleteSupplierToolMachinery);
-    }
+  constructor() {
+    this.initializeRoutes();
+  }
 
+  private initializeRoutes() {
+    this.router.post(
+      `${this.path}`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_create', 'supplier'),
+      ValidationMiddleware(CreateSupplierToolsMachineryDto),
+      this.supplierToolsMachinery.createSupplierToolMachinery,
+    );
+    this.router.get(`${this.path}`, AuthMiddleware, this.supplierToolsMachinery.getAllSupplierToolsMachinery);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierToolsMachinery.getSupplierToolMachinery);
+    this.router.put(
+      `${this.path}/:id`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_edit', 'supplier'),
+      this.supplierToolsMachinery.updateSupplierToolMachinery,
+    );
+    this.router.delete(
+      `${this.path}/:id`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_delete', 'supplier'),
+      this.supplierToolsMachinery.deleteSupplierToolMachinery,
+    );
+  }
 }

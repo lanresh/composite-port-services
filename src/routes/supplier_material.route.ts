@@ -16,7 +16,13 @@ export class SupplierMaterialRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, PrivilegeMiddleware('can_create', 'supplier'), ValidationMiddleware(CreateSupplierMaterialDto), this.supplierMaterial.createSupplierMaterial);
+    this.router.post(
+      `${this.path}`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_create', 'supplier'),
+      ValidationMiddleware(CreateSupplierMaterialDto),
+      this.supplierMaterial.createSupplierMaterial,
+    );
     this.router.get(`${this.path}`, AuthMiddleware, this.supplierMaterial.getAllSupplierMaterials);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.supplierMaterial.getSupplierMaterial);
     this.router.get(`${this.path}/types/all`, AuthMiddleware, this.supplierMaterial.getMaterialTypes);
@@ -24,6 +30,11 @@ export class SupplierMaterialRoute implements Routes {
     this.router.get(`${this.path}/type/description`, AuthMiddleware, this.supplierMaterial.getMaterialDescription);
     this.router.get(`${this.path}/supplier/description`, AuthMiddleware, this.supplierMaterial.getMaterialDescriptionBySupplierCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'supplier'), this.supplierMaterial.updateSupplierMaterial);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'supplier'), this.supplierMaterial.deleteSupplierMaterial);
+    this.router.delete(
+      `${this.path}/:id`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_delete', 'supplier'),
+      this.supplierMaterial.deleteSupplierMaterial,
+    );
   }
 }

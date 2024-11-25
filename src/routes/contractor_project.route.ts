@@ -18,7 +18,8 @@ export class ContractorProjectRoute implements Routes {
   private initializeRoutes() {
     this.router.post(
       `${this.path}`,
-      AuthMiddleware, PrivilegeMiddleware('can_create', 'project'),
+      AuthMiddleware,
+      PrivilegeMiddleware('can_create', 'project'),
       ValidationMiddleware(createContractorProjectDto),
       this.contractorProject.createContractorProject,
     );
@@ -27,6 +28,11 @@ export class ContractorProjectRoute implements Routes {
     this.router.get(`${this.path}/project-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByProjectCode);
     this.router.get(`${this.path}/contractor-code/:code`, AuthMiddleware, this.contractorProject.getContractorProjectsByContractorCode);
     this.router.put(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_edit', 'project'), this.contractorProject.updateContractorProject);
-    this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'project'), this.contractorProject.deleteContractorProject);
+    this.router.delete(
+      `${this.path}/:id`,
+      AuthMiddleware,
+      PrivilegeMiddleware('can_delete', 'project'),
+      this.contractorProject.deleteContractorProject,
+    );
   }
 }

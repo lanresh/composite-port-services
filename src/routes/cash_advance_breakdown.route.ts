@@ -6,20 +6,25 @@ import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
 export class CashAdvanceBreakdownRoute implements Routes {
-    public path = '/cash-advance-breakdowns';
-    public router = Router();
-    public cash_advance_breakdown = new CashAdvanceBreakdownController();
+  public path = '/cash-advance-breakdowns';
+  public router = Router();
+  public cash_advance_breakdown = new CashAdvanceBreakdownController();
 
-    constructor() {
-        this.initializeRoutes();
-    }
+  constructor() {
+    this.initializeRoutes();
+  }
 
-    private initializeRoutes() {
-        this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateCashAdvanceBreakdownDto), this.cash_advance_breakdown.createCashAdvanceBreakdown);
-        this.router.get(`${this.path}`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdowns);
-        this.router.get(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdown);
-        this.router.get(`${this.path}/request-code/:code`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdownsByRequestCode);
-        this.router.put(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.updateCashAdvanceBreakdown);
-        this.router.delete(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.deleteCashAdvanceBreakdown);
-    }
+  private initializeRoutes() {
+    this.router.post(
+      `${this.path}`,
+      AuthMiddleware,
+      ValidationMiddleware(CreateCashAdvanceBreakdownDto),
+      this.cash_advance_breakdown.createCashAdvanceBreakdown,
+    );
+    this.router.get(`${this.path}`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdowns);
+    this.router.get(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdown);
+    this.router.get(`${this.path}/request-code/:code`, AuthMiddleware, this.cash_advance_breakdown.getCashAdvanceBreakdownsByRequestCode);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.updateCashAdvanceBreakdown);
+    this.router.delete(`${this.path}/:id`, AuthMiddleware, this.cash_advance_breakdown.deleteCashAdvanceBreakdown);
+  }
 }

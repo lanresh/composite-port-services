@@ -1,16 +1,12 @@
 import { Router } from 'express';
 import { Routes } from '@interfaces/routes.interface';
-import { ToolFromStoreController } from '@/controllers/tool_from_store.controller'; 
+import { ToolFromStoreController } from '@/controllers/tool_from_store.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
-
-
 
 export class ToolFromStoreRoute implements Routes {
   public path = '/tool-from-store';
   public router = Router();
-  public toolFromStoreController = new ToolFromStoreController ();
-
-  
+  public toolFromStoreController = new ToolFromStoreController();
 
   constructor() {
     this.initializeRoutes();
@@ -22,4 +18,5 @@ export class ToolFromStoreRoute implements Routes {
     this.router.post(`${this.path}`, AuthMiddleware, this.toolFromStoreController.createToolFromStore);
     this.router.put(`${this.path}/:id`, AuthMiddleware, this.toolFromStoreController.updateToolFromStore);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.toolFromStoreController.deleteToolFromStore);
-}}
+  }
+}

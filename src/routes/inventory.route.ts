@@ -21,6 +21,5 @@ export class InventoryRoute implements Routes {
     this.router.delete(`${this.path}/:id`, AuthMiddleware, PrivilegeMiddleware('can_delete', 'inventory'), this.inventory.deleteInventory);
     this.router.get(`${this.path}/types/all`, AuthMiddleware, this.inventory.getAllInventoryTypes);
     this.router.get(`${this.path}/type/all`, AuthMiddleware, this.inventory.getInventoryByType);
-   
   }
 }
