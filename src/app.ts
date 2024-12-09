@@ -47,11 +47,11 @@ export class App {
 
   private async connectToDatabase() {
     try {
-      const connection = await createConnection(dbConfig)
-      const recentMigrations = await connection.runMigrations()
-      console.log(recentMigrations)
+      const connection = await createConnection(dbConfig);
+      const recentMigrations = await connection.runMigrations();
+      console.log(recentMigrations);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
     // const connection = await dbConnection();
   }

@@ -1,4 +1,5 @@
 import path, { join } from 'path';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createConnection, ConnectionOptions } from 'typeorm';
 import { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DATABASE } from '@config';
 

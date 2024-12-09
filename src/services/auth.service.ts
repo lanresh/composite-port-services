@@ -1,5 +1,7 @@
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+
 import { EntityRepository, Repository, getConnection } from 'typeorm';
 import { SECRET_KEY } from '@config';
 import { UsersEntity } from '@entities/users.entity';
@@ -20,6 +22,15 @@ const createToken = (user: User, expiresIn: number = 6 * 60 * 60): TokenData => 
 const createCookie = (tokenData: TokenData): string => {
   // return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
   return `${tokenData.token}`;
+};
+
+const generateJwtToken = async (user: User) => {
+  const secret_key: any = process.env.SECRET_KEY;
+  const session = process.env.SESSION;
+  const token = jwt.sign({ userId: user.id }, secret_key, {
+    expiresIn: session,
+  });
+  return token;
 };
 
 @EntityRepository(UsersEntity)
@@ -45,7 +56,7 @@ export class AuthService extends Repository<UsersEntity> {
       `INSERT INTO users_entity(userid, email, username, password, user_type, status, pwd_status, pwd_date_created) VALUES ($1, $2, $3, $4, $5, 'Active', 0, now()) RETURNING *`,
       [userId, userData.email, userData.username, hashedPassword, userType],
     );
-    
+
     let name: string;
     if (userType === 'Client') {
       name = userData.first_name + ' ' + userData.last_name;
@@ -58,16 +69,17 @@ export class AuthService extends Repository<UsersEntity> {
   }
 
   public async login(email: string, password: string): Promise<{ token: string; findUser: User }> {
-    const findUser: User[] = await getConnection().query(`SELECT * FROM users_entity WHERE email = $1`, [email]);
-    if (!findUser.length) throw new HttpException(409, `This email ${email} was not found`);
+    const findUser: User = await getConnection().query(`SELECT * FROM users_entity WHERE email = $1`, [email]);
+    const user = findUser[0] || null;
+    if (!user) throw new HttpException(409, `This email ${email} was not found`);
 
-    const isPasswordMatching: boolean = await compare(password, findUser[0].password);
+    const isPasswordMatching: boolean = await compare(password, user.password);
     if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
 
-    const userData = await getConnection().query(`UPDATE users_entity SET lastlogdate = now() WHERE userid = $1 RETURNING *`, [findUser[0].userid]);
-
-    const tokenData = createToken(userData[0][0]);
-    const token = createCookie(tokenData);
+    const userData = await getConnection().query(`UPDATE users_entity SET lastlogdate = now() WHERE userid = $1 RETURNING *`, [user.userid]);
+    //const tokenData = createToken(userData[0][0]);
+    // const token = createCookie(tokenData);
+    const token = await generateJwtToken(user);
 
     return { token, findUser: userData[0][0] };
   }
